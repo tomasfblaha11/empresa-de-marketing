@@ -86,7 +86,7 @@ cada turno (más lentitud y ruido), y resultados menos consistentes entre client
 | Documentación actualizada | Context7 | Pendiente de aprobación |
 | Framework | Astro 7 | Se añade al crear la plantilla base |
 | Calidad | Lighthouse CI (+ Playwright) | Se añade a la plantilla y a CI |
-| Publicación | Cloudflare Pages (wrangler / integración Git) | Se configura por cliente |
+| Publicación | Vercel Pro (decidido 2026-11-21; reemplaza a Cloudflare Pages) | Un proyecto por cliente |
 
 Lo sobrante se retiró con aprobación del responsable (2026-11-21):
 - **`design-taste-frontend`**: eliminado del repo (`.agents/`, enlace en `.claude/skills/`,

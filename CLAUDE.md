@@ -16,7 +16,7 @@ rápidas, adaptadas a cada nicho y fáciles de mantener.
 
 - **Astro** (salida estática por defecto). Islas de JS solo cuando una interacción lo justifique.
 - **Node.js 22** (Astro 7 exige `>=22.23.4`). Gestor: npm, salvo decisión contraria.
-- **GitHub** para control de versiones; **Cloudflare Pages** para publicar;
+- **GitHub** para control de versiones; **Vercel (plan Pro)** para publicar;
   **Lighthouse CI** y **Playwright** para pruebas.
 - CSS propio con tokens (variables CSS). Sin frameworks de UI ni librerías de componentes
   salvo aprobación.
@@ -28,7 +28,7 @@ rápidas, adaptadas a cada nicho y fáciles de mantener.
    Toda dependencia nueva se justifica en el PR (licencia, tamaño, mantenimiento).
 3. Componentes reutilizables y agnósticos del cliente; lo específico de cada cliente va en
    configuración y contenido, no en el código de los componentes.
-4. Cada cliente aislado: su propio repositorio, su propio proyecto de Cloudflare Pages y sus
+4. Cada cliente aislado: su propio repositorio, su propio proyecto de Vercel y sus
    propias credenciales. Nunca mezclar datos, contenido ni secretos entre clientes.
 5. No copiar textos, imágenes, logos ni diseños protegidos de competidores. Usar contenido del
    cliente, material propio o recursos con licencia verificada (anotar la licencia).
@@ -49,6 +49,22 @@ rápidas, adaptadas a cada nicho y fáciles de mantener.
   de terceros sin consentimiento. Preferir analítica sin cookies.
 - Responsive verificado a 390, 768, 1024 y 1440 px.
 
+## Demos para prospectos
+
+Una demo es una propuesta para un negocio que todavía no es cliente. Siempre:
+
+1. `noindex` (meta robots + cabecera `X-Robots-Tag`): nunca debe aparecer en buscadores.
+2. URL no adivinable (`demo-<código>.vercel.app`), nunca con el nombre del negocio.
+3. Aviso visible: "Propuesta de diseño para <negocio>. No es su web oficial."
+4. Solo datos públicos del negocio (nombre, servicios, zona). Nada de sus fotos, logos ni
+   reseñas sin permiso; usar imágenes propias o con licencia verificada.
+5. Borrar la demo si no hay respuesta en 30 días. Si contratan, pasa a un proyecto propio.
+
+## Datos de cada cliente
+
+Todos los clientes entregan la misma ficha: `docs/ficha-cliente.md`. El código lee esa ficha;
+no se escribe contenido de un cliente directamente en los componentes.
+
 ## Pruebas antes de publicar
 
 1. `astro check` y build sin errores.
@@ -59,7 +75,7 @@ rápidas, adaptadas a cada nicho y fáciles de mantener.
 ## Seguridad y credenciales
 
 - Nunca escribir claves API, tokens ni contraseñas en el código, en commits, en este archivo
-  ni en el chat. Usar secretos de GitHub Actions / Cloudflare por cliente.
+  ni en el chat. Usar secretos de GitHub Actions / Vercel por cliente.
 - `.env*` está en `.gitignore`; solo se versiona `.env.example` sin valores.
 - No instalar paquetes, skills, plugins ni servidores MCP desconocidos sin revisar antes su
   código, licencia, permisos y hooks. Fijar versiones (lockfile, commit de skills).
