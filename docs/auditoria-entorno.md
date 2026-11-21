@@ -88,11 +88,12 @@ cada turno (más lentitud y ruido), y resultados menos consistentes entre client
 | Calidad | Lighthouse CI (+ Playwright) | Se añade a la plantilla y a CI |
 | Publicación | Cloudflare Pages (wrangler / integración Git) | Se configura por cliente |
 
-Recomendación sobre lo sobrante (requiere tu aprobación, no se ha borrado nada):
-- **Retirar `design-taste-frontend`** del repo: su estilo (shaders, fotos de stock, secciones de
-  pantalla completa) choca con webs rápidas y sobrias para pymes, y añade un hook `Stop`.
-- **No persistir Impeccable** (ya es efímero): sus hooks globales corren tras cada edición.
-- **No instalar UI UX Pro Max**: útil como catálogo, pero duplica frontend-design.
+Lo sobrante se retiró con aprobación del responsable (2026-11-21):
+- **`design-taste-frontend`**: eliminado del repo (`.agents/`, enlace en `.claude/skills/`,
+  `skills-lock.json`). Su estilo chocaba con webs rápidas y sobrias, y añadía un hook `Stop`.
+- **Impeccable**: desinstalado (skills, agentes, motor y sus hooks en `~/.claude/settings.json`).
+- **Plugin de Figma**: desinstalado (su servidor estaba bloqueado por la red).
+- **UI UX Pro Max**: no se instala; duplica frontend-design.
 
 ## 6. Configuración aplicada
 
