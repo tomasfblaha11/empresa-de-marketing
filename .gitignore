@@ -1,0 +1,23 @@
+# Dependencias y builds
+node_modules/
+dist/
+.astro/
+.wrangler/
+
+# Pruebas
+.lighthouseci/
+playwright-report/
+test-results/
+
+# Credenciales: nunca versionar
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+
+# Claude Code: ajustes locales
+.claude/settings.local.json
+
+# Sistema
+.DS_Store
