@@ -19,14 +19,18 @@ if (!dir) throw new Error('Usage: rank.mjs <run-folder>');
 const { prospects } = JSON.parse(readFileSync(join(dir, 'places.json'), 'utf8'));
 const auditFile = join(dir, 'audit.json');
 const audits = existsSync(auditFile) ? JSON.parse(readFileSync(auditFile, 'utf8')) : {};
-const API_KEY = process.env.GOOGLE_MAPS_API_KEY || 'proxy-injected'; // replaced by the proxy
+// PageSpeed Insights works without a key (shared, lower quota). Send a key only if one is set:
+// GOOGLE_MAPS_API_KEY locally, or PSI_KEY_FROM_PROXY=1 when the network proxy injects it.
+const KEY_HEADER = process.env.GOOGLE_MAPS_API_KEY
+  ? { 'X-Goog-Api-Key': process.env.GOOGLE_MAPS_API_KEY }
+  : process.env.PSI_KEY_FROM_PROXY ? { 'X-Goog-Api-Key': 'proxy-injected' } : {};
 
 async function audit(url) {
   const api = new URL('https://www.googleapis.com/pagespeedonline/v5/runPagespeed');
   api.searchParams.set('url', url);
   api.searchParams.set('strategy', 'mobile');
   for (const c of ['performance', 'seo']) api.searchParams.append('category', c);
-  const res = await fetch(api, { headers: { 'X-Goog-Api-Key': API_KEY }, signal: AbortSignal.timeout(90_000) });
+  const res = await fetch(api, { headers: KEY_HEADER, signal: AbortSignal.timeout(90_000) });
   const body = await res.json().catch(() => ({}));
   if (!res.ok) {
     const msg = body?.error?.message ?? `HTTP ${res.status}`;

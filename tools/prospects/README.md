@@ -8,7 +8,15 @@ npm run prospects:find -- --dry-run          # cuántas consultas haría, sin ga
 npm run prospects:find                        # todos los nichos y ciudades
 npm run prospects:find -- --niche house-care --location Tauranga
 npm run prospects:rank -- data/prospects/nz/<fecha>
+
+# Alternativa gratis, sin clave ni facturación (OpenStreetMap):
+NODE_USE_ENV_PROXY=1 node tools/prospects/find-osm.mjs
+NODE_USE_ENV_PROXY=1 node tools/prospects/rank.mjs data/prospects/nz/<fecha>-osm
 ```
+
+En este entorno cloud, Node necesita `NODE_USE_ENV_PROXY=1` para salir por el proxy.
+OpenStreetMap: gratis, sin reseñas (no se puntúan) y con cobertura parcial de negocios chicos.
+Datos © colaboradores de OpenStreetMap (ODbL): solo uso interno.
 
 Resultado: `data/prospects/nz/<fecha>/prospects.csv` (fuera de Git).
 

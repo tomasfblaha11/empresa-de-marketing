@@ -48,3 +48,9 @@ test('toProspect + mergeProspect dedupe by placeId', () => {
 test('toCsv escapes', () => {
   assert.equal(toCsv([{ a: 'x,y', b: ['1', '2'] }], ['a', 'b']), 'a,b\n"x,y",1 | 2\n');
 });
+
+test('unknown review count (OpenStreetMap) is not penalised', () => {
+  const r = scoreProspect({ websiteType: 'none', userRatingCount: null, phone: '03 1' });
+  assert.equal(r.score, 40);
+  assert.equal(r.tier, 'B');
+});

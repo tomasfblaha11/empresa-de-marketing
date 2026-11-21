@@ -68,11 +68,14 @@ export function scoreProspect(p, audit = null) {
     }
   }
 
-  const reviews = p.userRatingCount ?? 0;
-  if (reviews >= 20) add(20, `${reviews} reseñas: negocio activo`);
-  else if (reviews >= 5) add(10, `${reviews} reseñas`);
-  else if (reviews < 3) add(-10, 'muy pocas reseñas');
-  if ((p.rating ?? 0) >= 4.5 && reviews >= 5) add(5, `puntuación ${p.rating}`);
+  // Review data only exists for Google sources; null means "unknown" and is not penalised.
+  if (p.userRatingCount != null) {
+    const reviews = p.userRatingCount;
+    if (reviews >= 20) add(20, `${reviews} reseñas: negocio activo`);
+    else if (reviews >= 5) add(10, `${reviews} reseñas`);
+    else if (reviews < 3) add(-10, 'muy pocas reseñas');
+    if ((p.rating ?? 0) >= 4.5 && reviews >= 5) add(5, `puntuación ${p.rating}`);
+  }
   if (!p.phone) add(-15, 'sin teléfono');
 
   score = Math.max(0, Math.min(100, score));
