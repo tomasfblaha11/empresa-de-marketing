@@ -1,0 +1,43 @@
+---
+import Icon from './Icon.astro';
+import { site, tel } from '../lib/site';
+---
+{site.demo && (
+  <p class="demo-banner" role="note">
+    Design proposal for {site.business.name}. This is not their official website.
+  </p>
+)}
+<header class="site-header">
+  <div class="wrap bar">
+    <a class="wordmark" href="/" translate="no">{site.business.name}</a>
+    <a class="call" href={tel(site.contact.phone)}>
+      <Icon name="phone" />
+      <span class="call-label">Call <span class="call-number">{site.contact.phone}</span></span>
+    </a>
+  </div>
+</header>
+
+<style>
+  .demo-banner {
+    max-width: none; margin: 0; padding: 0.55rem var(--gutter);
+    background: var(--ink); color: var(--paper);
+    font-size: var(--step--1); text-align: center;
+  }
+  .site-header { background: var(--paper); border-bottom: 1px solid var(--rule); }
+  .bar { display: flex; align-items: center; justify-content: space-between; gap: 1rem; min-height: 4rem; }
+  .wordmark {
+    font-weight: 800; font-stretch: var(--wide); font-size: var(--step-0);
+    text-decoration: none; line-height: 1.15; letter-spacing: -0.01em;
+  }
+  .call {
+    display: inline-flex; align-items: center; gap: 0.5rem; flex: none;
+    font-weight: 700; text-decoration: none; padding: 0.5rem 0;
+  }
+  .wordmark:hover, .call:hover { text-decoration: underline; text-decoration-thickness: 2px; }
+  .call :global(svg) { width: 1.2rem; height: 1.2rem; color: var(--brand); }
+  .call-number { display: none; }
+  @media (min-width: 40rem) {
+    .wordmark { font-size: var(--step-1); }
+    .call-number { display: inline; font-stretch: var(--wide); }
+  }
+</style>

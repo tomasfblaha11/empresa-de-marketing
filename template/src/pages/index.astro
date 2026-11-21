@@ -1,0 +1,49 @@
+---
+import Base from '../layouts/Base.astro';
+import Header from '../components/Header.astro';
+import Hero from '../components/Hero.astro';
+import Facts from '../components/Facts.astro';
+import Services from '../components/Services.astro';
+import Gallery from '../components/Gallery.astro';
+import About from '../components/About.astro';
+import Reviews from '../components/Reviews.astro';
+import Contact from '../components/Contact.astro';
+import Footer from '../components/Footer.astro';
+import MobileBar from '../components/MobileBar.astro';
+import { site, preset, tel } from '../lib/site';
+
+const b = site.business;
+const title = `${b.name} | ${site.contact.areas[0]}`;
+const description = b.tagline;
+
+// schema.org structured data for local search.
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': preset.schemaType,
+  name: b.name,
+  description: b.tagline,
+  url: site.siteUrl,
+  telephone: tel(site.contact.phone).replace('tel:', ''),
+  email: site.contact.email,
+  areaServed: site.contact.areas.map((name) => ({ '@type': 'Place', name })),
+  ...(site.contact.address && { address: site.contact.address }),
+  ...(site.googleReviews.rating && site.googleReviews.count && {
+    aggregateRating: { '@type': 'AggregateRating', ratingValue: site.googleReviews.rating, reviewCount: site.googleReviews.count },
+  }),
+};
+---
+<Base title={title} description={description}>
+  <script slot="head" type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+  <Header />
+  <main id="main">
+    <Hero />
+    <Facts />
+    <Services />
+    <Gallery />
+    <About />
+    <Reviews />
+    <Contact />
+  </main>
+  <Footer />
+  <MobileBar />
+</Base>

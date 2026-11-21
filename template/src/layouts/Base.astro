@@ -1,0 +1,40 @@
+---
+import '@fontsource-variable/archivo/wdth.css';
+import '../styles/global.css';
+import { getImage } from 'astro:assets';
+import { site, preset, img } from '../lib/site';
+
+interface Props { title: string; description: string; path?: string }
+const { title, description, path = '/' } = Astro.props;
+
+const canonical = new URL(path, site.siteUrl).href;
+const og = await getImage({ src: img(site.photos.hero.file), width: 1200, height: 630, fit: 'cover', format: 'jpg' });
+const ogUrl = new URL(og.src, site.siteUrl).href;
+const { brand, brandInk, accent, accentInk } = preset.colors;
+const themeVars = `--brand:${brand};--brand-ink:${brandInk};--accent:${accent};--accent-ink:${accentInk}`;
+---
+<!doctype html>
+<html lang={site.lang} style={themeVars}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    {site.demo && <meta name="robots" content="noindex, nofollow" />}
+    <meta name="theme-color" content="#f5f6f4" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogUrl} />
+    <meta property="og:locale" content={site.lang.replace('-', '_')} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <slot name="head" />
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+    <slot />
+  </body>
+</html>

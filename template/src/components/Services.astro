@@ -1,0 +1,41 @@
+---
+import { site, preset } from '../lib/site';
+---
+<section class="section" id="services" aria-labelledby="services-title">
+  <div class="wrap grid">
+    <div class="intro">
+      <h2 id="services-title">{preset.copy.servicesTitle}</h2>
+      {site.highlights.length > 0 && (
+        <ul class="highlights" role="list">
+          {site.highlights.map((h) => <li>{h}</li>)}
+        </ul>
+      )}
+    </div>
+    <ul class="list" role="list">
+      {site.services.map((s) => (
+        <li class="item">
+          <div class="head">
+            <h3>{s.name}</h3>
+            {s.priceFrom && <span class="price">{s.priceFrom}</span>}
+          </div>
+          <p>{s.description}</p>
+        </li>
+      ))}
+    </ul>
+  </div>
+</section>
+
+<style>
+  .grid { display: grid; gap: 2.5rem; }
+  .highlights { margin-top: 1.25rem; display: grid; gap: 0.4rem; color: var(--ink-soft); }
+  .list { border-top: 2px solid var(--ink); }
+  .item { padding-block: 1.25rem; border-bottom: 1px solid var(--rule); }
+  .head { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 0.25rem 1rem; }
+  h3 { font-stretch: var(--wide); }
+  .price { font-weight: 700; color: var(--brand); white-space: nowrap; }
+  .item p { margin-top: 0.4rem; color: var(--ink-soft); }
+  @media (min-width: 56rem) {
+    .grid { grid-template-columns: minmax(14rem, 1fr) 2fr; gap: 4rem; }
+    .intro { position: sticky; top: 2rem; align-self: start; }
+  }
+</style>

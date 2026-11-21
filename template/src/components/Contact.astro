@@ -1,0 +1,108 @@
+---
+import Icon from './Icon.astro';
+import { site, preset, tel, whatsappUrl } from '../lib/site';
+const c = site.contact;
+const waText = `Hi ${site.business.name}, I'd like a quote.`;
+const live = Boolean(c.formEndpoint);
+---
+<section class="contact" id="contact" aria-labelledby="contact-title">
+  <div class="wrap">
+    <h2 id="contact-title">{preset.copy.contactTitle}</h2>
+    <p class="lead">{preset.copy.contactLead}</p>
+
+    <a class="phone" href={tel(c.phone)}>
+      <span class="visually-hidden">Call </span>{c.phone}
+    </a>
+
+    <div class="grid">
+      <div class="channels">
+        <ul role="list">
+          {c.whatsapp && (
+            <li><a href={whatsappUrl(c.whatsapp, waText)} rel="noopener"><Icon name="whatsapp" />Message on WhatsApp</a></li>
+          )}
+          <li><a href={`mailto:${c.email}`}><Icon name="mail" />{c.email}</a></li>
+          {c.address && <li><Icon name="pin" />{c.address}</li>}
+        </ul>
+        {c.hours.length > 0 && (
+          <dl class="hours">
+            {c.hours.map((h) => (<><dt>{h.days}</dt><dd>{h.time}</dd></>))}
+          </dl>
+        )}
+        <div class="area">
+          <h3>{preset.copy.areaTitle}</h3>
+          <p>{c.areas.join(', ')} and surrounding areas.</p>
+        </div>
+      </div>
+
+      <form class="form" method="post" action={live ? c.formEndpoint : undefined} data-demo={live ? undefined : ''}>
+        <h3>Send an enquiry</h3>
+        <label>Name<input name="name" autocomplete="name" required /></label>
+        <label>Phone or email<input name="contact" autocomplete="email" spellcheck="false" required /></label>
+        <label>Suburb or town<input name="suburb" autocomplete="address-level2" /></label>
+        <label>What do you need?<textarea name="message" rows="4" required></textarea></label>
+        <div class="visually-hidden" aria-hidden="true">
+          <label>Leave this empty<input type="text" name="_gotcha" tabindex="-1" autocomplete="off" /></label>
+        </div>
+        <button class="btn btn--accent" type="submit">Send my enquiry</button>
+        <p class="status" role="status" aria-live="polite"></p>
+      </form>
+    </div>
+  </div>
+</section>
+
+<script>
+  // Demo forms are not connected: say so instead of failing silently.
+  for (const form of document.querySelectorAll<HTMLFormElement>('form[data-demo]')) {
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const status = form.querySelector('.status');
+      if (status) status.textContent = 'This is a design proposal, so the form is not connected yet. Please call or email instead.';
+    });
+  }
+</script>
+
+<style>
+  .contact {
+    background: var(--brand); color: var(--brand-ink);
+    padding-block: var(--space-section);
+  }
+  .lead { margin-top: 1rem; font-size: var(--step-1); line-height: 1.4; max-width: 46ch; opacity: 0.92; }
+  .phone {
+    display: inline-block; margin-top: 2rem;
+    font-size: var(--step-phone); font-weight: 850; font-stretch: var(--wide);
+    line-height: 1; letter-spacing: -0.03em; text-decoration: none;
+    color: var(--accent);
+    font-variant-numeric: tabular-nums;
+  }
+  .phone:hover { text-decoration: underline; text-decoration-thickness: 4px; }
+  .grid { display: grid; gap: 3rem; margin-top: 3rem; }
+  .channels ul { display: grid; gap: 0.9rem; font-size: var(--step-1); }
+  .channels li { display: flex; align-items: center; gap: 0.75rem; overflow-wrap: anywhere; }
+  .channels a { display: inline-flex; align-items: center; gap: 0.75rem; font-weight: 600; }
+  .channels :global(svg) { width: 1.4rem; height: 1.4rem; flex: none; }
+  .hours { display: grid; grid-template-columns: auto 1fr; gap: 0.25rem 1.5rem; margin-top: 2rem; }
+  dt { font-weight: 700; }
+  .area { margin-top: 2rem; }
+  .area p { margin-top: 0.5rem; opacity: 0.92; }
+
+  .form {
+    display: grid; gap: 1rem; align-content: start;
+    background: var(--paper); color: var(--ink);
+    padding: 1.5rem; border-radius: var(--radius);
+  }
+  label { display: grid; gap: 0.35rem; font-weight: 600; font-size: var(--step--1); }
+  input, textarea {
+    font: inherit; font-size: var(--step-0); color: var(--ink);
+    padding: 0.7rem 0.8rem; border: 1.5px solid #8a9198; border-radius: var(--radius); background: #fff;
+    width: 100%;
+  }
+  input:focus-visible, textarea:focus-visible { outline: 3px solid var(--focus); outline-offset: 1px; border-color: var(--ink); }
+  .form .btn { justify-self: start; }
+  .status { font-size: var(--step--1); font-weight: 600; }
+  .status:empty { display: none; }
+
+  @media (min-width: 56rem) {
+    .grid { grid-template-columns: 1fr 1fr; gap: 4rem; }
+    .form { padding: 2rem; }
+  }
+</style>

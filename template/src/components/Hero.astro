@@ -1,0 +1,61 @@
+---
+import { Picture } from 'astro:assets';
+import Icon from './Icon.astro';
+import { site, preset, img, tel } from '../lib/site';
+const hero = site.photos.hero;
+---
+<section class="hero" aria-labelledby="hero-title">
+  <Picture
+    class="hero-photo"
+    src={img(hero.file)}
+    alt={hero.alt}
+    widths={[640, 960, 1280, 1920]}
+    sizes="100vw"
+    formats={['avif', 'webp']}
+    loading="eager"
+    fetchpriority="high"
+  />
+  <div class="wrap board-wrap">
+    <div class="board">
+      <h1 id="hero-title" translate="no">{site.business.name}</h1>
+      <p class="tagline">{site.business.tagline}</p>
+      <div class="actions">
+        <a class="btn btn--accent" href="#contact">{preset.copy.quoteCta}</a>
+        <a class="btn btn--ghost" href={tel(site.contact.phone)}><Icon name="phone" />Call {site.contact.phone}</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .hero { position: relative; background: var(--brand); }
+  .hero :global(picture), .hero :global(.hero-photo) { display: block; width: 100%; }
+  .hero :global(.hero-photo) {
+    height: clamp(16rem, 50svh, 40rem); object-fit: cover; object-position: center 60%;
+  }
+  .board-wrap { position: relative; }
+  .board {
+    position: relative; margin-top: -3.5rem;
+    background: var(--brand); color: var(--brand-ink);
+    padding: 1.75rem 1.25rem 1.5rem; border-radius: var(--radius);
+    animation: board-in 700ms cubic-bezier(0.2, 0.7, 0.2, 1) both 150ms;
+  }
+  h1 {
+    font-size: var(--step-4); font-weight: 850; font-stretch: var(--wide);
+    line-height: 0.98; letter-spacing: -0.02em; max-width: 14ch;
+  }
+  .tagline { margin-top: 1rem; font-size: var(--step-1); line-height: 1.35; max-width: 34ch; opacity: 0.92; }
+  .actions { display: flex; flex-wrap: wrap; gap: 0.75rem; margin-top: 1.5rem; }
+
+  @media (min-width: 56rem) {
+    .hero { background: transparent; }
+    .hero :global(.hero-photo) { height: clamp(32rem, 86svh, 52rem); }
+    .board-wrap { position: absolute; inset: auto 0 2.5rem 0; }
+    .board { margin-top: 0; max-width: 40rem; padding: 2.25rem 2.25rem 2rem; }
+  }
+  @keyframes board-in {
+    from { opacity: 0; transform: translateY(1.5rem); }
+    to { opacity: 1; transform: none; }
+  }
+  @media (prefers-reduced-motion: reduce) { .board { animation: none; } }
+</style>

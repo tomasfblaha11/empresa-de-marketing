@@ -3,8 +3,8 @@
 Agencia de desarrollo web por suscripción para pequeñas empresas europeas: webs profesionales,
 rápidas, adaptadas a cada nicho y fáciles de mantener.
 
-> Estado actual: **entorno preparado, sin desarrollo**. No crear páginas de clientes, plantillas
-> ni plataforma hasta que el responsable lo apruebe explícitamente.
+> Estado actual: **plantilla base aprobada y construida** (`template/`, ver su README).
+> Mercado inicial: Nueva Zelanda. No crear webs de clientes reales ni plataforma sin aprobación.
 
 ## Alcance
 

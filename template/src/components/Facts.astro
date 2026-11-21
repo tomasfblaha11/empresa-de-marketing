@@ -1,0 +1,28 @@
+---
+import { site } from '../lib/site';
+const { yearsInTrade, credentials } = site.business;
+const g = site.googleReviews;
+const facts = [
+  yearsInTrade ? `${yearsInTrade} years in the trade` : null,
+  g.rating && g.count ? `Rated ${g.rating} from ${g.count} Google reviews` : null,
+  ...credentials,
+].filter(Boolean) as string[];
+---
+{facts.length > 0 && (
+  <div class="facts">
+    <ul class="wrap" role="list" aria-label="Why people choose us">
+      {facts.map((f) => <li>{f}</li>)}
+    </ul>
+  </div>
+)}
+
+<style>
+  .facts { border-bottom: 1px solid var(--rule); }
+  ul { display: flex; flex-wrap: wrap; gap: 0.5rem 1.75rem; padding-block: 1.25rem; font-weight: 600; color: var(--ink-soft); }
+  li { padding-left: 1rem; position: relative; }
+  li::before {
+    content: ''; position: absolute; left: 0; top: 0.55em;
+    width: 0.45rem; height: 0.45rem; background: var(--accent); border-radius: 1px;
+  }
+  @media (min-width: 56rem) { ul { padding-block: 1.5rem; } }
+</style>

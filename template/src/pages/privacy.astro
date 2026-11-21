@@ -1,0 +1,31 @@
+---
+// Plain-language privacy notice. Base text for New Zealand (Privacy Act 2020).
+// Review per country before publishing (EU/Ireland: GDPR).
+import Base from '../layouts/Base.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import { site } from '../lib/site';
+const name = site.legal.responsible;
+---
+<Base title={`Privacy | ${site.business.name}`} description={`How ${site.business.name} handles your personal information.`} path="/privacy/">
+  <Header />
+  <main id="main" class="wrap section legal">
+    <h1>Privacy</h1>
+    <p>{name} collects only what you send us through this website, by phone, email or WhatsApp: usually your name, contact details, address and a description of the job.</p>
+    <h2>What we use it for</h2>
+    <p>To reply to your enquiry, quote, carry out the work and invoice you. We do not sell or share your details with anyone else, except where the law requires it.</p>
+    <h2>Cookies and tracking</h2>
+    <p>This website does not use advertising or tracking cookies.</p>
+    <h2>How long we keep it</h2>
+    <p>Enquiries that do not become a job are deleted within 12 months. Job records are kept as long as tax law requires.</p>
+    <h2>Your rights</h2>
+    <p>You can ask to see or correct the information we hold about you, or ask us to delete it, by emailing <a href={`mailto:${site.contact.email}`}>{site.contact.email}</a>.</p>
+  </main>
+  <Footer />
+</Base>
+
+<style>
+  .legal h1 { font-size: var(--step-4); font-stretch: var(--wide); }
+  .legal h2 { font-size: var(--step-2); margin-top: 2.5rem; }
+  .legal p { margin-top: 1rem; }
+</style>
