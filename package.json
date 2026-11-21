@@ -1,0 +1,11 @@
+{
+  "name": "empresa-de-marketing",
+  "private": true,
+  "type": "module",
+  "engines": { "node": ">=22.23.4" },
+  "scripts": {
+    "test": "node --test tools/prospects/lib.test.mjs",
+    "prospects:find": "node tools/prospects/find.mjs",
+    "prospects:rank": "node tools/prospects/rank.mjs"
+  }
+}

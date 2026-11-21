@@ -21,3 +21,6 @@ test-results/
 
 # Sistema
 .DS_Store
+
+# Datos de prospectos (contienen datos de negocios reales; no versionar)
+data/
