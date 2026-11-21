@@ -10,4 +10,4 @@ Se reemplazan por las fotos del cliente. Verificadas en Wikimedia Commons el 202
 | mejiro.jpg | Asanagi | https://commons.wikimedia.org/wiki/File:Mejiro_Garden_path_2023-04-23.jpg |
 | oamaru.jpg | David Nind | https://commons.wikimedia.org/wiki/File:Oamaru_Public_Gardens_-_Path_and_lawn_area.jpg |
 | paving.jpg | MabelAmber (Pixabay) | https://commons.wikimedia.org/wiki/File:Square_paving_stones.jpg |
-| chch.jpg | Bernard Spragg | https://commons.wikimedia.org/wiki/File:Christchurch_Botanic_Gardens._(17099558470).jpg |
+| bowood.jpg | Daderot | https://commons.wikimedia.org/wiki/File:Bowood_lawn_and_pinetum_-_Wiltshire,_England_-_DSC00354.jpg |

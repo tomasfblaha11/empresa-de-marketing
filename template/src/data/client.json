@@ -8,46 +8,119 @@
     "name": "Harbourstone Paving & Gardens",
     "tagline": "Driveways, patios and gardens built to last, across the Bay of Plenty.",
     "yearsInTrade": 14,
-    "credentials": ["Locally owned and operated", "Fully insured"]
+    "credentials": [
+      "Locally owned and operated",
+      "Fully insured"
+    ]
   },
   "contact": {
     "phone": "021 555 0142",
     "whatsapp": "64215550142",
     "email": "hello@example.co.nz",
     "address": "",
-    "areas": ["Tauranga", "Mount Maunganui", "Papamoa", "Te Puke", "Katikati", "Omokoroa"],
+    "areas": [
+      "Tauranga",
+      "Mount Maunganui",
+      "Papamoa",
+      "Te Puke",
+      "Katikati",
+      "Omokoroa"
+    ],
     "hours": [
-      { "days": "Monday to Friday", "time": "7am – 5pm" },
-      { "days": "Saturday", "time": "By appointment" }
+      {
+        "days": "Monday to Friday",
+        "time": "7am – 5pm"
+      },
+      {
+        "days": "Saturday",
+        "time": "By appointment"
+      }
     ],
     "formEndpoint": ""
   },
   "services": [
-    { "name": "Driveways", "description": "Exposed aggregate, concrete pavers or cobbles, with proper base and drainage.", "priceFrom": "From $6,500" },
-    { "name": "Patios and outdoor rooms", "description": "Stone and paver patios sized for how you actually use the backyard.", "priceFrom": "From $4,000" },
-    { "name": "Retaining walls", "description": "Timber, block and stone walls, engineered where the council needs it.", "priceFrom": "From $3,200" },
-    { "name": "Garden design and planting", "description": "Low-maintenance native planting plans, edging, lawn and irrigation.", "priceFrom": "Free site visit" }
+    {
+      "name": "Driveways",
+      "description": "Exposed aggregate, concrete pavers or cobbles, with proper base and drainage.",
+      "priceFrom": "From $6,500"
+    },
+    {
+      "name": "Patios and outdoor rooms",
+      "description": "Stone and paver patios sized for how you actually use the backyard.",
+      "priceFrom": "From $4,000"
+    },
+    {
+      "name": "Retaining walls",
+      "description": "Timber, block and stone walls, engineered where the council needs it.",
+      "priceFrom": "From $3,200"
+    },
+    {
+      "name": "Garden design and planting",
+      "description": "Low-maintenance native planting plans, edging, lawn and irrigation.",
+      "priceFrom": "Free site visit"
+    }
   ],
-  "highlights": ["Fixed written quotes", "Five-year workmanship guarantee", "We clean up every day on site"],
+  "highlights": [
+    "Fixed written quotes",
+    "Five-year workmanship guarantee",
+    "We clean up every day on site"
+  ],
   "about": {
     "story": "Harbourstone started with one ute and a plate compactor in 2012. Today it is a crew of four, and the owner still measures every job and signs off every finish. Most of our work comes from neighbours of people we have already worked for.",
     "photo": "paving.jpg",
     "photoAlt": "Close-up of grey granite pavers laid in a straight bond"
   },
   "reviews": [
-    { "quote": "They turned a cracked, sloping drive into the best-looking entrance on the street, and finished a day early.", "author": "Karen W.", "place": "Papamoa" },
-    { "quote": "Clear quote, no surprises, and the crew left the place tidier than they found it.", "author": "Mike T.", "place": "Mount Maunganui" }
+    {
+      "quote": "They turned a cracked, sloping drive into the best-looking entrance on the street, and finished a day early.",
+      "author": "Karen W.",
+      "place": "Papamoa"
+    },
+    {
+      "quote": "Clear quote, no surprises, and the crew left the place tidier than they found it.",
+      "author": "Mike T.",
+      "place": "Mount Maunganui"
+    }
   ],
-  "googleReviews": { "rating": 4.9, "count": 38, "url": "" },
-  "social": { "facebook": "", "instagram": "" },
+  "googleReviews": {
+    "rating": 4.9,
+    "count": 38,
+    "url": ""
+  },
+  "social": {
+    "facebook": "",
+    "instagram": ""
+  },
   "photos": {
-    "hero": { "file": "swain.jpg", "alt": "Grey stone driveway curving past a lawn and young trees to a weatherboard house" },
+    "hero": {
+      "file": "swain.jpg",
+      "alt": "Grey stone driveway curving past a lawn and young trees to a weatherboard house"
+    },
     "gallery": [
-      { "file": "langer.jpg", "alt": "Charcoal driveway in front of a white townhouse and garage", "caption": "Driveway and front boundary" },
-      { "file": "mejiro.jpg", "alt": "Gravel garden path between rocks and flowering shrubs", "caption": "Garden path and planting" },
-      { "file": "oamaru.jpg", "alt": "Curved path through a lawn under mature trees", "caption": "Path and lawn renovation" },
-      { "file": "chch.jpg", "alt": "Pond edge with autumn trees and native grasses", "caption": "Water-edge planting" }
+      {
+        "file": "langer.jpg",
+        "alt": "Charcoal driveway in front of a white townhouse and garage",
+        "caption": "Driveway and front boundary"
+      },
+      {
+        "file": "mejiro.jpg",
+        "alt": "Gravel garden path between rocks and flowering shrubs",
+        "caption": "Garden path and planting"
+      },
+      {
+        "file": "oamaru.jpg",
+        "alt": "Curved path through a lawn under mature trees",
+        "caption": "Path and lawn renovation"
+      },
+      {
+        "file": "bowood.jpg",
+        "alt": "Freshly striped lawn with mature trees and a wildflower strip",
+        "caption": "Lawn renovation and tree care"
+      }
     ]
   },
-  "legal": { "responsible": "Harbourstone Paving & Gardens Ltd", "country": "NZ" }
+  "legal": {
+    "responsible": "Harbourstone Paving & Gardens Ltd",
+    "country": "NZ"
+  }
 }
