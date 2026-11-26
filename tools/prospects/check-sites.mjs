@@ -112,7 +112,10 @@ async function check(p) {
   if (page.error) {
     if (guessed) { r.verdict = 'sin-web'; r.problems.push('No tiene página web (el dominio de su email no tiene web activa)'); return r; }
     const host = new URL(page.url).hostname;
-    const dns = page.error === 'unreachable' ? await dnsStatus(host) : 'ok';
+    // Check both the bare domain and www: a site can live on either.
+    const bare = host.replace(/^www\./, '');
+    const statuses = page.error === 'unreachable' ? [await dnsStatus(bare), await dnsStatus(`www.${bare}`)] : ['ok'];
+    const dns = statuses.includes('ok') ? 'ok' : statuses.includes('none') ? 'none' : statuses[0];
     if (dns === 'none' || dns === 'empty') {
       r.verdict = 'caida';
       r.problems.push('El dominio de su web venció o ya no existe: quien entra desde Google o desde su ficha no encuentra nada');
