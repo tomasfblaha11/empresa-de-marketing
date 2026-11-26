@@ -280,7 +280,7 @@ export const pages: NichePage[] = [
       faq: [
         { q: '¿Trabajas solo con negocios de Paraná?', a: 'No. Trabajo con negocios de toda Entre Ríos y del resto de Argentina, y también con clientes de Nueva Zelanda y Estados Unidos.' },
         { q: '¿Qué tipo de negocios?', a: 'Sobre todo cabañas y alojamientos, paisajismo y jardinería, cuidado de casas y servicios para el hogar, pero cualquier negocio chico que necesite una web clara puede consultarme.' },
-        { q: '¿Cuánto cuesta?', a: 'Armar la web es gratis. Si te gusta, pagas una cuota mensual que cubre alojamiento, mantenimiento y cambios. Los precios están más abajo, en pesos o en dólares.' },
+        { q: '¿Cuánto cuesta?', a: 'Armar la web es gratis. Si te gusta, pagas una cuota mensual que cubre alojamiento, mantenimiento y cambios. Los precios están en esta misma página, en pesos o en dólares.' },
       ],
       ctaTitle: '¿Quieres un borrador gratis para tu negocio?',
       ctaText: 'Cuéntame qué hace tu negocio y dónde está. En pocos días tienes una web real para ver, sin compromiso.',
