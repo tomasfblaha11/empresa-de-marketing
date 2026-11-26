@@ -61,7 +61,7 @@ for (const comuna of args.comunas.split(',')) {
     if (!items.length) break;
     const fresh = items.filter((i) => SMALL.test(i.type) && !db.listings[i.profile]);
     let next = 0;
-    await Promise.all([0, 1, 2].map(async () => {
+    await Promise.all([0, 1, 2, 3, 4, 5].map(async () => {
       while (next < fresh.length) {
         const it = fresh[next++];
         const d = await get(it.profile);
