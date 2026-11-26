@@ -83,14 +83,18 @@ for (const loc of args.locs.split(',')) {
     await sleep(delay);
     if (!html) { db.pagesDone.push(key); continue; }
     const found = parseListings(html, cat, loc);
-    let added = 0;
-    for (const l of found) {
-      if (db.listings[l.profile]) continue;
-      l.email = await emailFromProfile(l.profile);
-      await sleep(delay);
-      db.listings[l.profile] = l;
-      added++;
-    }
+    // Profile pages are fetched three at a time, each worker pausing between requests.
+    const fresh = found.filter((l) => !db.listings[l.profile]);
+    let next = 0;
+    await Promise.all([0, 1, 2].map(async () => {
+      while (next < fresh.length) {
+        const l = fresh[next++];
+        l.email = await emailFromProfile(l.profile);
+        db.listings[l.profile] = l;
+        await sleep(delay);
+      }
+    }));
+    const added = fresh.length;
     db.pagesDone.push(key);
     save();
     console.log(`${key}: ${found.length} listings, ${added} new (total ${Object.keys(db.listings).length})`);

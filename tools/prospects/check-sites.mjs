@@ -10,6 +10,25 @@
 import { readFileSync, writeFileSync, existsSync } from 'node:fs';
 import { join } from 'node:path';
 import { parseArgs } from 'node:util';
+import { createRequire } from 'node:module';
+
+// A real browser (preinstalled Playwright Chromium) double-checks pages that look empty in raw
+// HTML, because many modern sites only show their content after JavaScript runs.
+let browser;
+async function renderedText(url) {
+  try {
+    if (!browser) {
+      const { chromium } = createRequire(import.meta.url)('playwright');
+      browser = await chromium.launch({ proxy: process.env.HTTPS_PROXY ? { server: process.env.HTTPS_PROXY } : undefined });
+    }
+    const page = await browser.newPage();
+    try {
+      await page.goto(url, { timeout: 30_000, waitUntil: 'networkidle' });
+      return (await page.innerText('body')).replace(/\s+/g, ' ').trim();
+    } finally { await page.close(); }
+  } catch { return null; }
+}
+const BOT_WALL = /request is being verified|checking your browser|just a moment|verify you are human|captcha|access denied|attention required/i;
 
 const { values: args, positionals } = parseArgs({ allowPositionals: true, options: { concurrency: { type: 'string', default: '6' } } });
 const dir = positionals[0];
@@ -67,6 +86,16 @@ function findEmails(html) {
   return [...found].filter((e) => !/\.(png|jpe?g|gif|webp|svg)$|sentry|wixpress|example\.|yourdomain|domain\.com|@2x|godaddy|squarespace|wordpress/.test(e));
 }
 
+// Public DNS lookup (this environment has no resolver of its own): 'none' when the domain no longer exists.
+async function dnsStatus(host) {
+  try {
+    const res = await fetch(`https://dns.google/resolve?name=${encodeURIComponent(host)}&type=A`, { signal: AbortSignal.timeout(15_000) });
+    const j = await res.json();
+    if (j.Status === 3) return 'none';
+    return j.Answer?.length ? 'ok' : 'empty';
+  } catch { return 'unknown'; }
+}
+
 async function check(p) {
   const url = candidateUrl(p);
   const r = { url, problems: [], notes: [], emails: [] };
@@ -82,11 +111,28 @@ async function check(p) {
   }
   if (page.error) {
     if (guessed) { r.verdict = 'sin-web'; r.problems.push('No tiene página web (el dominio de su email no tiene web activa)'); return r; }
+    const host = new URL(page.url).hostname;
+    const dns = page.error === 'unreachable' ? await dnsStatus(host) : 'ok';
+    if (dns === 'none' || dns === 'empty') {
+      r.verdict = 'caida';
+      r.problems.push('El dominio de su web venció o ya no existe: quien entra desde Google o desde su ficha no encuentra nada');
+      return r;
+    }
+    if (page.error === 'unreachable') {
+      r.verdict = 'deficiente';
+      r.problems.push('Su web no abre en versión segura (https). Si funciona, es sin seguridad y Chrome muestra "No seguro"');
+      return r;
+    }
     r.verdict = 'caida';
     r.problems.push(page.error === 'ssl' ? 'La web da error de seguridad (certificado vencido o inválido): el navegador avisa "no seguro" y la mayoría se va'
       : page.error === 'timeout' ? 'La web no termina de cargar (tarda más de 25 segundos)'
       : 'La web no abre con conexión segura (https): o está caída, o solo funciona sin seguridad y Chrome la marca como "No seguro"');
     return r;
+  }
+  if ([401, 403, 429].includes(page.status)) { r.verdict = 'ok'; r.notes.push(`Bloquea revisiones automáticas (${page.status}); revisar a mano`); return r; }
+  if (page.status === 404 && new URL(page.url).pathname.length > 1) {
+    const root = await fetchPage(new URL('/', page.url).href);
+    if (root.html && root.status < 400) { r.verdict = 'ok'; r.notes.push('El enlace de su ficha apunta a una página que ya no existe, pero la web principal funciona'); return r; }
   }
   if (page.status >= 400) {
     if (guessed) { r.verdict = 'sin-web'; r.problems.push('No tiene página web (el dominio de su email no tiene web activa)'); return r; }
@@ -96,7 +142,17 @@ async function check(p) {
   const visible = html.replace(/<script[\s\S]*?<\/script>|<style[\s\S]*?<\/style>/gi, ' ').replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ');
   r.title = (html.match(/<title[^>]*>([^<]*)/i)?.[1] ?? '').trim().slice(0, 120);
   r.emails = findEmails(html);
-  if (PARKED.test(visible.slice(0, 5000)) || visible.trim().length < 200) {
+  if (BOT_WALL.test(visible.slice(0, 2000)) && visible.trim().length < 400) { r.verdict = 'ok'; r.notes.push('Tiene filtro anti-robots; revisar a mano'); return r; }
+  let looksEmpty = PARKED.test(visible.slice(0, 5000)) || visible.trim().length < 200;
+  if (looksEmpty) {
+    const rendered = await renderedText(page.url);
+    if (rendered && BOT_WALL.test(rendered.slice(0, 500)) && rendered.length < 400) { r.verdict = 'ok'; r.notes.push('Tiene filtro anti-robots; revisar a mano'); return r; }
+    if (rendered && rendered.length > 600 && !PARKED.test(rendered.slice(0, 3000))) looksEmpty = false;
+    else if (rendered && rendered.length >= 200 && !PARKED.test(rendered.slice(0, 3000))) {
+      r.verdict = 'deficiente'; r.problems.push('La web es casi una página en blanco: solo un nombre y un teléfono, sin fotos ni servicios'); return r;
+    }
+  }
+  if (looksEmpty) {
     r.verdict = guessed ? 'sin-web' : 'caida';
     r.problems.push(guessed ? 'No tiene página web (su dominio está vacío o en construcción)' : 'La web está vacía, "en construcción" o el dominio está estacionado/en venta');
     return r;
@@ -136,6 +192,7 @@ async function worker() {
   }
 }
 await Promise.all(Array.from({ length: Number(args.concurrency) }, worker));
+await browser?.close();
 writeFileSync(outFile, JSON.stringify(cache, null, 2));
 const counts = {};
 for (const v of Object.values(cache)) counts[v.check.verdict] = (counts[v.check.verdict] ?? 0) + 1;

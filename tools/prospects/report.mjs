@@ -16,11 +16,17 @@ const checked = Object.values(JSON.parse(readFileSync(join(dir, 'checked.json'),
 const EXCLUDE = /cement|aggregate|quarr|consultant|council|mitre ?10|bunnings|placemakers|fulton hogan|downer|harcourts|ray white|bayleys|realty|real estate|realtor|quinovic|bachcare|sotheby|university|school|wsp|opus international|winstone|firth|landscape suppl|garden (centre|center)|nursery|home depot|lowe'?s|trugreen|brightview|davey|vacasa|evolve|airbnb|homewatch caregivers|caregiver|senior care|insurance|bank|hotel|resort|motel group|top 10|holiday park|camping|campground|rv park|storage|plumb|electric|roofing|pest|pool supply|mortgage|law firm|attorney/i;
 const FREE_MAIL = /@(gmail|googlemail|xtra|hotmail|outlook|live|yahoo|ymail|icloud|me|msn|aol|slingshot|orcon|vodafone|clear|paradise|actrix|inspire|kinect|farmside|bigpond|comcast|att|sbcglobal|verizon|bellsouth|cox|charter|earthlink)\./i;
 
+// Directories mix in unrelated businesses: the niche comes from the business's own categories,
+// and anything that matches none of ours is left out.
+const OFF_NICHE = /baker|dair|child|beauty|midwi|photograph|event|wedding|plumb|electric|refrigerat|roofing|chimney|plaster|ceiling|floor sand|painter|engineer|architect|carrier|freight|real estate agents|valuer|community|hire - plants|hardware|pump|insulation/i;
 function niche(p) {
-  const s = `${p.foundIn} ${p.category}`.toLowerCase();
-  if (/cottage|bed-and-breakfast|bed-breakfast|holiday-home|cabin|vacation|bed & breakfast|accommodation|lodg/.test(s)) return 'Alojamiento (cabañas, B&B, casas de vacaciones)';
-  if (/home-watch|property-maintenance|house-sitting|property maintenance|home watch/.test(s)) return 'Cuidado de casas';
-  return 'Paisajismo y pavimentos';
+  const s = (p.category || '').toLowerCase();
+  if (/home ?watch|house ?watch|property ?watch|caretak/i.test(p.name)) return 'Cuidado de casas';
+  if (!s || OFF_NICHE.test(s)) return '';
+  if (/bed & breakfast|bed and breakfast|bed &|holiday|farmstay|homestay|accommodation|cottage|cabin|chalet|lodg|inn\b|inns|vacation|guest/.test(s)) return 'Alojamiento (cabañas, B&B, casas de vacaciones)';
+  if (/property manag|property maint|building maint|handyman|caretak|home watch|house sit|sitting services|property care|home services|concierge/.test(s)) return 'Cuidado de casas';
+  if (/landscap|paving|driveway|concret|lawn|turf|garden maint|gardening|tar seal|asphalt|stonemason|tree serv|earthmov|hardscap|sod|patio/.test(s)) return 'Paisajismo y pavimentos';
+  return '';
 }
 const city = (p) => (p.foundIn ?? '').split('/')[0].replace(/-([a-z]{2})$/, (_, st) => `, ${st.toUpperCase()}`).replace(/-/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase());
 const PRIORITY = { caida: 1, 'sin-web': 2, deficiente: 3 };
@@ -32,6 +38,7 @@ for (const p of checked) {
   const c = p.check ?? {};
   if (!PRIORITY[c.verdict]) continue;
   if (EXCLUDE.test(`${p.name} ${p.category}`)) continue;
+  if (!niche(p)) continue;
   const email = (p.email || c.emails?.find((e) => !/noreply|no-reply|wix|example/.test(e)) || '').trim();
   if (!email || !/^[^@\s]+@[^@\s]+\.[a-z]{2,}$/i.test(email)) continue;
   const domain = (c.finalUrl || c.url || '').replace(/^https?:\/\/(www\.)?/, '').split('/')[0];
