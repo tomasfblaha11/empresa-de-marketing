@@ -1,15 +1,20 @@
 ---
 import Icon from './Icon.astro';
-import { site, tel } from '../lib/site';
+import { site, tel, link } from '../lib/site';
 ---
-{site.demo && (
+{site.sample ? (
+  <p class="demo-banner" role="note">
+    Sample website made by {site.sample.by}. The business and its details are fictional.
+    <a href={site.sample.backUrl}>Back to {site.sample.by}</a>
+  </p>
+) : site.demo && (
   <p class="demo-banner" role="note">
     Design proposal for {site.business.name}. This is not their official website.
   </p>
 )}
 <header class="site-header">
   <div class="wrap bar">
-    <a class="wordmark" href="/" translate="no">{site.business.name}</a>
+    <a class="wordmark" href={link()} translate="no">{site.business.name}</a>
     <a class="call" href={tel(site.contact.phone)}>
       <Icon name="phone" />
       <span class="call-label">Call <span class="call-number">{site.contact.phone}</span></span>
@@ -23,6 +28,7 @@ import { site, tel } from '../lib/site';
     background: var(--ink); color: var(--paper);
     font-size: var(--step--1); text-align: center;
   }
+  .demo-banner a { margin-left: 0.5rem; font-weight: 700; color: inherit; }
   .site-header { background: var(--paper); border-bottom: 1px solid var(--rule); }
   .bar { display: flex; align-items: center; justify-content: space-between; gap: 1rem; min-height: 4rem; }
   .wordmark {

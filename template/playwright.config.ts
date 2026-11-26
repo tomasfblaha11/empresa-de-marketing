@@ -9,7 +9,7 @@ export default defineConfig({
     baseURL: 'http://localhost:4321',
     launchOptions: process.env.PW_CHROMIUM_PATH ? { executablePath: process.env.PW_CHROMIUM_PATH } : {},
   },
-  webServer: { command: 'npx astro preview --port 4321', url: 'http://localhost:4321', reuseExistingServer: true },
+  webServer: { command: 'node scripts/serve-dist.mjs', url: 'http://localhost:4321', reuseExistingServer: true },
   projects: [
     { name: 'desktop', use: { ...devices['Desktop Chrome'], viewport: { width: 1440, height: 900 } } },
     { name: 'mobile', use: { ...devices['Pixel 7'] } },

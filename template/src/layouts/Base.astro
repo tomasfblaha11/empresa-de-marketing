@@ -2,14 +2,14 @@
 import '@fontsource-variable/archivo/wdth.css';
 import '../styles/global.css';
 import { getImage } from 'astro:assets';
-import { site, preset, img } from '../lib/site';
+import { site, preset, img, absolute, fromOrigin, link, noindex } from '../lib/site';
 
 interface Props { title: string; description: string; path?: string }
 const { title, description, path = '/' } = Astro.props;
 
-const canonical = new URL(path, site.siteUrl).href;
+const canonical = absolute(path);
 const og = await getImage({ src: img(site.photos.hero.file), width: 1200, height: 630, fit: 'cover', format: 'jpg' });
-const ogUrl = new URL(og.src, site.siteUrl).href;
+const ogUrl = fromOrigin(og.src);
 const { brand, brandInk, accent, accentInk } = preset.colors;
 const themeVars = `--brand:${brand};--brand-ink:${brandInk};--accent:${accent};--accent-ink:${accentInk}`;
 ---
@@ -21,7 +21,7 @@ const themeVars = `--brand:${brand};--brand-ink:${brandInk};--accent:${accent};-
     <title>{title}</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
-    {site.demo && <meta name="robots" content="noindex, nofollow" />}
+    {noindex && <meta name="robots" content="noindex, nofollow" />}
     <meta name="theme-color" content="#f5f6f4" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content={title} />
@@ -30,7 +30,7 @@ const themeVars = `--brand:${brand};--brand-ink:${brandInk};--accent:${accent};-
     <meta property="og:image" content={ogUrl} />
     <meta property="og:locale" content={site.lang.replace('-', '_')} />
     <meta name="twitter:card" content="summary_large_image" />
-    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="icon" href={link('favicon.svg')} type="image/svg+xml" />
     <slot name="head" />
   </head>
   <body>

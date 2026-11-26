@@ -12,6 +12,8 @@ const schema = z.object({
   niche: z.enum(Object.keys(PRESETS) as [string, ...string[]]),
   lang: z.string().default('en-NZ'),
   demo: z.boolean().default(false),
+  // Sample sites shown on the agency website: fictional business, banner with a link back.
+  sample: z.object({ by: z.string(), backUrl: z.string() }).optional(),
   siteUrl: z.url(),
   business: z.object({
     name: z.string().min(1),
@@ -59,6 +61,14 @@ export function img(file: string): ImageMetadata {
   if (!hit) throw new Error(`Photo "${file}" not found in src/assets/client/ or src/assets/demo/`);
   return hit[1].default;
 }
+
+// Links that work both at the domain root and inside a sub-folder (e.g. /examples/paving/).
+const base = import.meta.env.BASE_URL.endsWith('/') ? import.meta.env.BASE_URL : `${import.meta.env.BASE_URL}/`;
+export const link = (path = '') => `${base}${path.replace(/^\//, '')}`;
+const siteRoot = site.siteUrl.endsWith('/') ? site.siteUrl : `${site.siteUrl}/`;
+export const absolute = (path = '') => new URL(path.replace(/^\//, ''), siteRoot).href;
+export const fromOrigin = (path: string) => new URL(path, new URL(site.siteUrl).origin).href;
+export const noindex = site.demo || Boolean(site.sample);
 
 export const tel = (phone: string) => `tel:${phone.replace(/[^\d+]/g, '')}`;
 export const whatsappUrl = (n: string, text: string) => `https://wa.me/${n}?text=${encodeURIComponent(text)}`;

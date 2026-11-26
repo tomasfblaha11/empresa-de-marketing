@@ -1,0 +1,122 @@
+{
+  "niche": "house-care",
+  "lang": "en-NZ",
+  "demo": false,
+  "siteUrl": "https://ceibo-works.vercel.app/examples/home-care/",
+  "business": {
+    "name": "Keyline Home Care",
+    "tagline": "We look after your home while you are away, with a photo report after every visit.",
+    "yearsInTrade": 14,
+    "credentials": [
+      "Police-vetted",
+      "Fully insured"
+    ]
+  },
+  "contact": {
+    "phone": "021 000 0000",
+    "whatsapp": "",
+    "email": "hello@example.com",
+    "address": "",
+    "areas": [
+      "Queenstown",
+      "Arrowtown",
+      "Frankton",
+      "Jack’s Point"
+    ],
+    "hours": [
+      {
+        "days": "Monday to Friday",
+        "time": "7am – 5pm"
+      },
+      {
+        "days": "Saturday",
+        "time": "By appointment"
+      }
+    ],
+    "formEndpoint": ""
+  },
+  "services": [
+    {
+      "name": "Weekly house checks",
+      "description": "Doors, windows, water, power and mail, with photos sent to you.",
+      "priceFrom": "From $45 a visit"
+    },
+    {
+      "name": "Garden and lawn care",
+      "description": "Mowing, edges and watering so the place never looks empty.",
+      "priceFrom": "From $60"
+    },
+    {
+      "name": "Storm and alarm call-outs",
+      "description": "We go round when the weather turns or the alarm goes off.",
+      "priceFrom": "On request"
+    }
+  ],
+  "highlights": [
+    "Same person every visit",
+    "Photo report by WhatsApp",
+    "Keys held securely"
+  ],
+  "about": {
+    "story": "Harbourstone started with one ute and a plate compactor in 2012. Today it is a crew of four, and the owner still measures every job and signs off every finish. Most of our work comes from neighbours of people we have already worked for.",
+    "photo": "swain.jpg",
+    "photoAlt": "House with lawn"
+  },
+  "reviews": [
+    {
+      "quote": "They turned a cracked, sloping drive into the best-looking entrance on the street, and finished a day early.",
+      "author": "Karen W.",
+      "place": "Papamoa"
+    },
+    {
+      "quote": "Clear quote, no surprises, and the crew left the place tidier than they found it.",
+      "author": "Mike T.",
+      "place": "Mount Maunganui"
+    }
+  ],
+  "googleReviews": {
+    "rating": 4.9,
+    "count": 38,
+    "url": ""
+  },
+  "social": {
+    "facebook": "",
+    "instagram": ""
+  },
+  "photos": {
+    "hero": {
+      "file": "langer.jpg",
+      "alt": "White townhouse with a dark gate and garage"
+    },
+    "gallery": [
+      {
+        "file": "swain.jpg",
+        "alt": "House with lawn and driveway",
+        "caption": "Regular checks"
+      },
+      {
+        "file": "bowood.jpg",
+        "alt": "Mown lawn and trees",
+        "caption": "Lawn care"
+      },
+      {
+        "file": "oamaru.jpg",
+        "alt": "Path through lawn",
+        "caption": "Grounds"
+      },
+      {
+        "file": "mejiro.jpg",
+        "alt": "Garden path",
+        "caption": "Garden"
+      }
+    ]
+  },
+  "legal": {
+    "responsible": "Keyline Home Care",
+    "country": "NZ"
+  },
+  "sample": {
+    "by": "Ceibo Works",
+    "backUrl": "/"
+  }
+}

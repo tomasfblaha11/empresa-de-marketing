@@ -1,0 +1,118 @@
+{
+  "niche": "holiday-rentals",
+  "lang": "en-NZ",
+  "demo": false,
+  "siteUrl": "https://ceibo-works.vercel.app/examples/holiday-cottage/",
+  "business": {
+    "name": "Tarn Lake Cottage",
+    "tagline": "A quiet two-bedroom cottage on the water, ten minutes from town.",
+    "credentials": [
+      "Sleeps 4",
+      "Hosted by locals"
+    ]
+  },
+  "contact": {
+    "phone": "021 000 0000",
+    "whatsapp": "",
+    "email": "hello@example.com",
+    "address": "",
+    "areas": [
+      "Lake Taupō"
+    ],
+    "hours": [
+      {
+        "days": "Monday to Friday",
+        "time": "7am – 5pm"
+      },
+      {
+        "days": "Saturday",
+        "time": "By appointment"
+      }
+    ],
+    "formEndpoint": ""
+  },
+  "services": [
+    {
+      "name": "Two bedrooms",
+      "description": "A queen room and a twin room, both with lake views.",
+      "priceFrom": "From $240 a night"
+    },
+    {
+      "name": "Private deck",
+      "description": "Morning sun, a barbecue and the lake at the bottom of the garden.",
+      "priceFrom": "Included"
+    },
+    {
+      "name": "Kayaks and bikes",
+      "description": "Free to use during your stay.",
+      "priceFrom": "Included"
+    }
+  ],
+  "highlights": [
+    "Book direct, no booking fees",
+    "Self check-in",
+    "Dogs welcome on request"
+  ],
+  "about": {
+    "story": "Harbourstone started with one ute and a plate compactor in 2012. Today it is a crew of four, and the owner still measures every job and signs off every finish. Most of our work comes from neighbours of people we have already worked for.",
+    "photo": "paving.jpg",
+    "photoAlt": "Stone path"
+  },
+  "reviews": [
+    {
+      "quote": "They turned a cracked, sloping drive into the best-looking entrance on the street, and finished a day early.",
+      "author": "Karen W.",
+      "place": "Papamoa"
+    },
+    {
+      "quote": "Clear quote, no surprises, and the crew left the place tidier than they found it.",
+      "author": "Mike T.",
+      "place": "Mount Maunganui"
+    }
+  ],
+  "googleReviews": {
+    "rating": 4.9,
+    "count": 38,
+    "url": ""
+  },
+  "social": {
+    "facebook": "",
+    "instagram": ""
+  },
+  "photos": {
+    "hero": {
+      "file": "lake.jpg",
+      "alt": "Lake with autumn trees reflected in still water"
+    },
+    "gallery": [
+      {
+        "file": "bowood.jpg",
+        "alt": "Lawn and trees",
+        "caption": "The garden"
+      },
+      {
+        "file": "mejiro.jpg",
+        "alt": "Path between shrubs",
+        "caption": "Walk to the water"
+      },
+      {
+        "file": "oamaru.jpg",
+        "alt": "Path under trees",
+        "caption": "Nearby trails"
+      },
+      {
+        "file": "swain.jpg",
+        "alt": "House and garden",
+        "caption": "Arriving"
+      }
+    ]
+  },
+  "legal": {
+    "responsible": "Tarn Lake Cottage",
+    "country": "NZ"
+  },
+  "sample": {
+    "by": "Ceibo Works",
+    "backUrl": "/"
+  }
+}

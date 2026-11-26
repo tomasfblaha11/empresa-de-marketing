@@ -1,12 +1,12 @@
 ---
-import { site } from '../lib/site';
+import { site, link } from '../lib/site';
 const year = new Date().getFullYear();
 ---
 <footer class="footer">
   <div class="wrap row">
     <p>© {year} <span translate="no">{site.legal.responsible}</span></p>
     <nav aria-label="Legal">
-      <a href="/privacy/">Privacy</a>
+      <a href={link('privacy/')}>Privacy</a>
     </nav>
     {site.demo && <p class="credit">Demo photos: public domain (CC0), Wikimedia Commons.</p>}
   </div>

@@ -6,7 +6,8 @@ export const settings = {
   // PENDING: the domain is not bought yet. Until then this address does not receive mail.
   email: 'hello@ceiboworks.com',
   whatsapp: '', // international number, digits only, e.g. 5493430000000
-  demoUrl: 'https://demo-tpn0fpa8.vercel.app',
+  // Sample sites built from ../template into public/examples/<slug>/ (see scripts/build-examples.mjs).
+  examples: { paving: '/examples/paving/', housecare: '/examples/home-care/', rental: '/examples/holiday-cottage/' },
   preview: true, // true = noindex (site not launched yet)
   // Monthly prices per currency. ARS is provisional: confirm and review regularly for inflation.
   currencies: [
@@ -41,7 +42,8 @@ export const t = {
       phone: 'on a phone',
       items: { paving: 'Paving and gardens', housecare: 'Home care', rental: 'Holiday cottage' },
       alt: { desktop: 'Home page of a sample website for', mobile: 'Mobile view of a sample website for' },
-      open: 'Open the live example',
+      open: 'Explore a sample website:',
+      note: '',
     },
     draft: {
       title: 'Want one like these for your business?',
@@ -125,7 +127,8 @@ export const t = {
       phone: 'en el teléfono',
       items: { paving: 'Pavimentos y jardines', housecare: 'Cuidado de casas', rental: 'Cabaña de vacaciones' },
       alt: { desktop: 'Página de inicio de una web de muestra para', mobile: 'Vista en teléfono de una web de muestra para' },
-      open: 'Abrir el ejemplo en vivo',
+      open: 'Recorre una web de muestra:',
+      note: 'Las webs de muestra están en inglés.',
     },
     draft: {
       title: '¿Quieres una así para tu negocio?',
