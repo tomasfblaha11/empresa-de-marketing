@@ -1,0 +1,234 @@
+---
+import { Image } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import Logo from './Logo.astro';
+import CeiboTree from './CeiboTree.astro';
+import demo from '../assets/demo-paving.jpg';
+import { t, settings, type Lang } from '../i18n/content';
+
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const c = t[lang];
+const path = lang === 'en' ? '/' : '/es/';
+const altPath = lang === 'en' ? '/es/' : '/';
+const home = lang === 'en' ? '/' : '/es/';
+const mail = `mailto:${settings.email}`;
+const wa = settings.whatsapp ? `https://wa.me/${settings.whatsapp}?text=${encodeURIComponent(c.contact.waText)}` : '';
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'ProfessionalService',
+  name: 'Ceibo Works',
+  url: settings.url,
+  email: settings.email,
+  founder: { '@type': 'Person', name: 'Tomas Blaha' },
+  areaServed: ['NZ', 'US', 'Central America', 'Caribbean'],
+  description: c.meta.description,
+};
+---
+<Base lang={lang} title={c.meta.title} description={c.meta.description} path={path} altPath={altPath}>
+  <script slot="head" type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+
+  <header class="header">
+    <div class="wrap bar">
+      <a href={home} class="home" aria-label="Ceibo Works"><Logo /></a>
+      <nav aria-label={lang === 'en' ? 'Main' : 'Principal'}>
+        <ul role="list" class="nav">
+          <li class="hide-sm"><a href="#how">{c.nav.how}</a></li>
+          <li class="hide-sm"><a href="#pricing">{c.nav.pricing}</a></li>
+          <li class="hide-sm"><a href="#about">{c.nav.about}</a></li>
+          <li><a href={c.nav.switchHref} hreflang={lang === 'en' ? 'es' : 'en'} lang={lang === 'en' ? 'es' : 'en'}>{c.nav.switchLabel}</a></li>
+          <li><a class="btn btn--primary btn--sm" href="#contact">{c.nav.contact}</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="hero" aria-labelledby="hero-title">
+      <div class="wrap hero-inner">
+        <h1 id="hero-title">{c.hero.title}</h1>
+        <p class="lead">{c.hero.lead}</p>
+        <div class="actions">
+          <a class="btn btn--primary" href="#contact">{c.hero.cta}</a>
+          <a class="btn btn--quiet" href="#work">{c.hero.secondary}</a>
+        </div>
+        <p class="note">{c.hero.note}</p>
+      </div>
+      <div class="hero-art"><CeiboTree /></div>
+    </section>
+
+    <section class="section" id="how" aria-labelledby="how-title">
+      <div class="wrap">
+        <h2 id="how-title">{c.steps.title}</h2>
+        <ol role="list" class="steps">
+          {c.steps.items.map((s, i) => (
+            <li>
+              <span class="num" aria-hidden="true">{i + 1}</span>
+              <h3>{s.title}</h3>
+              <p>{s.text}</p>
+            </li>
+          ))}
+        </ol>
+      </div>
+    </section>
+
+    <section class="section tinted" aria-labelledby="included-title">
+      <div class="wrap split">
+        <h2 id="included-title">{c.included.title}</h2>
+        <ul role="list" class="checks">
+          {c.included.items.map((item) => <li>{item}</li>)}
+        </ul>
+      </div>
+    </section>
+
+    <section class="section" id="pricing" aria-labelledby="pricing-title">
+      <div class="wrap">
+        <h2 id="pricing-title">{c.pricing.title}</h2>
+        <p class="sub">{c.pricing.lead}</p>
+        <ul role="list" class="prices">
+          {c.pricing.regions.map((r) => (
+            <li>
+              <span class="region">{r.name}</span>
+              <span class="amount">{r.price} <small>{c.pricing.per}</small></span>
+            </li>
+          ))}
+        </ul>
+        <p class="foot">{c.pricing.foot}</p>
+      </div>
+    </section>
+
+    <section class="section tinted" id="work" aria-labelledby="work-title">
+      <div class="wrap split">
+        <div>
+          <h2 id="work-title">{c.work.title}</h2>
+          <p class="sub">{c.work.text}</p>
+          <p><a class="btn btn--quiet" href={settings.demoUrl} rel="noopener">{c.work.link}</a></p>
+        </div>
+        <a class="shot" href={settings.demoUrl} rel="noopener" tabindex="-1" aria-hidden="true">
+          <Image src={demo} alt="" widths={[480, 800, 1200]} sizes="(min-width: 56rem) 34rem, 100vw" loading="lazy" />
+        </a>
+      </div>
+    </section>
+
+    <section class="section" id="about" aria-labelledby="about-title">
+      <div class="wrap about">
+        <div class="portrait" role="img" aria-label={c.about.photoAlt}><span>TB</span></div>
+        <div>
+          <h2 id="about-title">{c.about.title}</h2>
+          {c.about.text.map((p) => <p class="story">{p}</p>)}
+        </div>
+      </div>
+    </section>
+
+    <section class="section tinted" aria-labelledby="faq-title">
+      <div class="wrap narrow">
+        <h2 id="faq-title">{c.faq.title}</h2>
+        <div class="faq">
+          {c.faq.items.map((f) => (
+            <details>
+              <summary>{f.q}</summary>
+              <p>{f.a}</p>
+            </details>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <section class="section contact" id="contact" aria-labelledby="contact-title">
+      <div class="wrap narrow">
+        <Logo size={56} withName={false} />
+        <h2 id="contact-title">{c.contact.title}</h2>
+        <p class="sub">{c.contact.lead}</p>
+        <div class="actions">
+          <a class="btn btn--primary" href={mail}>{c.contact.email}: {settings.email}</a>
+          {wa && <a class="btn btn--quiet" href={wa} rel="noopener">{c.contact.whatsapp}</a>}
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="wrap row">
+      <p>© {new Date().getFullYear()} Ceibo Works</p>
+      <a href={c.footer.privacyHref}>{c.footer.privacy}</a>
+    </div>
+  </footer>
+</Base>
+
+<style>
+  .header { position: sticky; top: 0; z-index: 5; background: color-mix(in srgb, var(--paper) 92%, transparent); backdrop-filter: blur(6px); border-bottom: 1px solid var(--line); }
+  .bar { display: flex; align-items: center; justify-content: space-between; gap: 1rem; min-height: 4.25rem; }
+  .home { text-decoration: none; }
+  .nav { display: flex; align-items: center; gap: 1.25rem; font-weight: 500; font-size: var(--step--1); }
+  .nav a:not(.btn) { text-decoration: none; }
+  .nav a:not(.btn):hover { text-decoration: underline; }
+  .btn--sm { min-height: 2.5rem; padding: 0.5rem 1rem; }
+  .hide-sm { display: none; }
+  @media (min-width: 56rem) { .hide-sm { display: list-item; } }
+
+  .hero { position: relative; overflow: hidden; padding-block: clamp(3rem, 2rem + 6vw, 7rem) 0; }
+  .hero-art { width: min(88%, 26rem); margin: 1.5rem 0 0 auto; pointer-events: none; }
+  .hero-inner { position: relative; }
+  h1 { font-size: var(--step-4); font-weight: 640; font-stretch: 92%; max-width: 18ch; }
+  .lead { margin-top: 1.5rem; font-size: var(--step-1); color: var(--muted); max-width: 40ch; }
+  .actions { display: flex; flex-wrap: wrap; gap: 0.75rem; margin-top: 2rem; }
+  .note { margin-top: 1rem; font-size: var(--step--1); color: var(--muted); }
+  @media (min-width: 56rem) {
+    .hero { padding-bottom: clamp(4rem, 3rem + 5vw, 7rem); }
+    .hero-art { position: absolute; right: -2%; bottom: -3rem; width: 46%; max-width: none; margin: 0; }
+    .hero-inner > * { max-width: 34rem; }
+  }
+
+  .steps { display: grid; gap: 2rem; margin-top: 2.5rem; }
+  .steps li { position: relative; padding-top: 3.25rem; }
+  .num {
+    position: absolute; top: 0; left: 0; width: 2.4rem; height: 2.4rem; border-radius: 50%;
+    display: grid; place-items: center; background: var(--ceibo); color: #fff; font-weight: 650;
+  }
+  .steps p { margin-top: 0.5rem; color: var(--muted); }
+  @media (min-width: 48rem) { .steps { grid-template-columns: repeat(3, 1fr); gap: 2.5rem; } }
+
+  .tinted { background: var(--paper-2); }
+  .split { display: grid; gap: 2rem; align-items: center; }
+  @media (min-width: 56rem) { .split { grid-template-columns: 1fr 1.2fr; gap: 4rem; } }
+  .checks { display: grid; gap: 0.9rem; }
+  .checks li { position: relative; padding-left: 2rem; }
+  .checks li::before {
+    content: ''; position: absolute; left: 0.15rem; top: 0.45em; width: 0.95rem; height: 0.55rem;
+    border-left: 2.5px solid var(--river); border-bottom: 2.5px solid var(--river); transform: rotate(-45deg);
+  }
+
+  .sub { margin-top: 1rem; color: var(--muted); font-size: var(--step-1); line-height: 1.45; }
+  .prices { margin-top: 2.5rem; border-top: 1px solid var(--line); }
+  .prices li { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 0.25rem 1rem; padding-block: 1.25rem; border-bottom: 1px solid var(--line); }
+  .region { font-size: var(--step-1); font-weight: 550; }
+  .amount { font-size: var(--step-2); font-weight: 650; color: var(--ceibo); font-variant-numeric: tabular-nums; }
+  .amount small { font-size: var(--step--1); font-weight: 500; color: var(--muted); }
+  .foot { margin-top: 1.25rem; font-size: var(--step--1); color: var(--muted); }
+
+  .shot { display: block; border-radius: var(--radius); overflow: hidden; border: 1px solid var(--line); box-shadow: 0 12px 30px -18px rgb(31 36 33 / 0.35); }
+
+  .about { display: grid; gap: 2rem; align-items: start; }
+  .portrait {
+    width: 9rem; aspect-ratio: 1; border-radius: 50%; display: grid; place-items: center;
+    background: var(--river); color: #fff; font-size: 2.2rem; font-weight: 650;
+  }
+  .story { margin-top: 1.1rem; font-size: var(--step-1); line-height: 1.5; }
+  @media (min-width: 48rem) { .about { grid-template-columns: auto 1fr; gap: 3rem; } .portrait { width: 12rem; } }
+
+  .narrow { max-width: 46rem; }
+  .faq { margin-top: 2rem; border-top: 1px solid var(--line); }
+  details { border-bottom: 1px solid var(--line); }
+  summary { cursor: pointer; padding-block: 1.1rem; font-weight: 600; font-size: var(--step-1); list-style: none; display: flex; justify-content: space-between; gap: 1rem; }
+  summary::-webkit-details-marker { display: none; }
+  summary::after { content: '+'; color: var(--ceibo); font-weight: 500; }
+  details[open] summary::after { content: '−'; }
+  details p { padding-bottom: 1.2rem; color: var(--muted); }
+
+  .contact { text-align: left; }
+  .contact h2 { margin-top: 1.25rem; }
+
+  .footer { border-top: 1px solid var(--line); padding-block: 2rem; font-size: var(--step--1); color: var(--muted); }
+  .row { display: flex; flex-wrap: wrap; gap: 1rem 2rem; }
+</style>

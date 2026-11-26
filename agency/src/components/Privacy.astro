@@ -1,0 +1,32 @@
+---
+import Base from '../layouts/Base.astro';
+import Logo from './Logo.astro';
+import { settings, type Lang } from '../i18n/content';
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const en = lang === 'en';
+---
+<Base lang={lang} title={en ? 'Privacy | Ceibo Works' : 'Privacidad | Ceibo Works'} description={en ? 'How Ceibo Works handles your information.' : 'Cómo trata Ceibo Works tu información.'} path={en ? '/privacy/' : '/es/privacidad/'} altPath={en ? '/es/privacidad/' : '/privacy/'}>
+  <main id="main" class="wrap section legal">
+    <a href={en ? '/' : '/es/'} aria-label="Ceibo Works"><Logo /></a>
+    <h1>{en ? 'Privacy' : 'Privacidad'}</h1>
+    {en ? (
+      <>
+        <p>Ceibo Works is run by Tomas Blaha from Argentina. This site does not use cookies, analytics or tracking.</p>
+        <p>If you email or message me, I use your details only to reply and, if we work together, to build and look after your website and invoice you. I don't sell or share them.</p>
+        <p>Enquiries that don't turn into work are deleted within 12 months. To see, correct or delete what I hold about you, write to <a href={`mailto:${settings.email}`}>{settings.email}</a>.</p>
+      </>
+    ) : (
+      <>
+        <p>Ceibo Works está a cargo de Tomas Blaha, desde Argentina. Esta web no usa cookies, analíticas ni rastreo.</p>
+        <p>Si me escribes, uso tus datos solo para responderte y, si trabajamos juntos, para armar y mantener tu web y facturarte. No los vendo ni los comparto.</p>
+        <p>Las consultas que no se convierten en trabajo se borran dentro de los 12 meses. Para ver, corregir o borrar tus datos, escribe a <a href={`mailto:${settings.email}`}>{settings.email}</a>.</p>
+      </>
+    )}
+  </main>
+</Base>
+<style>
+  .legal h1 { font-size: var(--step-3); margin-top: 2.5rem; }
+  .legal p { margin-top: 1.1rem; }
+  .legal > a { text-decoration: none; }
+</style>

@@ -1,0 +1,19 @@
+---
+// Ceibo flower mark: the large curved standard petal, the darker keel, the calyx and the stem.
+interface Props { size?: number; withName?: boolean }
+const { size = 36, withName = true } = Astro.props;
+---
+<span class="logo">
+  <svg width={size} height={size} viewBox="0 0 64 64" aria-hidden="true" focusable="false">
+    <path d="M30 61c0-9 1.2-15 4.4-21" fill="none" stroke="var(--river)" stroke-width="3" stroke-linecap="round" />
+    <path d="M28.5 41.5c3-5 8-6.5 11.5-3.2-1.6 4.6-6.2 7.2-11.5 3.2z" fill="var(--river)" />
+    <path d="M33.5 38.5C19 31 17.5 12.5 29.5 3.5 33 15 44 22.5 46.5 35c-4.6 4.2-8.6 5-13 3.5z" fill="var(--ceibo)" />
+    <path d="M37 37.5c8.5-2.5 15.5-8.5 19.5-17.5-1.2 10.5-8.3 18.3-17.2 20.2z" fill="var(--ceibo-dark)" />
+  </svg>
+  {withName && <span class="name">Ceibo Works</span>}
+</span>
+
+<style>
+  .logo { display: inline-flex; align-items: center; gap: 0.55rem; }
+  .name { font-weight: 650; font-size: 1.15rem; letter-spacing: -0.01em; color: var(--ink); }
+</style>

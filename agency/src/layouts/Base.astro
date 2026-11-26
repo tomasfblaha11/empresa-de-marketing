@@ -1,0 +1,36 @@
+---
+import '@fontsource-variable/instrument-sans/wdth.css';
+import '../styles/global.css';
+import { settings, type Lang } from '../i18n/content';
+
+interface Props { lang: Lang; title: string; description: string; path: string; altPath: string }
+const { lang, title, description, path, altPath } = Astro.props;
+const canonical = new URL(path, settings.url).href;
+const alternate = new URL(altPath, settings.url).href;
+---
+<!doctype html>
+<html lang={lang}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <link rel="alternate" hreflang={lang} href={canonical} />
+    <link rel="alternate" hreflang={lang === 'en' ? 'es' : 'en'} href={alternate} />
+    <link rel="alternate" hreflang="x-default" href={new URL(lang === 'en' ? path : altPath, settings.url).href} />
+    {settings.preview && <meta name="robots" content="noindex, nofollow" />}
+    <meta name="theme-color" content="#fcfcfa" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:locale" content={lang === 'en' ? 'en_US' : 'es_419'} />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <slot name="head" />
+  </head>
+  <body>
+    <a class="skip-link" href="#main">{lang === 'en' ? 'Skip to content' : 'Ir al contenido'}</a>
+    <slot />
+  </body>
+</html>

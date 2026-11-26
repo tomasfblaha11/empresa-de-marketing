@@ -1,4 +1,4 @@
-# CLAUDE.md — DGB Works (webs, contenido y automatizaciones)
+# CLAUDE.md — Ceibo Works (webs, contenido y automatizaciones)
 
 Agencia de desarrollo web por suscripción para pequeñas empresas europeas: webs profesionales,
 rápidas, adaptadas a cada nicho y fáciles de mantener.
