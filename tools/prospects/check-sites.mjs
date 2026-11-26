@@ -39,11 +39,12 @@ const cache = read('checked.json') ?? {};
 
 const fromYellow = Object.values(read('yellow.json')?.listings ?? {}).map((l) => ({ ...l, country: 'NZ', source: 'Yellow.co.nz' }));
 const fromYpUs = Object.values(read('yp-us.json')?.listings ?? {}).map((l) => ({ ...l, country: 'US', source: 'YellowPages.com' }));
+const fromSernatur = Object.values(read('sernatur-cl.json')?.listings ?? {}).map((l) => ({ ...l, country: 'CL', source: 'SERNATUR' }));
 const manual = read('manual.json') ?? [];
-const all = [...fromYellow, ...fromYpUs, ...manual];
+const all = [...fromYellow, ...fromYpUs, ...fromSernatur, ...manual];
 
 const UA = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124 Safari/537.36';
-const FREE_MAIL = /@(gmail|googlemail|xtra|hotmail|outlook|live|yahoo|ymail|icloud|me|msn|aol|slingshot|orcon|vodafone|clear|paradise|actrix|inspire|kinect|farmside|woosh|ihug|windowslive|protonmail|bigpond|comcast|att|sbcglobal|verizon|bellsouth|cox|charter|earthlink)\./i;
+const FREE_MAIL = /@(gmail|adinet|vera|movistar|entelchile|vtr|terra|googlemail|xtra|hotmail|outlook|live|yahoo|ymail|icloud|me|msn|aol|slingshot|orcon|vodafone|clear|paradise|actrix|inspire|kinect|farmside|woosh|ihug|windowslive|protonmail|bigpond|comcast|att|sbcglobal|verizon|bellsouth|cox|charter|earthlink)\./i;
 const SOCIAL = /facebook\.com|instagram\.com|linktr\.ee|business\.site|g\.page|google\.com\/maps/i;
 
 function candidateUrl(p) {

@@ -23,6 +23,8 @@ function niche(p) {
   const s = (p.category || '').toLowerCase();
   if (/home ?watch|house ?watch|property ?watch|caretak/i.test(p.name)) return 'Cuidado de casas';
   if (!s || OFF_NICHE.test(s)) return '';
+  if (/inmobiliaria/.test(s)) return 'Inmobiliarias (alquiler de temporada)';
+  if (/alojamiento|caba(ñ|n)a|hostal|hospedaje|posada|refugio|turismo rural|estancia|departamentos tur|complejo tur|residencial|turismo de naturaleza/.test(s)) return 'Alojamiento (cabañas, B&B, casas de vacaciones)';
   if (/bed & breakfast|bed and breakfast|bed &|holiday|farmstay|homestay|accommodation|cottage|cabin|chalet|lodg|inn\b|inns|vacation|guest/.test(s)) return 'Alojamiento (cabañas, B&B, casas de vacaciones)';
   if (/property manag|property maint|building maint|handyman|caretak|home watch|house sit|sitting services|property care|home services|concierge/.test(s)) return 'Cuidado de casas';
   if (/landscap|paving|driveway|concret|lawn|turf|garden maint|gardening|tar seal|asphalt|stonemason|tree serv|earthmov|hardscap|sod|patio/.test(s)) return 'Paisajismo y pavimentos';
@@ -37,7 +39,9 @@ const rows = [];
 for (const p of checked) {
   const c = p.check ?? {};
   if (!PRIORITY[c.verdict]) continue;
-  if (EXCLUDE.test(`${p.name} ${p.category}`)) continue;
+  // In Chile and Uruguay small family hotels are fine prospects; elsewhere hotels are left out.
+  const exclude = ['CL', 'UY'].includes(p.country) ? new RegExp(EXCLUDE.source.replace('|hotel|resort', '|resort|enjoy|conrad|sheraton|radisson|hilton|ibis|wyndham|cumbres|& beyond'), 'i') : EXCLUDE;
+  if (exclude.test(`${p.name} ${p.category}`)) continue;
   if (!niche(p)) continue;
   const email = (p.email || c.emails?.find((e) => !/noreply|no-reply|wix|example/.test(e)) || '').trim();
   if (!email || !/^[^@\s]+@[^@\s]+\.[a-z]{2,}$/i.test(email)) continue;
@@ -65,15 +69,19 @@ const cols = ['pais', 'tipo', 'nicho', 'negocio', 'ciudad', 'deficiencia', 'emai
 writeFileSync(join(dir, 'prospectos.csv'), toCsv(rows, cols));
 
 const count = (f) => rows.filter(f).length;
-let md = `# Prospectos Nueva Zelanda y Estados Unidos\n\n`;
+const NAMES = { NZ: 'Nueva Zelanda', US: 'Estados Unidos', CL: 'Chile', UY: 'Uruguay' };
+const countries = Object.keys(NAMES).filter((k) => rows.some((r) => r.pais === k));
+let md = `# Prospectos ${countries.map((k) => NAMES[k]).join(', ')}\n\n`;
 md += `Generado el ${new Date().toISOString().slice(0, 10)}. ${rows.length} negocios con un problema concreto y un email publicado por ellos mismos `;
 md += `(en su ficha de Yellow / YellowPages o en su propia web).\n\n`;
-md += `| | Nueva Zelanda | Estados Unidos |\n|---|---|---|\n`;
-for (const t of Object.values(LABEL)) md += `| ${t} | ${count((r) => r.pais === 'NZ' && r.tipo === t)} | ${count((r) => r.pais === 'US' && r.tipo === t)} |\n`;
+md += `| | ${countries.map((k) => NAMES[k]).join(' | ')} |\n|---|${countries.map(() => '---').join('|')}|\n`;
+for (const t of Object.values(LABEL)) md += `| ${t} | ${countries.map((k) => count((r) => r.pais === k && r.tipo === t)).join(' | ')} |\n`;
 md += `\n**Antes de escribir:** mirá la web vos mismo (a veces vuelven a funcionar), escribí uno por uno y siempre con la línea para darse de baja. `;
-md += `A Estados Unidos, la ley (CAN-SPAM) exige además poner una dirección postal al pie del mail.\n`;
-for (const pais of ['NZ', 'US']) {
-  md += `\n## ${pais === 'NZ' ? 'Nueva Zelanda' : 'Estados Unidos'}\n`;
+if (countries.includes('US')) md += `A Estados Unidos, la ley (CAN-SPAM) exige además poner una dirección postal al pie del mail.`;
+if (countries.includes('CL')) md += ` En Chile (Ley 19.496, art. 28 B) el mail debe decir de qué se trata, quién lo envía y dar una forma de darse de baja.`;
+md += `\n`;
+for (const pais of countries) {
+  md += `\n## ${NAMES[pais]}\n`;
   for (const t of Object.values(LABEL)) {
     const list = rows.filter((r) => r.pais === pais && r.tipo === t);
     if (!list.length) continue;
@@ -82,4 +90,4 @@ for (const pais of ['NZ', 'US']) {
   }
 }
 writeFileSync(join(dir, 'prospectos.md'), md);
-console.log(`${rows.length} prospects → prospectos.csv / prospectos.md`, { NZ: count((r) => r.pais === 'NZ'), US: count((r) => r.pais === 'US') });
+console.log(`${rows.length} prospects → prospectos.csv / prospectos.md`, Object.fromEntries(countries.map((k) => [k, count((r) => r.pais === k)])));
