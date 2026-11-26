@@ -20,6 +20,8 @@ for (const dir of folders) {
     const before = statSync(src).size;
     const meta = await sharp(src).metadata();
     const needsResize = Math.max(meta.width ?? 0, meta.height ?? 0) > MAX;
+    // Already processed (JPEG, small enough, no metadata): skip, so photos are not recompressed again.
+    if (/\.jpe?g$/i.test(name) && !needsResize && !meta.exif && !meta.icc && !meta.xmp) continue;
     // .rotate() applies EXIF orientation; metadata is not copied unless asked, so it is stripped.
     await sharp(src).rotate().resize({ width: MAX, height: MAX, fit: 'inside', withoutEnlargement: true })
       .jpeg({ quality: 82, mozjpeg: true }).toFile(tmp);
