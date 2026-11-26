@@ -3,10 +3,42 @@ import '@fontsource-variable/instrument-sans/wdth.css';
 import '../styles/global.css';
 import { settings, type Lang } from '../i18n/content';
 
-interface Props { lang: Lang; title: string; description: string; path: string; altPath: string }
-const { lang, title, description, path, altPath } = Astro.props;
-const canonical = new URL(path, settings.url).href;
-const alternate = new URL(altPath, settings.url).href;
+interface Props {
+  lang: Lang;
+  title: string;
+  description: string;
+  path: string;
+  altPath?: string; // the same page in the other language, if it exists
+  jsonLd?: object[]; // page-specific structured data
+}
+const { lang, title, description, path, altPath, jsonLd = [] } = Astro.props;
+const abs = (p: string) => new URL(p, settings.url).href;
+const canonical = abs(path);
+const enPath = lang === 'en' ? path : altPath;
+const esPath = lang === 'es' ? path : altPath;
+const ogImage = abs(lang === 'en' ? '/og-en.png' : '/og-es.png');
+
+// The business itself, referenced by @id from page-level data (services, FAQs, breadcrumbs).
+const organization = {
+  '@context': 'https://schema.org',
+  '@type': 'ProfessionalService',
+  '@id': `${settings.url}/#business`,
+  name: 'Ceibo Works',
+  url: `${settings.url}/`,
+  logo: abs('/logo-512.png'),
+  image: ogImage,
+  email: settings.email,
+  founder: { '@type': 'Person', name: 'Tomas Blaha' },
+  address: { '@type': 'PostalAddress', addressLocality: 'Paraná', addressRegion: 'Entre Ríos', addressCountry: 'AR' },
+  areaServed: [
+    { '@type': 'Country', name: 'New Zealand' },
+    { '@type': 'Country', name: 'United States' },
+    { '@type': 'Country', name: 'Argentina' },
+    { '@type': 'Place', name: 'Latin America' },
+  ],
+  knowsLanguage: ['en', 'es'],
+  slogan: lang === 'en' ? 'Websites for small businesses, made by someone you can actually talk to.' : 'Páginas web para negocios pequeños, hechas por alguien con quien puedes hablar.',
+};
 ---
 <!doctype html>
 <html lang={lang}>
@@ -16,17 +48,27 @@ const alternate = new URL(altPath, settings.url).href;
     <title>{title}</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
-    <link rel="alternate" hreflang={lang} href={canonical} />
-    <link rel="alternate" hreflang={lang === 'en' ? 'es' : 'en'} href={alternate} />
-    <link rel="alternate" hreflang="x-default" href={new URL(lang === 'en' ? path : altPath, settings.url).href} />
+    {enPath && <link rel="alternate" hreflang="en" href={abs(enPath)} />}
+    {esPath && <link rel="alternate" hreflang="es" href={abs(esPath)} />}
+    <link rel="alternate" hreflang="x-default" href={abs(enPath ?? path)} />
     {settings.preview && <meta name="robots" content="noindex, nofollow" />}
     <meta name="theme-color" content="#fcfcfa" />
+    <meta name="author" content="Tomas Blaha" />
     <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Ceibo Works" />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
     <meta property="og:locale" content={lang === 'en' ? 'en_US' : 'es_419'} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Ceibo Works" />
+    <meta name="twitter:card" content="summary_large_image" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <script type="application/ld+json" set:html={JSON.stringify(organization)} />
+    {jsonLd.map((d) => <script type="application/ld+json" set:html={JSON.stringify(d)} />)}
     <slot name="head" />
   </head>
   <body>

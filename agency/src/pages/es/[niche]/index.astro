@@ -1,0 +1,12 @@
+---
+import Niche from '../../../components/Niche.astro';
+import { pages } from '../../../i18n/niches';
+
+export function getStaticPaths() {
+  return pages
+    .filter((page) => page.es)
+    .map((page) => ({ params: { niche: page.es!.path.replace('/es/', '').replace(/\/$/, '') }, props: { page } }));
+}
+const { page } = Astro.props;
+---
+<Niche page={page} lang="es" />

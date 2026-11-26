@@ -1,0 +1,36 @@
+---
+// Footer shared by every page: links to the niche pages (useful for visitors and for Google).
+import { t, type Lang } from '../i18n/content';
+import { pages } from '../i18n/niches';
+
+interface Props { lang: Lang; photoCredit?: boolean }
+const { lang, photoCredit = false } = Astro.props;
+const c = t[lang];
+const links = pages.filter((p) => p[lang]).map((p) => ({ href: p[lang]!.path, label: p[lang]!.short }));
+---
+<footer class="footer">
+  <div class="wrap">
+    <nav aria-label={c.footer.servicesLabel}>
+      <p class="label">{c.footer.servicesLabel}</p>
+      <ul role="list" class="services">
+        {links.map((l) => <li><a href={l.href}>{l.label}</a></li>)}
+      </ul>
+    </nav>
+    <div class="row">
+      <p>© {new Date().getFullYear()} Ceibo Works · {c.footer.place}</p>
+      <a href={c.footer.privacyHref}>{c.footer.privacy}</a>
+      {photoCredit && (
+        <p class="credit">{c.footer.photo}: <a href="https://commons.wikimedia.org/wiki/File:Cockspur_Coral_Tree_(Erythrina_crista-galli)_leaves_and_flowers.jpg" rel="noopener">Bidgee</a>, <a href="https://creativecommons.org/licenses/by-sa/3.0/" rel="noopener license">CC BY-SA 3.0</a>, cropped.</p>
+      )}
+    </div>
+  </div>
+</footer>
+
+<style>
+  .footer { border-top: 1px solid var(--line); padding-block: 2.5rem 2rem; font-size: var(--step--1); color: var(--muted); }
+  .label { font-weight: 650; color: var(--ink); }
+  .services { display: flex; flex-wrap: wrap; gap: 0.5rem 1.5rem; margin-top: 0.6rem; }
+  .services a { color: var(--ink); }
+  .row { display: flex; flex-wrap: wrap; gap: 1rem 2rem; margin-top: 2rem; }
+  .credit { flex-basis: 100%; font-size: 0.8rem; }
+</style>

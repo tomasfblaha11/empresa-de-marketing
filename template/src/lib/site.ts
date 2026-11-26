@@ -14,6 +14,8 @@ const schema = z.object({
   demo: z.boolean().default(false),
   // Sample sites shown on the agency website: fictional business, banner with a link back.
   sample: z.object({ by: z.string(), backUrl: z.string() }).optional(),
+  // Small "Website by Ceibo Works" link in the footer. Set to false if the client prefers not to show it.
+  credit: z.boolean().default(true),
   siteUrl: z.url(),
   business: z.object({
     name: z.string().min(1),

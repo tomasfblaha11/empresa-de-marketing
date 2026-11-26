@@ -1,6 +1,9 @@
 ---
 import Base from '../layouts/Base.astro';
 import Logo from './Logo.astro';
+import SiteHeader from './SiteHeader.astro';
+import SiteFooter from './SiteFooter.astro';
+import { pages } from '../i18n/niches';
 import { Image } from 'astro:assets';
 import ceiboPhoto from '../assets/ceibo-flowers.jpg';
 import Wheel from './Wheel.astro';
@@ -15,39 +18,12 @@ const mail = `mailto:${settings.email}`;
 const wa = settings.whatsapp ? `https://wa.me/${settings.whatsapp}?text=${encodeURIComponent(c.contact.waText)}` : '';
 const titleWords = c.hero.title.split(' ');
 
-const jsonLd = {
-  '@context': 'https://schema.org',
-  '@type': 'ProfessionalService',
-  name: 'Ceibo Works',
-  url: settings.url,
-  email: settings.email,
-  founder: { '@type': 'Person', name: 'Tomas Blaha' },
-  areaServed: ['NZ', 'US', 'AR', 'Latin America'],
-  description: c.meta.description,
-};
----
-<Base lang={lang} title={c.meta.title} description={c.meta.description} path={path} altPath={altPath}>
-  <script slot="head" type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+const nicheLinks = pages.filter((p) => p.id !== 'entre-rios' && p[lang]).map((p) => p[lang]!);
+const website = { '@context': 'https://schema.org', '@type': 'WebSite', name: 'Ceibo Works', url: `${settings.url}/`, inLanguage: lang, publisher: { '@id': `${settings.url}/#business` } };
 
-  <header class="header">
-    <div class="wrap bar">
-      <a href={path} class="home" aria-label="Ceibo Works"><Logo /></a>
-      <nav aria-label={lang === 'en' ? 'Main' : 'Principal'}>
-        <ul role="list" class="nav">
-          <li class="hide-sm"><a href="#how">{c.nav.how}</a></li>
-          <li class="hide-sm"><a href="#pricing">{c.nav.pricing}</a></li>
-          <li class="hide-sm"><a href="#about">{c.nav.about}</a></li>
-          <li>
-            <div class="lang" role="group" aria-label={c.nav.language}>
-              <a href="/" hreflang="en" lang="en" aria-current={lang === 'en' ? 'true' : undefined}>EN</a>
-              <a href="/es/" hreflang="es" lang="es" aria-current={lang === 'es' ? 'true' : undefined}>ES</a>
-            </div>
-          </li>
-          <li class="hide-xs"><a class="btn btn--primary btn--sm" href="#contact">{c.nav.contact}</a></li>
-        </ul>
-      </nav>
-    </div>
-  </header>
+---
+<Base lang={lang} title={c.meta.title} description={c.meta.description} path={path} altPath={altPath} jsonLd={[website]}>
+  <SiteHeader lang={lang} onHome enHref="/" esHref="/es/" />
 
   <main id="main">
     <section class="hero" aria-labelledby="hero-title">
@@ -99,6 +75,24 @@ const jsonLd = {
         <h2 id="included-title">{c.included.title}</h2>
         <ul role="list" class="checks">
           {c.included.items.map((item) => <li>{item}</li>)}
+        </ul>
+      </div>
+    </section>
+
+    <section class="section niches" aria-labelledby="niches-title">
+      <div class="wrap">
+        <h2 id="niches-title">{c.niches.title}</h2>
+        <p class="sub">{c.niches.lead}</p>
+        <ul role="list" class="niche-list">
+          {nicheLinks.map((n) => (
+            <li>
+              <a href={n.path}>
+                <h3>{n.h1}</h3>
+                <p>{n.description}</p>
+                <span class="more-link">{c.niches.more} <span aria-hidden="true">→</span></span>
+              </a>
+            </li>
+          ))}
         </ul>
       </div>
     </section>
@@ -165,32 +159,11 @@ const jsonLd = {
     </section>
   </main>
 
-  <footer class="footer">
-    <div class="wrap row">
-      <p>© {new Date().getFullYear()} Ceibo Works</p>
-      <a href={c.footer.privacyHref}>{c.footer.privacy}</a>
-      <p class="credit">{c.footer.photo}: <a href="https://commons.wikimedia.org/wiki/File:Cockspur_Coral_Tree_(Erythrina_crista-galli)_leaves_and_flowers.jpg" rel="noopener">Bidgee</a>, <a href="https://creativecommons.org/licenses/by-sa/3.0/" rel="noopener license">CC BY-SA 3.0</a>, cropped.</p>
-    </div>
-  </footer>
+  <SiteFooter lang={lang} photoCredit />
 </Base>
 
 <style>
-  .header { position: sticky; top: 0; z-index: 200; background: color-mix(in srgb, var(--paper) 92%, transparent); backdrop-filter: blur(6px); border-bottom: 1px solid var(--line); }
-  .bar { display: flex; align-items: center; justify-content: space-between; gap: 1rem; min-height: 4.25rem; }
-  .home { text-decoration: none; }
-  .nav { display: flex; align-items: center; gap: 1.25rem; font-weight: 500; font-size: var(--step--1); }
-  .nav > li > a:not(.btn) { text-decoration: none; }
-  .nav > li > a:not(.btn):hover { text-decoration: underline; }
-  .btn--sm { min-height: 2.5rem; padding: 0.5rem 1rem; }
-  .hide-sm { display: none; }
-  .hide-xs { display: none; }
-  @media (min-width: 30rem) { .hide-xs { display: list-item; } }
-  @media (min-width: 56rem) { .hide-sm { display: list-item; } }
 
-  .lang { display: inline-flex; border: 1px solid var(--line); border-radius: 999px; padding: 3px; background: #fff; }
-  .lang a { min-width: 2.6rem; min-height: 2.1rem; display: grid; place-items: center; border-radius: 999px; text-decoration: none; font-weight: 600; color: var(--muted); }
-  .lang a:hover { color: var(--ink); }
-  .lang a[aria-current='true'] { background: var(--ink); color: #fff; }
 
   /* Hero: one orchestrated entrance. Words rise in, then the special line is drawn in. */
   .hero { position: relative; overflow: hidden; padding-block: clamp(3rem, 2rem + 6vw, 7rem) 0; }
@@ -286,7 +259,12 @@ const jsonLd = {
   details p { padding-bottom: 1.2rem; color: var(--muted); }
 
   .contact h2 { margin-top: 1.25rem; }
-  .footer { border-top: 1px solid var(--line); padding-block: 2rem; font-size: var(--step--1); color: var(--muted); }
-  .row { display: flex; flex-wrap: wrap; gap: 1rem 2rem; }
-  .credit { flex-basis: 100%; font-size: 0.8rem; }
+
+  .niches { padding-bottom: 0; }
+  .niche-list { display: grid; gap: 1.25rem; margin-top: 2.5rem; }
+  .niche-list a { display: grid; gap: 0.6rem; height: 100%; padding: 1.5rem; border: 1px solid var(--line); border-radius: var(--radius); background: #fff; text-decoration: none; color: inherit; transition: border-color 0.12s, box-shadow 0.12s; }
+  .niche-list a:hover { border-color: var(--ink); box-shadow: 0 16px 34px -26px rgb(31 36 33 / 0.5); }
+  .niche-list p { color: var(--muted); font-size: var(--step--1); }
+  .more-link { align-self: end; color: var(--ceibo-dark); font-weight: 650; }
+  @media (min-width: 48rem) { .niche-list { grid-template-columns: repeat(3, 1fr); } }
 </style>

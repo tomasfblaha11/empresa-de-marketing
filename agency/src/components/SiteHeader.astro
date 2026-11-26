@@ -1,0 +1,49 @@
+---
+// Sticky header shared by every page. On the home page the links are in-page anchors;
+// elsewhere they point back to the matching section of the home page.
+import Logo from './Logo.astro';
+import { t, type Lang } from '../i18n/content';
+
+interface Props { lang: Lang; onHome?: boolean; enHref: string; esHref: string }
+const { lang, onHome = false, enHref, esHref } = Astro.props;
+const c = t[lang];
+const home = lang === 'en' ? '/' : '/es/';
+const to = (id: string) => (onHome ? `#${id}` : `${home}#${id}`);
+---
+<header class="header">
+  <div class="wrap bar">
+    <a href={home} class="home" aria-label="Ceibo Works"><Logo /></a>
+    <nav aria-label={lang === 'en' ? 'Main' : 'Principal'}>
+      <ul role="list" class="nav">
+        <li class="hide-sm"><a href={to('how')}>{c.nav.how}</a></li>
+        <li class="hide-sm"><a href={to('pricing')}>{c.nav.pricing}</a></li>
+        <li class="hide-sm"><a href={to('about')}>{c.nav.about}</a></li>
+        <li>
+          <div class="lang" role="group" aria-label={c.nav.language}>
+            <a href={enHref} hreflang="en" lang="en" aria-current={lang === 'en' ? 'true' : undefined}>EN</a>
+            <a href={esHref} hreflang="es" lang="es" aria-current={lang === 'es' ? 'true' : undefined}>ES</a>
+          </div>
+        </li>
+        <li class="hide-xs"><a class="btn btn--primary btn--sm" href={to('contact')}>{c.nav.contact}</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<style>
+  .header { position: sticky; top: 0; z-index: 200; background: color-mix(in srgb, var(--paper) 92%, transparent); backdrop-filter: blur(6px); border-bottom: 1px solid var(--line); }
+  .bar { display: flex; align-items: center; justify-content: space-between; gap: 1rem; min-height: 4.25rem; }
+  .home { text-decoration: none; }
+  .nav { display: flex; align-items: center; gap: 1.25rem; font-weight: 500; font-size: var(--step--1); }
+  .nav > li > a:not(.btn) { text-decoration: none; }
+  .nav > li > a:not(.btn):hover { text-decoration: underline; }
+  .btn--sm { min-height: 2.5rem; padding: 0.5rem 1rem; }
+  .hide-sm { display: none; }
+  .hide-xs { display: none; }
+  @media (min-width: 30rem) { .hide-xs { display: list-item; } }
+  @media (min-width: 56rem) { .hide-sm { display: list-item; } }
+  .lang { display: inline-flex; border: 1px solid var(--line); border-radius: 999px; padding: 3px; background: #fff; }
+  .lang a { min-width: 2.6rem; min-height: 2.1rem; display: grid; place-items: center; border-radius: 999px; text-decoration: none; font-weight: 600; color: var(--muted); }
+  .lang a:hover { color: var(--ink); }
+  .lang a[aria-current='true'] { background: var(--ink); color: #fff; }
+</style>

@@ -1,0 +1,203 @@
+---
+// Landing page for one kind of business (see src/i18n/niches.ts). Same look as the home page,
+// with its own copy, a sample site, prices, FAQs and structured data for Google.
+import Base from '../layouts/Base.astro';
+import SiteHeader from './SiteHeader.astro';
+import SiteFooter from './SiteFooter.astro';
+import { Image } from 'astro:assets';
+import { t, settings, type Lang } from '../i18n/content';
+import { pages, type NichePage } from '../i18n/niches';
+import paving from '../assets/examples/paving-desktop.jpg';
+import housecare from '../assets/examples/housecare-desktop.jpg';
+import rental from '../assets/examples/rental-desktop.jpg';
+
+interface Props { page: NichePage; lang: Lang }
+const { page, lang } = Astro.props;
+const n = page[lang]!;
+const other = lang === 'en' ? page.es : page.en;
+const c = t[lang];
+const home = lang === 'en' ? '/' : '/es/';
+const shots = { paving, housecare, rental };
+const sampleUrl = settings.examples[page.sample];
+const prices = settings.currencies.filter((cur) => (lang === 'en' ? ['nzd', 'usd'] : ['ars', 'usd']).includes(cur.id));
+const others = pages.filter((p) => p.id !== page.id && p[lang]).map((p) => p[lang]!);
+const mail = `mailto:${settings.email}?subject=${encodeURIComponent(n.ctaTitle)}`;
+const abs = (p: string) => new URL(p, settings.url).href;
+
+const jsonLd = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'Service',
+    name: n.h1,
+    serviceType: n.serviceType,
+    description: n.description,
+    url: abs(n.path),
+    provider: { '@id': `${settings.url}/#business` },
+    areaServed: page.areaServed,
+    offers: prices.map((cur) => ({
+      '@type': 'Offer',
+      priceCurrency: cur.id.toUpperCase(),
+      price: cur.price.replace(/[^\d]/g, ''),
+      description: lang === 'en' ? 'Monthly fee. Building the website is free.' : 'Cuota mensual. Armar la web es gratis.',
+    })),
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: n.faq.map((f) => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })),
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Ceibo Works', item: abs(home) },
+      { '@type': 'ListItem', position: 2, name: n.short, item: abs(n.path) },
+    ],
+  },
+];
+---
+<Base lang={lang} title={n.title} description={n.description} path={n.path} altPath={other?.path} jsonLd={jsonLd}>
+  <SiteHeader lang={lang} enHref={lang === 'en' ? n.path : (other?.path ?? '/')} esHref={lang === 'es' ? n.path : (other?.path ?? '/es/')} />
+
+  <main id="main">
+    <section class="hero">
+      <div class="wrap hero-grid">
+        <div>
+          <nav aria-label={lang === 'en' ? 'Breadcrumb' : 'Ruta'} class="crumbs">
+            <a href={home}>{c.niche.home}</a> <span aria-hidden="true">/</span> <span aria-current="page">{n.short}</span>
+          </nav>
+          <h1>{n.h1}</h1>
+          <p class="lead">{n.lead}</p>
+          <div class="actions">
+            <a class="btn btn--primary" href="#contact">{c.hero.cta}</a>
+            <a class="btn btn--quiet" href={sampleUrl}>{c.niche.open}</a>
+          </div>
+          <p class="note">{c.hero.note}</p>
+        </div>
+        <a class="shot" href={sampleUrl} aria-label={c.niche.open}>
+          <Image src={shots[page.sample]} alt="" widths={[480, 720, 960]} sizes="(min-width: 56rem) 34rem, 92vw" loading="eager" fetchpriority="high" />
+        </a>
+      </div>
+    </section>
+
+    <section class="section tinted" aria-labelledby="why-title">
+      <div class="wrap">
+        <h2 id="why-title">{n.whyTitle}</h2>
+        <ol role="list" class="why">
+          {n.why.map((w, i) => <li><span class="num" aria-hidden="true">{i + 1}</span><p>{w}</p></li>)}
+        </ol>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="includes-title">
+      <div class="wrap split">
+        <h2 id="includes-title">{n.includesTitle}</h2>
+        <ul role="list" class="checks">
+          {n.includes.map((item) => <li>{item}</li>)}
+        </ul>
+      </div>
+    </section>
+
+    <section class="section tinted" aria-labelledby="how-title">
+      <div class="wrap">
+        <h2 id="how-title">{c.steps.title}</h2>
+        <ol role="list" class="steps">
+          {c.steps.items.map((s, i) => (
+            <li><span class="num" aria-hidden="true">{i + 1}</span><h3>{s.title}</h3><p>{s.text}</p></li>
+          ))}
+        </ol>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="sample-title">
+      <div class="wrap split">
+        <div>
+          <h2 id="sample-title">{n.sampleTitle}</h2>
+          <p class="sub">{n.sampleText}</p>
+          <a class="btn btn--quiet" href={sampleUrl}>{c.niche.open}</a>
+        </div>
+        <div class="price-box">
+          <p class="from">{c.niche.from}</p>
+          <p class="amount">{prices.map((p) => p.price).join(' · ')} <small>{c.niche.per}</small></p>
+          <p class="foot">{c.niche.priceNote}</p>
+          <a href={`${home}#pricing`}>{c.niche.allPrices}</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="section tinted" aria-labelledby="faq-title">
+      <div class="wrap narrow">
+        <h2 id="faq-title">{c.niche.faq}</h2>
+        <div class="faq">
+          {n.faq.map((f) => (<details><summary>{f.q}</summary><p>{f.a}</p></details>))}
+        </div>
+      </div>
+    </section>
+
+    <section class="section contact" id="contact" aria-labelledby="contact-title">
+      <div class="wrap narrow">
+        <h2 id="contact-title">{n.ctaTitle}</h2>
+        <p class="sub">{n.ctaText}</p>
+        <div class="actions">
+          <a class="btn btn--primary" href={mail}>{c.niche.email}: {settings.email}</a>
+        </div>
+        {others.length > 0 && (
+          <nav class="others" aria-labelledby="others-title">
+            <h3 id="others-title">{c.niche.others}</h3>
+            <ul role="list">{others.map((o) => <li><a href={o.path}>{o.short}</a></li>)}</ul>
+          </nav>
+        )}
+      </div>
+    </section>
+  </main>
+
+  <SiteFooter lang={lang} />
+</Base>
+
+<style>
+  .hero { padding-block: clamp(2.5rem, 2rem + 4vw, 5.5rem); }
+  .hero-grid { display: grid; gap: 2.5rem; align-items: center; }
+  @media (min-width: 56rem) { .hero-grid { grid-template-columns: 1.05fr 1fr; gap: 3.5rem; } }
+  .crumbs { font-size: var(--step--1); color: var(--muted); margin-bottom: 1.25rem; }
+  h1 { font-size: var(--step-4); font-weight: 640; font-stretch: 92%; max-width: 20ch; }
+  .lead { margin-top: 1.5rem; font-size: var(--step-1); color: var(--muted); max-width: 44ch; }
+  .actions { display: flex; flex-wrap: wrap; gap: 0.75rem; margin-top: 2rem; }
+  .note { margin-top: 1rem; font-size: var(--step--1); color: var(--muted); }
+  .shot { display: block; border-radius: 12px; overflow: hidden; border: 1px solid var(--line); box-shadow: 0 30px 60px -36px rgb(31 36 33 / 0.55); transform: rotate(-1.5deg); transition: transform 0.2s; }
+  .shot:hover { transform: rotate(0deg); }
+  .shot :global(img) { width: 100%; height: auto; }
+  @media (prefers-reduced-motion: reduce) { .shot { transform: none; transition: none; } }
+
+  .tinted { background: var(--paper-2); }
+  .why, .steps { display: grid; gap: 2rem; margin-top: 2.5rem; }
+  .why li, .steps li { position: relative; padding-top: 3.25rem; }
+  .why p { font-size: var(--step-1); line-height: 1.5; }
+  .steps p { margin-top: 0.5rem; color: var(--muted); }
+  .num { position: absolute; top: 0; left: 0; width: 2.4rem; height: 2.4rem; border-radius: 50%; display: grid; place-items: center; background: var(--ceibo); color: #fff; font-weight: 650; }
+  @media (min-width: 48rem) { .why, .steps { grid-template-columns: repeat(3, 1fr); gap: 2.5rem; } }
+
+  .split { display: grid; gap: 2rem; align-items: center; }
+  @media (min-width: 56rem) { .split { grid-template-columns: 1fr 1.2fr; gap: 4rem; } }
+  .checks { display: grid; gap: 0.9rem; }
+  .checks li { position: relative; padding-left: 2rem; }
+  .checks li::before { content: ''; position: absolute; left: 0.15rem; top: 0.45em; width: 0.95rem; height: 0.55rem; border-left: 2.5px solid var(--river); border-bottom: 2.5px solid var(--river); transform: rotate(-45deg); }
+
+  .sub { margin-top: 1rem; margin-bottom: 1.5rem; color: var(--muted); font-size: var(--step-1); line-height: 1.45; }
+  .narrow { max-width: 46rem; }
+  .price-box { padding: 1.75rem; border-radius: var(--radius); background: #fff; border: 1px solid var(--line); }
+  .from { font-weight: 650; color: var(--ceibo-dark); }
+  .amount { margin-top: 0.4rem; font-size: var(--step-3); font-weight: 650; line-height: 1.1; font-variant-numeric: tabular-nums; }
+  .amount small { font-size: var(--step-0); font-weight: 500; color: var(--muted); }
+  .foot { margin-block: 1rem; font-size: var(--step--1); color: var(--muted); }
+
+  .faq { margin-top: 2rem; border-top: 1px solid var(--line); }
+  details { border-bottom: 1px solid var(--line); }
+  summary { cursor: pointer; padding-block: 1.1rem; font-weight: 600; font-size: var(--step-1); list-style: none; display: flex; justify-content: space-between; gap: 1rem; }
+  summary::-webkit-details-marker { display: none; }
+  summary::after { content: '+'; color: var(--ceibo); font-weight: 500; }
+  details[open] summary::after { content: '−'; }
+  details p { padding-bottom: 1.2rem; color: var(--muted); }
+
+  .others { margin-top: 3rem; padding-top: 2rem; border-top: 1px solid var(--line); }
+  .others ul { display: grid; gap: 0.5rem; margin-top: 0.75rem; }
+</style>

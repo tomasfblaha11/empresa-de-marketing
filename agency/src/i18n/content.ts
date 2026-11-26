@@ -23,8 +23,8 @@ export const t = {
   en: {
     htmlLang: 'en',
     meta: {
-      title: 'Ceibo Works | Websites for small businesses',
-      description: 'A small studio that builds your website for free and looks after it every month. You always deal with the same person.',
+      title: 'Ceibo Works | Custom websites for small businesses',
+      description: 'Custom websites for small businesses in New Zealand, the US and Latin America. Built for free, looked after every month, always by the same person.',
     },
     nav: { how: 'How it works', pricing: 'Pricing', about: 'About', contact: 'Contact', language: 'Language' },
     hero: {
@@ -105,13 +105,19 @@ export const t = {
       whatsapp: 'Message on WhatsApp',
       waText: 'Hi Tomas, I’d like a free website draft.',
     },
-    footer: { privacy: 'Privacy', privacyHref: '/privacy/', photo: 'Ceibo photo' },
+    footer: { privacy: 'Privacy', privacyHref: '/privacy/', photo: 'Ceibo photo', servicesLabel: 'Websites for', place: 'Made in Entre Ríos, Argentina' },
+    niches: {
+      title: 'Built for your kind of business',
+      lead: 'I know these trades well, so your site starts from what your customers actually look for.',
+      more: 'Read more',
+    },
+    niche: { home: 'Home', from: 'From', per: 'per month', priceNote: 'Building the site is free. 12-month minimum, billed monthly.', allPrices: 'See pricing details', open: 'Open the sample website', email: 'Email me', faq: 'Questions', others: 'Other kinds of business' },
   },
   es: {
     htmlLang: 'es',
     meta: {
-      title: 'Ceibo Works | Páginas web para negocios pequeños',
-      description: 'Un estudio pequeño que te arma la web gratis y la mantiene cada mes. Siempre tratas con la misma persona.',
+      title: 'Ceibo Works | Páginas web a medida para negocios pequeños',
+      description: 'Páginas web a medida para negocios pequeños de Argentina y Latinoamérica. Te la armo gratis, la mantengo cada mes y siempre tratas con la misma persona.',
     },
     nav: { how: 'Cómo funciona', pricing: 'Precios', about: 'Quién soy', contact: 'Contacto', language: 'Idioma' },
     hero: {
@@ -192,6 +198,12 @@ export const t = {
       whatsapp: 'Escribir por WhatsApp',
       waText: 'Hola Tomas, me interesa un borrador gratis de mi web.',
     },
-    footer: { privacy: 'Privacidad', privacyHref: '/es/privacidad/', photo: 'Foto del ceibo' },
+    footer: { privacy: 'Privacidad', privacyHref: '/es/privacidad/', photo: 'Foto del ceibo', servicesLabel: 'Páginas web para', place: 'Hecho en Entre Ríos, Argentina' },
+    niches: {
+      title: 'Pensadas para tu tipo de negocio',
+      lead: 'Conozco bien estos rubros, así que tu web arranca desde lo que tus clientes realmente buscan.',
+      more: 'Ver más',
+    },
+    niche: { home: 'Inicio', from: 'Desde', per: 'por mes', priceNote: 'Armar la web es gratis. Mínimo 12 meses, con pago mensual.', allPrices: 'Ver detalle de precios', open: 'Abrir la web de muestra', email: 'Escríbeme', faq: 'Preguntas', others: 'Otros tipos de negocio' },
   },
 } as const;

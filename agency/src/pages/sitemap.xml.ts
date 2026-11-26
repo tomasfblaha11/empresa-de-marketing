@@ -1,5 +1,28 @@
 import type { APIRoute } from 'astro';
 import { settings } from '../i18n/content';
-const pages = ['/', '/es/', '/privacy/', '/es/privacidad/'];
+import { pages } from '../i18n/niches';
+
+// Every indexable page, with its translation when there is one (hreflang alternates).
+const entries: { en?: string; es?: string }[] = [
+  { en: '/', es: '/es/' },
+  ...pages.map((p) => ({ en: p.en?.path, es: p.es?.path })),
+  { en: '/privacy/', es: '/es/privacidad/' },
+];
+const abs = (p: string) => new URL(p, settings.url).href;
+const lastmod = new Date().toISOString().slice(0, 10);
+
+const urls = entries.flatMap((e) => {
+  const alts = (['en', 'es'] as const)
+    .filter((l) => e[l])
+    .map((l) => `    <xhtml:link rel="alternate" hreflang="${l}" href="${abs(e[l]!)}"/>`)
+    .join('\n');
+  return (['en', 'es'] as const)
+    .filter((l) => e[l])
+    .map((l) => `  <url>\n    <loc>${abs(e[l]!)}</loc>\n    <lastmod>${lastmod}</lastmod>\n${alts}\n  </url>`);
+});
+
 export const GET: APIRoute = () =>
-  new Response(`<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${pages.map((p) => `  <url><loc>${settings.url}${p}</loc></url>`).join('\n')}\n</urlset>\n`, { headers: { 'Content-Type': 'application/xml' } });
+  new Response(
+    `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">\n${urls.join('\n')}\n</urlset>\n`,
+    { headers: { 'Content-Type': 'application/xml' } },
+  );

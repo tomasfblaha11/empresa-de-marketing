@@ -8,6 +8,7 @@ const year = new Date().getFullYear();
     <nav aria-label="Legal">
       <a href={link('privacy/')}>Privacy</a>
     </nav>
+    {site.credit && <p class="made">Website by <a href="https://ceiboworks.com/">Ceibo Works</a></p>}
     {site.demo && <p class="credit">Demo photos: public domain (CC0), Wikimedia Commons.</p>}
   </div>
 </footer>
@@ -16,5 +17,7 @@ const year = new Date().getFullYear();
   .footer { background: var(--ink); color: #c9ced2; font-size: var(--step--1); padding-block: 2rem 6rem; }
   .row { display: flex; flex-wrap: wrap; gap: 0.75rem 2rem; align-items: center; }
   .credit { flex-basis: 100%; opacity: 0.8; }
+  .made { margin-left: auto; }
+  .made a { color: inherit; }
   @media (min-width: 48rem) { .footer { padding-bottom: 2rem; } }
 </style>
