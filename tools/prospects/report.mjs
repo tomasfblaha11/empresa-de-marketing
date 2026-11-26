@@ -73,7 +73,7 @@ const NAMES = { NZ: 'Nueva Zelanda', US: 'Estados Unidos', CL: 'Chile', UY: 'Uru
 const countries = Object.keys(NAMES).filter((k) => rows.some((r) => r.pais === k));
 let md = `# Prospectos ${countries.map((k) => NAMES[k]).join(', ')}\n\n`;
 md += `Generado el ${new Date().toISOString().slice(0, 10)}. ${rows.length} negocios con un problema concreto y un email publicado por ellos mismos `;
-md += `(en su ficha de Yellow / YellowPages o en su propia web).\n\n`;
+md += `(en un registro oficial, un directorio o su propia web).\n\n`;
 md += `| | ${countries.map((k) => NAMES[k]).join(' | ')} |\n|---|${countries.map(() => '---').join('|')}|\n`;
 for (const t of Object.values(LABEL)) md += `| ${t} | ${countries.map((k) => count((r) => r.pais === k && r.tipo === t)).join(' | ')} |\n`;
 md += `\n**Antes de escribir:** mirá la web vos mismo (a veces vuelven a funcionar), escribí uno por uno y siempre con la línea para darse de baja. `;
