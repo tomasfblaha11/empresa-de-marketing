@@ -3,12 +3,12 @@
 
 export const settings = {
   url: 'https://ceiboworks.com',
-  // PENDING: the domain is not bought yet. Until then this address does not receive mail.
-  email: 'hello@ceiboworks.com',
+  // Free Gmail for now; move to an address on ceiboworks.com once there are paying clients.
+  email: 'ceiboworks@gmail.com',
   whatsapp: '', // international number, digits only, e.g. 5493430000000
   // Sample sites built from ../template into public/examples/<slug>/ (see scripts/build-examples.mjs).
   examples: { paving: '/examples/paving/', housecare: '/examples/home-care/', rental: '/examples/holiday-cottage/' },
-  preview: true, // true = noindex (site not launched yet)
+  preview: false, // true = noindex (site not launched yet)
   // Monthly prices per currency. ARS is provisional: confirm and review regularly for inflation.
   currencies: [
     { id: 'nzd', label: 'NZD', name: 'New Zealand dollar', price: 'NZ$79', extra: 'NZ$69' },
