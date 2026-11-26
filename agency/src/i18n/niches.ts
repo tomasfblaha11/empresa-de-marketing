@@ -27,6 +27,7 @@ export interface NichePage {
   id: string;
   sample: SampleKey;
   areaServed: string[];
+  prices?: string[]; // ids from settings.currencies; defaults by language in Niche.astro
   en?: NicheCopy;
   es?: NicheCopy;
 }
@@ -252,6 +253,7 @@ export const pages: NichePage[] = [
     id: 'entre-rios',
     sample: 'rental',
     areaServed: ['Paraná', 'Entre Ríos', 'AR'],
+    prices: ['ars'],
     es: {
       path: '/es/paginas-web-parana-entre-rios/',
       short: 'Páginas web en Paraná, Entre Ríos',
@@ -280,10 +282,88 @@ export const pages: NichePage[] = [
       faq: [
         { q: '¿Trabajas solo con negocios de Paraná?', a: 'No. Trabajo con negocios de toda Entre Ríos y del resto de Argentina, y también con clientes de Nueva Zelanda y Estados Unidos.' },
         { q: '¿Qué tipo de negocios?', a: 'Sobre todo cabañas y alojamientos, paisajismo y jardinería, cuidado de casas y servicios para el hogar, pero cualquier negocio chico que necesite una web clara puede consultarme.' },
-        { q: '¿Cuánto cuesta?', a: 'Armar la web es gratis. Si te gusta, pagas una cuota mensual que cubre alojamiento, mantenimiento y cambios. Los precios están en esta misma página, en pesos o en dólares.' },
+        { q: '¿Cuánto cuesta?', a: 'Armar la web es gratis. Si te gusta, pagas una cuota mensual en pesos que cubre alojamiento, mantenimiento y cambios. El precio está en esta misma página.' },
       ],
       ctaTitle: '¿Quieres un borrador gratis para tu negocio?',
       ctaText: 'Cuéntame qué hace tu negocio y dónde está. En pocos días tienes una web real para ver, sin compromiso.',
+    },
+  },
+  {
+    id: 'chile',
+    sample: 'rental',
+    areaServed: ['CL'],
+    prices: ['latam'],
+    es: {
+      path: '/es/paginas-web-chile/',
+      short: 'Páginas web en Chile',
+      title: 'Páginas web para cabañas, hostales y pymes en Chile | Ceibo Works',
+      description: 'Páginas web para cabañas, hostales, lodges y pequeños negocios de Chile. Te la armo gratis y la mantengo por US$49 al mes. Pagas con tarjeta o PayPal.',
+      serviceType: 'Diseño de páginas web para cabañas, hostales y pymes en Chile',
+      h1: 'Páginas web para cabañas, hostales y pymes de Chile',
+      lead: 'Armo páginas web para alojamientos y pequeños negocios de Chile, de Pucón a Chiloé: rápidas en el celular, con tus fotos y con reservas directas sin comisión. Te la armo gratis y, si te gusta, la mantengo por US$49 al mes.',
+      whyTitle: 'Por qué una web propia',
+      why: [
+        'Los turistas que planean el verano en el sur o en la costa revisan la web del alojamiento antes de reservar. Si no la encuentran, reservan en otro lado o por una plataforma que te cobra comisión.',
+        'Los huéspedes que vuelven, y los amigos que te recomiendan, pueden reservar directo contigo desde tu propia web.',
+        'Instagram sirve para mostrarte, pero la web aparece en Google, no depende de un algoritmo y explica todo en un solo lugar: fotos, tarifas, cómo llegar y contacto.',
+      ],
+      includesTitle: 'Qué incluye tu web',
+      includes: [
+        'Galería grande de fotos de las cabañas o habitaciones, la vista y el entorno',
+        'Tarifas, temporadas, estadía mínima y qué incluye',
+        'Botón de WhatsApp y formulario de consulta directa',
+        'Cómo llegar y qué hacer cerca',
+        'Configuración de tu perfil de Google Business',
+        careEs,
+      ],
+      sampleTitle: 'Mira una web de muestra',
+      sampleText: 'Una web de muestra que armé para una cabaña ficticia (en inglés). La tuya se arma en español, con tu lugar y tus fotos.',
+      faq: [
+        { q: '¿Cómo pago desde Chile?', a: 'En dólares, US$49 al mes, con tarjeta de débito o crédito por un link de pago seguro, o con PayPal. No necesitas abrir ninguna cuenta nueva.' },
+        { q: '¿Puedo tener la web en español e inglés?', a: 'Sí. Si recibes turistas extranjeros, la armo en los dos idiomas.' },
+        { q: '¿Tengo que dejar Booking o Airbnb?', a: 'No. Lo normal es seguir usando las plataformas para huéspedes nuevos y tu web para las reservas directas y los que vuelven.' },
+      ],
+      ctaTitle: '¿Quieres un borrador gratis para tu alojamiento?',
+      ctaText: 'Envíame algunas fotos y cuéntame de tu lugar. En pocos días tienes una web real para ver en el celular, sin compromiso.',
+    },
+  },
+  {
+    id: 'uruguay',
+    sample: 'rental',
+    areaServed: ['UY'],
+    prices: ['latam'],
+    es: {
+      path: '/es/paginas-web-uruguay/',
+      short: 'Páginas web en Uruguay',
+      title: 'Páginas web para alojamientos e inmobiliarias en Uruguay | Ceibo Works',
+      description: 'Páginas web para posadas, cabañas, estancias e inmobiliarias de Uruguay: Punta del Este, Rocha, Colonia y todo el país. Gratis de armar, US$49 al mes.',
+      serviceType: 'Diseño de páginas web para alojamientos e inmobiliarias en Uruguay',
+      h1: 'Páginas web para alojamientos e inmobiliarias de Uruguay',
+      lead: 'Armo páginas web para posadas, cabañas, estancias turísticas e inmobiliarias de alquiler de temporada, de Colonia a Punta del Diablo. Te la armo gratis y, si te gusta, la mantengo por US$49 al mes.',
+      whyTitle: 'Por qué una web propia',
+      why: [
+        'En temporada, quien busca dónde quedarse en la costa mira primero la web del lugar. Una web clara, con fotos grandes y disponibilidad, convierte esas visitas en consultas directas.',
+        'Para una inmobiliaria, las propiedades de alquiler de temporada bien presentadas en tu propia web te independizan de los portales y muestran tu marca.',
+        'La web es tuya: aparece en Google, no depende de un algoritmo y se ve bien en cualquier celular.',
+      ],
+      includesTitle: 'Qué incluye tu web',
+      includes: [
+        'Galería de fotos de las habitaciones, cabañas o propiedades',
+        'Tarifas por temporada y condiciones',
+        'Botón de WhatsApp y formulario de consulta directa',
+        'Cómo llegar y qué hacer cerca',
+        'Configuración de tu perfil de Google Business',
+        careEs,
+      ],
+      sampleTitle: 'Mira una web de muestra',
+      sampleText: 'Una web de muestra que armé para una cabaña ficticia (en inglés). La tuya se arma en español, con tu negocio y tus fotos.',
+      faq: [
+        { q: '¿Cómo pago desde Uruguay?', a: 'En dólares, US$49 al mes, con tarjeta de débito o crédito por un link de pago seguro, o con PayPal.' },
+        { q: '¿Sirve para una inmobiliaria?', a: 'Sí. Puedo armar fichas de propiedades para alquiler de temporada o venta, con fotos, características y un botón para consultar por cada una.' },
+        { q: '¿La web puede estar en español, inglés y portugués?', a: 'Sí. Muchos visitantes de la costa vienen de Argentina y Brasil; la web puede tener los idiomas que necesites.' },
+      ],
+      ctaTitle: '¿Quieres un borrador gratis para tu negocio?',
+      ctaText: 'Cuéntame qué hace tu negocio y dónde está. En pocos días tienes una web real para ver en el celular, sin compromiso.',
     },
   },
 ];

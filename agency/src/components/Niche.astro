@@ -19,7 +19,8 @@ const c = t[lang];
 const home = lang === 'en' ? '/' : '/es/';
 const shots = { paving, housecare, rental };
 const sampleUrl = settings.examples[page.sample];
-const prices = settings.currencies.filter((cur) => (lang === 'en' ? ['nzd', 'usd'] : ['ars', 'usd']).includes(cur.id));
+const priceIds: string[] = page.prices ?? (lang === 'en' ? ['nzd', 'usd'] : ['latam', 'ars']);
+const prices = settings.currencies.filter((cur) => priceIds.includes(cur.id));
 const others = pages.filter((p) => p.id !== page.id && p[lang]).map((p) => p[lang]!);
 const mail = `mailto:${settings.email}?subject=${encodeURIComponent(n.ctaTitle)}`;
 const abs = (p: string) => new URL(p, settings.url).href;
@@ -36,7 +37,7 @@ const jsonLd = [
     areaServed: page.areaServed,
     offers: prices.map((cur) => ({
       '@type': 'Offer',
-      priceCurrency: cur.id.toUpperCase(),
+      priceCurrency: cur.currency,
       price: cur.price.replace(/[^\d]/g, ''),
       description: lang === 'en' ? 'Monthly fee. Building the website is free.' : 'Cuota mensual. Armar la web es gratis.',
     })),

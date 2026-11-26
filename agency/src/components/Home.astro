@@ -17,8 +17,9 @@ const altPath = lang === 'en' ? '/es/' : '/';
 const mail = `mailto:${settings.email}`;
 const wa = settings.whatsapp ? `https://wa.me/${settings.whatsapp}?text=${encodeURIComponent(c.contact.waText)}` : '';
 const titleWords = c.hero.title.split(' ');
+const currencies = settings.currencies.filter((cur) => (cur.langs as readonly string[]).includes(lang));
 
-const nicheLinks = pages.filter((p) => p.id !== 'entre-rios' && p[lang]).map((p) => p[lang]!);
+const nicheLinks = pages.filter((p) => !['entre-rios', 'chile', 'uruguay'].includes(p.id) && p[lang]).map((p) => p[lang]!);
 const website = { '@context': 'https://schema.org', '@type': 'WebSite', name: 'Ceibo Works', url: `${settings.url}/`, inLanguage: lang, publisher: { '@id': `${settings.url}/#business` } };
 
 ---
@@ -103,15 +104,15 @@ const website = { '@context': 'https://schema.org', '@type': 'WebSite', name: 'C
         <p class="sub">{c.pricing.lead}</p>
         <fieldset class="currency">
           <legend>{c.pricing.legend}</legend>
-          {settings.currencies.map((cur) => (
+          {currencies.map((cur) => (
             <label>
               <input type="radio" name="currency" value={cur.id} checked={cur.id === c.pricing.defaultCurrency} />
-              <span>{cur.label}</span>
+              <span>{cur.label[lang]}</span>
             </label>
           ))}
         </fieldset>
         <div class="price-box" aria-live="polite">
-          {settings.currencies.map((cur) => (
+          {currencies.map((cur) => (
             <div class="price" data-cur={cur.id}>
               <p class="amount">{cur.price} <small>{c.pricing.per}</small></p>
               <p class="extra">{c.pricing.extra} <strong>{cur.extra}</strong> {c.pricing.per}</p>
@@ -119,6 +120,12 @@ const website = { '@context': 'https://schema.org', '@type': 'WebSite', name: 'C
           ))}
         </div>
         <p class="foot">{c.pricing.foot}</p>
+        <div class="pay">
+          <h3>{c.pricing.payTitle}</h3>
+          <dl>
+            {c.pricing.pay.map((p) => (<><dt>{p.where}</dt><dd>{p.how}</dd></>))}
+          </dl>
+        </div>
       </div>
     </section>
 
@@ -227,18 +234,26 @@ const website = { '@context': 'https://schema.org', '@type': 'WebSite', name: 'C
   .narrow { max-width: 46rem; }
 
   /* Currency switch: pure CSS with :has(), no JavaScript needed. */
-  .currency { display: inline-flex; gap: 4px; margin: 2rem 0 0; padding: 4px; border: 1px solid var(--line); border-radius: 999px; background: #fff; }
+  .currency { display: inline-flex; max-width: 100%; gap: 4px; margin: 2rem 0 0; padding: 4px; border: 1px solid var(--line); border-radius: 999px; background: #fff; }
   .currency legend { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
   .currency label { position: relative; cursor: pointer; }
   .currency input { position: absolute; opacity: 0; inset: 0; margin: 0; cursor: pointer; }
-  .currency span { display: grid; place-items: center; min-width: 4.5rem; min-height: 2.6rem; border-radius: 999px; font-weight: 650; color: var(--muted); }
+  .currency span { display: grid; place-items: center; min-width: 4.5rem; min-height: 2.6rem; padding-inline: 0.75rem; white-space: nowrap; border-radius: 999px; font-weight: 650; color: var(--muted); }
   .currency input:checked + span { background: var(--ceibo); color: #fff; }
   .currency input:focus-visible + span { outline: 3px solid var(--focus); outline-offset: 2px; }
   .price-box { margin-top: 1.75rem; padding: 1.75rem; border-radius: var(--radius); background: #fff; border: 1px solid var(--line); }
   .price { display: none; }
   .pricing:has(input[value='nzd']:checked) [data-cur='nzd'],
   .pricing:has(input[value='usd']:checked) [data-cur='usd'],
-  .pricing:has(input[value='ars']:checked) [data-cur='ars'] { display: block; }
+  .pricing:has(input[value='ars']:checked) [data-cur='ars'],
+  .pricing:has(input[value='latam']:checked) [data-cur='latam'] { display: block; }
+  @media (max-width: 26rem) { .currency span { min-width: 0; padding-inline: 0.6rem; font-size: var(--step--1); } }
+  .pay { margin-top: 2rem; }
+  .pay h3 { font-size: var(--step-0); }
+  .pay dl { display: grid; gap: 0.25rem 1.5rem; margin-top: 0.75rem; font-size: var(--step--1); }
+  .pay dt { font-weight: 650; }
+  .pay dd { margin: 0 0 0.6rem; color: var(--muted); }
+  @media (min-width: 40rem) { .pay dl { grid-template-columns: 10rem 1fr; } .pay dd { margin: 0; } }
   .amount { font-size: var(--step-4); font-weight: 650; color: var(--ink); font-variant-numeric: tabular-nums; line-height: 1; }
   .amount small { font-size: var(--step-0); font-weight: 500; color: var(--muted); }
   .extra { margin-top: 0.9rem; color: var(--muted); }

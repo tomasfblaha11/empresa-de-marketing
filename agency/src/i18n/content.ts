@@ -9,11 +9,13 @@ export const settings = {
   // Sample sites built from ../template into public/examples/<slug>/ (see scripts/build-examples.mjs).
   examples: { paving: '/examples/paving/', housecare: '/examples/home-care/', rental: '/examples/holiday-cottage/' },
   preview: false, // true = noindex (site not launched yet)
-  // Monthly prices per currency. ARS is provisional: confirm and review regularly for inflation.
+  // Monthly prices per region. `langs` says in which version of the site each option appears.
+  // ARS is provisional: confirm and review regularly for inflation.
   currencies: [
-    { id: 'nzd', label: 'NZD', name: 'New Zealand dollar', price: 'NZ$79', extra: 'NZ$69' },
-    { id: 'usd', label: 'USD', name: 'US dollar', price: 'US$79', extra: 'US$69' },
-    { id: 'ars', label: 'ARS', name: 'Peso argentino', price: 'ARS 45.000', extra: 'ARS 40.000' },
+    { id: 'nzd', currency: 'NZD', label: { en: 'NZD', es: 'NZD' }, price: 'NZ$79', extra: 'NZ$69', langs: ['en'] },
+    { id: 'latam', currency: 'USD', label: { en: 'Chile · Uruguay', es: 'Chile y Uruguay' }, price: 'US$49', extra: 'US$39', langs: ['es'] },
+    { id: 'ars', currency: 'ARS', label: { en: 'ARS', es: 'Argentina' }, price: 'ARS 45.000', extra: 'ARS 40.000', langs: ['es'] },
+    { id: 'usd', currency: 'USD', label: { en: 'USD', es: 'Otro país' }, price: 'US$79', extra: 'US$69', langs: ['en', 'es'] },
   ],
 };
 
@@ -79,6 +81,10 @@ export const t = {
       extra: 'Each extra website for the same owner:',
       foot: '12-month minimum, billed monthly. Your domain is around US$15 a year, paid by you and registered in your name.',
       defaultCurrency: 'nzd',
+      payTitle: 'How you pay',
+      pay: [
+        { where: 'New Zealand and the US', how: 'Monthly, by debit or credit card through a secure payment link, or with PayPal.' },
+      ],
     },
     about: {
       title: 'Who’s behind it',
@@ -95,6 +101,7 @@ export const t = {
         { q: 'How long does it take?', a: 'A first draft usually takes 3 to 5 days after I receive your photos and details.' },
         { q: 'What happens after 12 months?', a: 'You can carry on month to month, or cancel whenever you like.' },
         { q: 'Who owns the domain?', a: 'You do. It is registered in your name from day one.' },
+        { q: 'How do I pay?', a: 'Monthly, by debit or credit card through a secure payment link, or with PayPal. Building the site is free.' },
         { q: 'Where are you based?', a: 'In Argentina. I work remotely with businesses in New Zealand, the United States and Latin America, by email, WhatsApp or video call.' },
       ],
     },
@@ -166,12 +173,18 @@ export const t = {
     },
     pricing: {
       title: 'Precios',
-      lead: 'Armar la web es gratis. Elige la moneda en la que prefieres pagar.',
-      legend: 'Moneda',
+      lead: 'Armar la web es gratis. Elige dónde está tu negocio.',
+      legend: 'País',
       per: 'por mes',
       extra: 'Cada web adicional del mismo dueño:',
       foot: 'Mínimo 12 meses, con pago mensual. El dominio cuesta unos US$15 al año, lo pagas tú y queda a tu nombre.',
-      defaultCurrency: 'usd',
+      defaultCurrency: 'latam',
+      payTitle: 'Cómo pagas',
+      pay: [
+        { where: 'Chile y Uruguay', how: 'En dólares, todos los meses, con tarjeta de débito o crédito (Visa o Mastercard) por un link de pago seguro, o con PayPal.' },
+        { where: 'Argentina', how: 'En pesos, por transferencia bancaria o Mercado Pago.' },
+        { where: 'Otros países', how: 'En dólares, con tarjeta o PayPal.' },
+      ],
     },
     about: {
       title: 'Quién está detrás',
@@ -188,7 +201,8 @@ export const t = {
         { q: '¿Cuánto tarda?', a: 'El primer borrador suele estar en 3 a 5 días desde que recibo tus fotos y datos.' },
         { q: '¿Qué pasa después de los 12 meses?', a: 'Puedes seguir mes a mes o cancelar cuando quieras.' },
         { q: '¿De quién es el dominio?', a: 'Tuyo. Queda registrado a tu nombre desde el primer día.' },
-        { q: '¿Dónde estás?', a: 'En Argentina. Trabajo a distancia con negocios de Nueva Zelanda, Estados Unidos y Latinoamérica, por correo, WhatsApp o videollamada.' },
+        { q: '¿Cómo pago desde Chile o Uruguay?', a: 'En dólares (US$49 por mes), con tarjeta de débito o crédito por un link de pago seguro, o con PayPal. No hace falta abrir ninguna cuenta nueva.' },
+        { q: '¿Dónde estás?', a: 'En Argentina, en Entre Ríos. Trabajo a distancia con negocios de Chile, Uruguay, Argentina, Nueva Zelanda y Estados Unidos, por correo, WhatsApp o videollamada.' },
       ],
     },
     contact: {
