@@ -25,12 +25,12 @@
     ],
     "hours": [
       {
-        "days": "Monday to Friday",
-        "time": "7am – 5pm"
+        "days": "Monday to Saturday",
+        "time": "8am – 6pm"
       },
       {
-        "days": "Saturday",
-        "time": "By appointment"
+        "days": "Call-outs",
+        "time": "Any time for storms and alarms"
       }
     ],
     "formEndpoint": ""
@@ -58,25 +58,25 @@
     "Keys held securely"
   ],
   "about": {
-    "story": "Harbourstone started with one ute and a plate compactor in 2012. Today it is a crew of four, and the owner still measures every job and signs off every finish. Most of our work comes from neighbours of people we have already worked for.",
+    "story": "Keyline started when friends kept asking us to keep an eye on their places over winter. Today we look after more than forty homes around Queenstown, and every visit ends with photos sent straight to the owner.",
     "photo": "swain.jpg",
     "photoAlt": "House with lawn"
   },
   "reviews": [
     {
-      "quote": "They turned a cracked, sloping drive into the best-looking entrance on the street, and finished a day early.",
-      "author": "Karen W.",
-      "place": "Papamoa"
+      "quote": "We were overseas for three months and got photos after every check. Coming home to a tidy garden and no surprises was worth every cent.",
+      "author": "Rachel and Tom",
+      "place": "Arrowtown"
     },
     {
-      "quote": "Clear quote, no surprises, and the crew left the place tidier than they found it.",
-      "author": "Mike T.",
-      "place": "Mount Maunganui"
+      "quote": "They spotted a leaking tap the first week and had it fixed before it became a problem.",
+      "author": "Graham P.",
+      "place": "Frankton"
     }
   ],
   "googleReviews": {
     "rating": 4.9,
-    "count": 38,
+    "count": 27,
     "url": ""
   },
   "social": {

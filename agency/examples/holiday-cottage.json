@@ -21,12 +21,12 @@
     ],
     "hours": [
       {
-        "days": "Monday to Friday",
-        "time": "7am – 5pm"
+        "days": "Check-in",
+        "time": "From 3pm"
       },
       {
-        "days": "Saturday",
-        "time": "By appointment"
+        "days": "Check-out",
+        "time": "By 10am"
       }
     ],
     "formEndpoint": ""
@@ -54,25 +54,25 @@
     "Dogs welcome on request"
   ],
   "about": {
-    "story": "Harbourstone started with one ute and a plate compactor in 2012. Today it is a crew of four, and the owner still measures every job and signs off every finish. Most of our work comes from neighbours of people we have already worked for.",
+    "story": "We are Anna and James, and we live ten minutes up the road. We built the cottage for our own family holidays, and now we share it with guests. We meet you on arrival if you like, and we are always a phone call away.",
     "photo": "paving.jpg",
     "photoAlt": "Stone path"
   },
   "reviews": [
     {
-      "quote": "They turned a cracked, sloping drive into the best-looking entrance on the street, and finished a day early.",
-      "author": "Karen W.",
-      "place": "Papamoa"
+      "quote": "Waking up to the lake every morning was magic. The cottage had everything we needed and Anna's tips for walks were spot on.",
+      "author": "Sophie L.",
+      "place": "Wellington"
     },
     {
-      "quote": "Clear quote, no surprises, and the crew left the place tidier than they found it.",
-      "author": "Mike T.",
-      "place": "Mount Maunganui"
+      "quote": "Booked direct, saved on fees and got a warm welcome. We are already planning to come back next summer.",
+      "author": "The Ngata family",
+      "place": "Hamilton"
     }
   ],
   "googleReviews": {
     "rating": 4.9,
-    "count": 38,
+    "count": 52,
     "url": ""
   },
   "social": {
