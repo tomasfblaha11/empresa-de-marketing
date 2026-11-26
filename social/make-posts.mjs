@@ -140,7 +140,18 @@ const posts = [
     </div>`)],
 ];
 
+// Small round avatars (Gmail, WhatsApp): the flower must still read at 40px inside a circle.
+const avatar = (bg, petal, petalDark, stem) => page(1024, 1024, `<div style="height:100%;display:grid;place-items:center;background:${bg}">
+  <svg viewBox="0 0 64 64" style="width:800px;height:800px;transform:translate(-62px,-6px)">
+    <path d="M30 61c0-9 1.2-15 4.4-21" fill="none" stroke="${stem}" stroke-width="3" stroke-linecap="round"/>
+    <path d="M28.5 41.5c3-5 8-6.5 11.5-3.2-1.6 4.6-6.2 7.2-11.5 3.2z" fill="${stem}"/>
+    <path d="M33.5 38.5C19 31 17.5 12.5 29.5 3.5 33 15 44 22.5 46.5 35c-4.6 4.2-8.6 5-13 3.5z" fill="${petal}"/>
+    <path d="M37 37.5c8.5-2.5 15.5-8.5 19.5-17.5-1.2 10.5-8.3 18.3-17.2 20.2z" fill="${petalDark}"/>
+  </svg></div>`);
+
 const extras = [
+  ['avatar-rojo', 1024, 1024, avatar('#c8102e', '#ffffff', '#f6c9d0', '#fde8eb')],
+  ['avatar-claro', 1024, 1024, avatar('#fcfcfa', '#c8102e', '#9b0c23', '#2f4a3a')],
   ['profile', 1080, 1080, page(1080, 1080, `<div style="height:100%;display:grid;place-items:center;background:var(--paper)">${mark.replace('<svg', '<svg style="width:720px;height:720px"')}</div>`)],
   ['facebook-cover', 1640, 624, page(1640, 624, `
     <div style="height:100%;display:grid;grid-template-columns:1fr 520px;background:var(--paper)">
