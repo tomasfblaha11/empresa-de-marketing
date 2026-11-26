@@ -60,3 +60,4 @@ a, button, summary { touch-action: manipulation; -webkit-tap-highlight-color: tr
 .btn--primary:hover { background: var(--ceibo-dark); }
 .btn--quiet { border-color: var(--line); background: #fff; color: var(--ink); }
 .btn--quiet:hover { border-color: var(--ink); }
+section[id] { scroll-margin-top: 5rem; }

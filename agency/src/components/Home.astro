@@ -1,9 +1,8 @@
 ---
-import { Image } from 'astro:assets';
 import Base from '../layouts/Base.astro';
 import Logo from './Logo.astro';
 import CeiboTree from './CeiboTree.astro';
-import demo from '../assets/demo-paving.jpg';
+import Wheel from './Wheel.astro';
 import { t, settings, type Lang } from '../i18n/content';
 
 interface Props { lang: Lang }
@@ -11,9 +10,9 @@ const { lang } = Astro.props;
 const c = t[lang];
 const path = lang === 'en' ? '/' : '/es/';
 const altPath = lang === 'en' ? '/es/' : '/';
-const home = lang === 'en' ? '/' : '/es/';
 const mail = `mailto:${settings.email}`;
 const wa = settings.whatsapp ? `https://wa.me/${settings.whatsapp}?text=${encodeURIComponent(c.contact.waText)}` : '';
+const titleWords = c.hero.title.split(' ');
 
 const jsonLd = {
   '@context': 'https://schema.org',
@@ -22,7 +21,7 @@ const jsonLd = {
   url: settings.url,
   email: settings.email,
   founder: { '@type': 'Person', name: 'Tomas Blaha' },
-  areaServed: ['NZ', 'US', 'Central America', 'Caribbean'],
+  areaServed: ['NZ', 'US', 'AR', 'Latin America'],
   description: c.meta.description,
 };
 ---
@@ -31,14 +30,19 @@ const jsonLd = {
 
   <header class="header">
     <div class="wrap bar">
-      <a href={home} class="home" aria-label="Ceibo Works"><Logo /></a>
+      <a href={path} class="home" aria-label="Ceibo Works"><Logo /></a>
       <nav aria-label={lang === 'en' ? 'Main' : 'Principal'}>
         <ul role="list" class="nav">
           <li class="hide-sm"><a href="#how">{c.nav.how}</a></li>
           <li class="hide-sm"><a href="#pricing">{c.nav.pricing}</a></li>
           <li class="hide-sm"><a href="#about">{c.nav.about}</a></li>
-          <li><a href={c.nav.switchHref} hreflang={lang === 'en' ? 'es' : 'en'} lang={lang === 'en' ? 'es' : 'en'}>{c.nav.switchLabel}</a></li>
-          <li><a class="btn btn--primary btn--sm" href="#contact">{c.nav.contact}</a></li>
+          <li>
+            <div class="lang" role="group" aria-label={c.nav.language}>
+              <a href="/" hreflang="en" lang="en" aria-current={lang === 'en' ? 'true' : undefined}>EN</a>
+              <a href="/es/" hreflang="es" lang="es" aria-current={lang === 'es' ? 'true' : undefined}>ES</a>
+            </div>
+          </li>
+          <li class="hide-xs"><a class="btn btn--primary btn--sm" href="#contact">{c.nav.contact}</a></li>
         </ul>
       </nav>
     </div>
@@ -47,15 +51,28 @@ const jsonLd = {
   <main id="main">
     <section class="hero" aria-labelledby="hero-title">
       <div class="wrap hero-inner">
-        <h1 id="hero-title">{c.hero.title}</h1>
-        <p class="lead">{c.hero.lead}</p>
-        <div class="actions">
+        <h1 id="hero-title" class="reveal-words">
+          {titleWords.map((w, i) => <><span style={`--i:${i}`}>{w}</span>{' '}</>)}
+        </h1>
+        <p class="special" style={`--i:${titleWords.length + 2}`}>{c.hero.special}</p>
+        <p class="lead fade" style={`--i:${titleWords.length + 5}`}>{c.hero.lead}</p>
+        <div class="actions fade" style={`--i:${titleWords.length + 6}`}>
           <a class="btn btn--primary" href="#contact">{c.hero.cta}</a>
           <a class="btn btn--quiet" href="#work">{c.hero.secondary}</a>
         </div>
-        <p class="note">{c.hero.note}</p>
+        <p class="note fade" style={`--i:${titleWords.length + 7}`}>{c.hero.note}</p>
       </div>
       <div class="hero-art"><CeiboTree /></div>
+    </section>
+
+    <Wheel lang={lang} />
+
+    <section class="draft" aria-labelledby="draft-title">
+      <div class="wrap draft-inner">
+        <h2 id="draft-title">{c.draft.title}</h2>
+        <p>{c.draft.text}</p>
+        <a class="btn btn--light" href="#contact">{c.draft.cta}</a>
+      </div>
     </section>
 
     <section class="section" id="how" aria-labelledby="how-title">
@@ -82,36 +99,32 @@ const jsonLd = {
       </div>
     </section>
 
-    <section class="section" id="pricing" aria-labelledby="pricing-title">
-      <div class="wrap">
+    <section class="section pricing" id="pricing" aria-labelledby="pricing-title">
+      <div class="wrap narrow">
         <h2 id="pricing-title">{c.pricing.title}</h2>
         <p class="sub">{c.pricing.lead}</p>
-        <ul role="list" class="prices">
-          {c.pricing.regions.map((r) => (
-            <li>
-              <span class="region">{r.name}</span>
-              <span class="amount">{r.price} <small>{c.pricing.per}</small></span>
-            </li>
+        <fieldset class="currency">
+          <legend>{c.pricing.legend}</legend>
+          {settings.currencies.map((cur) => (
+            <label>
+              <input type="radio" name="currency" value={cur.id} checked={cur.id === c.pricing.defaultCurrency} />
+              <span>{cur.label}</span>
+            </label>
           ))}
-        </ul>
+        </fieldset>
+        <div class="price-box" aria-live="polite">
+          {settings.currencies.map((cur) => (
+            <div class="price" data-cur={cur.id}>
+              <p class="amount">{cur.price} <small>{c.pricing.per}</small></p>
+              <p class="extra">{c.pricing.extra} <strong>{cur.extra}</strong> {c.pricing.per}</p>
+            </div>
+          ))}
+        </div>
         <p class="foot">{c.pricing.foot}</p>
       </div>
     </section>
 
-    <section class="section tinted" id="work" aria-labelledby="work-title">
-      <div class="wrap split">
-        <div>
-          <h2 id="work-title">{c.work.title}</h2>
-          <p class="sub">{c.work.text}</p>
-          <p><a class="btn btn--quiet" href={settings.demoUrl} rel="noopener">{c.work.link}</a></p>
-        </div>
-        <a class="shot" href={settings.demoUrl} rel="noopener" tabindex="-1" aria-hidden="true">
-          <Image src={demo} alt="" widths={[480, 800, 1200]} sizes="(min-width: 56rem) 34rem, 100vw" loading="lazy" />
-        </a>
-      </div>
-    </section>
-
-    <section class="section" id="about" aria-labelledby="about-title">
+    <section class="section tinted" id="about" aria-labelledby="about-title">
       <div class="wrap about">
         <div class="portrait" role="img" aria-label={c.about.photoAlt}><span>TB</span></div>
         <div>
@@ -121,7 +134,7 @@ const jsonLd = {
       </div>
     </section>
 
-    <section class="section tinted" aria-labelledby="faq-title">
+    <section class="section" aria-labelledby="faq-title">
       <div class="wrap narrow">
         <h2 id="faq-title">{c.faq.title}</h2>
         <div class="faq">
@@ -135,7 +148,7 @@ const jsonLd = {
       </div>
     </section>
 
-    <section class="section contact" id="contact" aria-labelledby="contact-title">
+    <section class="section contact tinted" id="contact" aria-labelledby="contact-title">
       <div class="wrap narrow">
         <Logo size={56} withName={false} />
         <h2 id="contact-title">{c.contact.title}</h2>
@@ -157,35 +170,64 @@ const jsonLd = {
 </Base>
 
 <style>
-  .header { position: sticky; top: 0; z-index: 5; background: color-mix(in srgb, var(--paper) 92%, transparent); backdrop-filter: blur(6px); border-bottom: 1px solid var(--line); }
+  .header { position: sticky; top: 0; z-index: 200; background: color-mix(in srgb, var(--paper) 92%, transparent); backdrop-filter: blur(6px); border-bottom: 1px solid var(--line); }
   .bar { display: flex; align-items: center; justify-content: space-between; gap: 1rem; min-height: 4.25rem; }
   .home { text-decoration: none; }
   .nav { display: flex; align-items: center; gap: 1.25rem; font-weight: 500; font-size: var(--step--1); }
-  .nav a:not(.btn) { text-decoration: none; }
-  .nav a:not(.btn):hover { text-decoration: underline; }
+  .nav > li > a:not(.btn) { text-decoration: none; }
+  .nav > li > a:not(.btn):hover { text-decoration: underline; }
   .btn--sm { min-height: 2.5rem; padding: 0.5rem 1rem; }
   .hide-sm { display: none; }
+  .hide-xs { display: none; }
+  @media (min-width: 30rem) { .hide-xs { display: list-item; } }
   @media (min-width: 56rem) { .hide-sm { display: list-item; } }
 
+  .lang { display: inline-flex; border: 1px solid var(--line); border-radius: 999px; padding: 3px; background: #fff; }
+  .lang a { min-width: 2.6rem; min-height: 2.1rem; display: grid; place-items: center; border-radius: 999px; text-decoration: none; font-weight: 600; color: var(--muted); }
+  .lang a:hover { color: var(--ink); }
+  .lang a[aria-current='true'] { background: var(--ink); color: #fff; }
+
+  /* Hero: one orchestrated entrance. Words rise in, then the special line is drawn in. */
   .hero { position: relative; overflow: hidden; padding-block: clamp(3rem, 2rem + 6vw, 7rem) 0; }
   .hero-art { width: min(88%, 26rem); margin: 1.5rem 0 0 auto; pointer-events: none; }
   .hero-inner { position: relative; }
   h1 { font-size: var(--step-4); font-weight: 640; font-stretch: 92%; max-width: 18ch; }
+  .reveal-words span { display: inline-block; animation: rise 700ms cubic-bezier(0.2, 0.7, 0.2, 1) both; animation-delay: calc(var(--i) * 70ms); }
+  .special {
+    position: relative; display: inline-block; margin-top: 1.5rem;
+    font-size: var(--step-2); font-weight: 600; color: var(--ceibo); line-height: 1.25; max-width: 26ch;
+    animation: rise 700ms cubic-bezier(0.2, 0.7, 0.2, 1) both; animation-delay: calc(var(--i) * 70ms);
+  }
+  .special::after {
+    content: ''; position: absolute; left: 0; right: 0; bottom: -0.35rem; height: 3px; border-radius: 3px;
+    background: var(--ceibo); transform-origin: left; transform: scaleX(0);
+    animation: draw 900ms cubic-bezier(0.6, 0, 0.2, 1) forwards; animation-delay: calc(var(--i) * 70ms + 500ms);
+  }
+  .fade { animation: rise 700ms ease both; animation-delay: calc(var(--i) * 70ms); }
   .lead { margin-top: 1.5rem; font-size: var(--step-1); color: var(--muted); max-width: 40ch; }
   .actions { display: flex; flex-wrap: wrap; gap: 0.75rem; margin-top: 2rem; }
   .note { margin-top: 1rem; font-size: var(--step--1); color: var(--muted); }
+  @keyframes rise { from { opacity: 0; transform: translateY(0.6em); } to { opacity: 1; transform: none; } }
+  @keyframes draw { to { transform: scaleX(1); } }
+  @media (prefers-reduced-motion: reduce) {
+    .reveal-words span, .special, .fade { animation: none; }
+    .special::after { animation: none; transform: scaleX(1); }
+  }
   @media (min-width: 56rem) {
     .hero { padding-bottom: clamp(4rem, 3rem + 5vw, 7rem); }
-    .hero-art { position: absolute; right: -2%; bottom: -3rem; width: 46%; max-width: none; margin: 0; }
+    .hero-art { position: absolute; right: -2%; bottom: -3rem; width: 46%; margin: 0; }
     .hero-inner > * { max-width: 34rem; }
   }
 
+  .draft { background: var(--ceibo); color: #fff; padding-block: clamp(3rem, 2rem + 4vw, 5rem); }
+  .draft-inner { display: grid; gap: 1rem; justify-items: start; }
+  .draft p { font-size: var(--step-1); opacity: 0.95; }
+  .btn--light { background: #fff; color: var(--ceibo-dark); margin-top: 0.5rem; }
+  .btn--light:hover { background: var(--paper-2); }
+
   .steps { display: grid; gap: 2rem; margin-top: 2.5rem; }
   .steps li { position: relative; padding-top: 3.25rem; }
-  .num {
-    position: absolute; top: 0; left: 0; width: 2.4rem; height: 2.4rem; border-radius: 50%;
-    display: grid; place-items: center; background: var(--ceibo); color: #fff; font-weight: 650;
-  }
+  .num { position: absolute; top: 0; left: 0; width: 2.4rem; height: 2.4rem; border-radius: 50%; display: grid; place-items: center; background: var(--ceibo); color: #fff; font-weight: 650; }
   .steps p { margin-top: 0.5rem; color: var(--muted); }
   @media (min-width: 48rem) { .steps { grid-template-columns: repeat(3, 1fr); gap: 2.5rem; } }
 
@@ -194,30 +236,35 @@ const jsonLd = {
   @media (min-width: 56rem) { .split { grid-template-columns: 1fr 1.2fr; gap: 4rem; } }
   .checks { display: grid; gap: 0.9rem; }
   .checks li { position: relative; padding-left: 2rem; }
-  .checks li::before {
-    content: ''; position: absolute; left: 0.15rem; top: 0.45em; width: 0.95rem; height: 0.55rem;
-    border-left: 2.5px solid var(--river); border-bottom: 2.5px solid var(--river); transform: rotate(-45deg);
-  }
+  .checks li::before { content: ''; position: absolute; left: 0.15rem; top: 0.45em; width: 0.95rem; height: 0.55rem; border-left: 2.5px solid var(--river); border-bottom: 2.5px solid var(--river); transform: rotate(-45deg); }
 
   .sub { margin-top: 1rem; color: var(--muted); font-size: var(--step-1); line-height: 1.45; }
-  .prices { margin-top: 2.5rem; border-top: 1px solid var(--line); }
-  .prices li { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 0.25rem 1rem; padding-block: 1.25rem; border-bottom: 1px solid var(--line); }
-  .region { font-size: var(--step-1); font-weight: 550; }
-  .amount { font-size: var(--step-2); font-weight: 650; color: var(--ceibo); font-variant-numeric: tabular-nums; }
-  .amount small { font-size: var(--step--1); font-weight: 500; color: var(--muted); }
+  .narrow { max-width: 46rem; }
+
+  /* Currency switch: pure CSS with :has(), no JavaScript needed. */
+  .currency { display: inline-flex; gap: 4px; margin: 2rem 0 0; padding: 4px; border: 1px solid var(--line); border-radius: 999px; background: #fff; }
+  .currency legend { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+  .currency label { position: relative; cursor: pointer; }
+  .currency input { position: absolute; opacity: 0; inset: 0; margin: 0; cursor: pointer; }
+  .currency span { display: grid; place-items: center; min-width: 4.5rem; min-height: 2.6rem; border-radius: 999px; font-weight: 650; color: var(--muted); }
+  .currency input:checked + span { background: var(--ceibo); color: #fff; }
+  .currency input:focus-visible + span { outline: 3px solid var(--focus); outline-offset: 2px; }
+  .price-box { margin-top: 1.75rem; padding: 1.75rem; border-radius: var(--radius); background: #fff; border: 1px solid var(--line); }
+  .price { display: none; }
+  .pricing:has(input[value='nzd']:checked) [data-cur='nzd'],
+  .pricing:has(input[value='usd']:checked) [data-cur='usd'],
+  .pricing:has(input[value='ars']:checked) [data-cur='ars'] { display: block; }
+  .amount { font-size: var(--step-4); font-weight: 650; color: var(--ink); font-variant-numeric: tabular-nums; line-height: 1; }
+  .amount small { font-size: var(--step-0); font-weight: 500; color: var(--muted); }
+  .extra { margin-top: 0.9rem; color: var(--muted); }
+  .extra strong { color: var(--ink); }
   .foot { margin-top: 1.25rem; font-size: var(--step--1); color: var(--muted); }
 
-  .shot { display: block; border-radius: var(--radius); overflow: hidden; border: 1px solid var(--line); box-shadow: 0 12px 30px -18px rgb(31 36 33 / 0.35); }
-
   .about { display: grid; gap: 2rem; align-items: start; }
-  .portrait {
-    width: 9rem; aspect-ratio: 1; border-radius: 50%; display: grid; place-items: center;
-    background: var(--river); color: #fff; font-size: 2.2rem; font-weight: 650;
-  }
+  .portrait { width: 9rem; aspect-ratio: 1; border-radius: 50%; display: grid; place-items: center; background: var(--river); color: #fff; font-size: 2.2rem; font-weight: 650; }
   .story { margin-top: 1.1rem; font-size: var(--step-1); line-height: 1.5; }
   @media (min-width: 48rem) { .about { grid-template-columns: auto 1fr; gap: 3rem; } .portrait { width: 12rem; } }
 
-  .narrow { max-width: 46rem; }
   .faq { margin-top: 2rem; border-top: 1px solid var(--line); }
   details { border-bottom: 1px solid var(--line); }
   summary { cursor: pointer; padding-block: 1.1rem; font-weight: 600; font-size: var(--step-1); list-style: none; display: flex; justify-content: space-between; gap: 1rem; }
@@ -226,9 +273,7 @@ const jsonLd = {
   details[open] summary::after { content: '−'; }
   details p { padding-bottom: 1.2rem; color: var(--muted); }
 
-  .contact { text-align: left; }
   .contact h2 { margin-top: 1.25rem; }
-
   .footer { border-top: 1px solid var(--line); padding-block: 2rem; font-size: var(--step--1); color: var(--muted); }
   .row { display: flex; flex-wrap: wrap; gap: 1rem 2rem; }
 </style>

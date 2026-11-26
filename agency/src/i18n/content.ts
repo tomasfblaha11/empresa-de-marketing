@@ -8,6 +8,12 @@ export const settings = {
   whatsapp: '', // international number, digits only, e.g. 5493430000000
   demoUrl: 'https://demo-tpn0fpa8.vercel.app',
   preview: true, // true = noindex (site not launched yet)
+  // Monthly prices per currency. ARS is provisional: confirm and review regularly for inflation.
+  currencies: [
+    { id: 'nzd', label: 'NZD', name: 'New Zealand dollar', price: 'NZ$79', extra: 'NZ$69' },
+    { id: 'usd', label: 'USD', name: 'US dollar', price: 'US$79', extra: 'US$69' },
+    { id: 'ars', label: 'ARS', name: 'Peso argentino', price: 'ARS 45.000', extra: 'ARS 40.000' },
+  ],
 };
 
 export type Lang = 'en' | 'es';
@@ -19,13 +25,28 @@ export const t = {
       title: 'Ceibo Works | Websites for small businesses',
       description: 'A small studio that builds your website for free and looks after it every month. You always deal with the same person.',
     },
-    nav: { how: 'How it works', pricing: 'Pricing', about: 'About', contact: 'Contact', switchLabel: 'Español', switchHref: '/es/' },
+    nav: { how: 'How it works', pricing: 'Pricing', about: 'About', contact: 'Contact', language: 'Language' },
     hero: {
       title: 'Websites for small businesses, made by someone you can actually talk to.',
       lead: 'Ceibo Works is a small studio. I build your website for free, look after it every month, and you always deal with the same person.',
       cta: 'Get a free draft',
       secondary: 'See an example',
       note: 'No upfront cost. I reply within 24 hours.',
+      special: 'Every website is made by hand for one business: yours.',
+    },
+    examples: {
+      title: 'Websites we could build for you',
+      lead: 'A few sample designs. Yours is built around your own photos, your words and your customers.',
+      label: 'Sample design',
+      phone: 'on a phone',
+      items: { paving: 'Paving and gardens', housecare: 'Home care', rental: 'Holiday cottage' },
+      alt: { desktop: 'Home page of a sample website for', mobile: 'Mobile view of a sample website for' },
+      open: 'Open the live example',
+    },
+    draft: {
+      title: 'Want one like these for your business?',
+      text: 'Tell me what you do. In a few days you get a free draft to look at, with no obligation.',
+      cta: 'Get a free draft',
     },
     steps: {
       title: 'How it works',
@@ -48,20 +69,12 @@ export const t = {
     },
     pricing: {
       title: 'Pricing',
-      lead: 'Building the site is free. The monthly fee depends on where your business is.',
+      lead: 'Building the site is free. Choose the currency you would like to pay in.',
+      legend: 'Currency',
       per: 'per month',
-      regions: [
-        { name: 'New Zealand', price: 'NZ$79' },
-        { name: 'United States', price: 'US$79' },
-        { name: 'Central America and the Caribbean', price: 'US$39' },
-      ],
-      foot: '12-month minimum, billed monthly. Each extra website for the same owner costs 10 less per month. Your domain is around US$15 a year, paid by you and registered in your name.',
-    },
-    work: {
-      title: 'An example',
-      text: 'A sample site for a paving and garden business. Every site is built around the client’s own photos and words.',
-      alt: 'Home page of a sample website for a paving and garden business, with a large photo of a stone driveway',
-      link: 'Open the example',
+      extra: 'Each extra website for the same owner:',
+      foot: '12-month minimum, billed monthly. Your domain is around US$15 a year, paid by you and registered in your name.',
+      defaultCurrency: 'nzd',
     },
     about: {
       title: 'Who’s behind it',
@@ -96,13 +109,28 @@ export const t = {
       title: 'Ceibo Works | Páginas web para negocios pequeños',
       description: 'Un estudio pequeño que te arma la web gratis y la mantiene cada mes. Siempre tratas con la misma persona.',
     },
-    nav: { how: 'Cómo funciona', pricing: 'Precios', about: 'Quién soy', contact: 'Contacto', switchLabel: 'English', switchHref: '/' },
+    nav: { how: 'Cómo funciona', pricing: 'Precios', about: 'Quién soy', contact: 'Contacto', language: 'Idioma' },
     hero: {
       title: 'Páginas web para negocios pequeños, hechas por alguien con quien puedes hablar.',
       lead: 'Ceibo Works es un estudio pequeño. Te armo la web gratis, la mantengo cada mes y siempre tratas con la misma persona.',
       cta: 'Pide un borrador gratis',
       secondary: 'Ver un ejemplo',
       note: 'Sin costo inicial. Respondo en menos de 24 horas.',
+      special: 'Cada web se hace a mano para un solo negocio: el tuyo.',
+    },
+    examples: {
+      title: 'Webs que podríamos armar para ti',
+      lead: 'Algunos diseños de muestra. La tuya se arma con tus fotos, tus palabras y tus clientes.',
+      label: 'Diseño de muestra',
+      phone: 'en el teléfono',
+      items: { paving: 'Pavimentos y jardines', housecare: 'Cuidado de casas', rental: 'Cabaña de vacaciones' },
+      alt: { desktop: 'Página de inicio de una web de muestra para', mobile: 'Vista en teléfono de una web de muestra para' },
+      open: 'Abrir el ejemplo en vivo',
+    },
+    draft: {
+      title: '¿Quieres una así para tu negocio?',
+      text: 'Cuéntame qué haces. En pocos días tienes un borrador gratis para ver, sin compromiso.',
+      cta: 'Pide un borrador gratis',
     },
     steps: {
       title: 'Cómo funciona',
@@ -125,20 +153,12 @@ export const t = {
     },
     pricing: {
       title: 'Precios',
-      lead: 'Armar la web es gratis. La cuota mensual depende de dónde está tu negocio.',
+      lead: 'Armar la web es gratis. Elige la moneda en la que prefieres pagar.',
+      legend: 'Moneda',
       per: 'por mes',
-      regions: [
-        { name: 'Nueva Zelanda', price: 'NZ$79' },
-        { name: 'Estados Unidos', price: 'US$79' },
-        { name: 'Centroamérica y el Caribe', price: 'US$39' },
-      ],
-      foot: 'Mínimo 12 meses, con pago mensual. Cada web adicional del mismo dueño cuesta 10 menos por mes. El dominio cuesta unos US$15 al año, lo pagas tú y queda a tu nombre.',
-    },
-    work: {
-      title: 'Un ejemplo',
-      text: 'Una web de muestra para una empresa de pavimentos y jardines. Cada web se arma con las fotos y las palabras del propio cliente.',
-      alt: 'Página de inicio de una web de muestra para una empresa de pavimentos y jardines, con una foto grande de una entrada de piedra',
-      link: 'Abrir el ejemplo',
+      extra: 'Cada web adicional del mismo dueño:',
+      foot: 'Mínimo 12 meses, con pago mensual. El dominio cuesta unos US$15 al año, lo pagas tú y queda a tu nombre.',
+      defaultCurrency: 'usd',
     },
     about: {
       title: 'Quién está detrás',

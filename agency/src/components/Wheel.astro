@@ -1,0 +1,128 @@
+---
+// "Wheel" of sample websites. While the visitor scrolls through this section, the cards turn
+// past the centre like a wheel (tilt, lift and scale by distance from the middle).
+// Without JavaScript, or with reduced motion, it is a plain horizontal list you can swipe.
+import { Image } from 'astro:assets';
+import { t, settings, type Lang } from '../i18n/content';
+import pavingD from '../assets/examples/paving-desktop.jpg';
+import pavingM from '../assets/examples/paving-mobile.jpg';
+import careD from '../assets/examples/housecare-desktop.jpg';
+import careM from '../assets/examples/housecare-mobile.jpg';
+import rentalD from '../assets/examples/rental-desktop.jpg';
+import rentalM from '../assets/examples/rental-mobile.jpg';
+
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const c = t[lang].examples;
+const cards = [
+  { key: 'paving', img: pavingD, phone: false },
+  { key: 'paving', img: pavingM, phone: true },
+  { key: 'housecare', img: careD, phone: false },
+  { key: 'housecare', img: careM, phone: true },
+  { key: 'rental', img: rentalD, phone: false },
+  { key: 'rental', img: rentalM, phone: true },
+] as const;
+---
+<section class="wheel" id="work" aria-labelledby="work-title" data-wheel>
+  <div class="sticky">
+    <div class="wrap head">
+      <h2 id="work-title">{c.title}</h2>
+      <p>{c.lead}</p>
+    </div>
+    <ul role="list" class="track">
+      {cards.map((card) => {
+        const name = c.items[card.key];
+        return (
+          <li class:list={['card', { phone: card.phone }]}>
+            <figure>
+              <div class="frame">
+                <Image
+                  src={card.img}
+                  alt={`${card.phone ? c.alt.mobile : c.alt.desktop} ${name.toLowerCase()}`}
+                  widths={card.phone ? [240, 360, 480] : [480, 720, 960]}
+                  sizes={card.phone ? '(min-width: 56rem) 15rem, 40vw' : '(min-width: 56rem) 40rem, 80vw'}
+                  loading="lazy"
+                />
+              </div>
+              <figcaption>
+                <span class="tag">{c.label}</span> {name}{card.phone && <span class="muted"> {c.phone}</span>}
+              </figcaption>
+            </figure>
+          </li>
+        );
+      })}
+    </ul>
+    <p class="wrap more"><a href={settings.demoUrl} rel="noopener">{c.open}</a></p>
+  </div>
+</section>
+
+<script>
+  const section = document.querySelector<HTMLElement>('[data-wheel]');
+  const still = window.matchMedia('(prefers-reduced-motion: reduce)');
+  if (section && !still.matches) {
+    section.classList.add('is-wheel');
+    const cards = [...section.querySelectorAll<HTMLElement>('.card')];
+    const n = cards.length;
+    let ticking = false;
+    const render = () => {
+      ticking = false;
+      const r = section.getBoundingClientRect();
+      const span = r.height - window.innerHeight;
+      const p = Math.min(1, Math.max(0, -r.top / Math.max(span, 1)));
+      const centre = p * (n - 1);
+      const slot = Math.min(window.innerWidth * 0.58, 540);
+      cards.forEach((card, i) => {
+        const o = i - centre;
+        const a = Math.abs(o);
+        card.style.transform =
+          `translate(-50%, -50%) translateX(${o * slot}px) translateY(${a * a * 22}px) rotate(${o * 7}deg) scale(${Math.max(0.7, 1 - a * 0.14)})`;
+        // Fade only the picture; the caption is shown at full contrast while the card is near the centre.
+        const frame = card.querySelector<HTMLElement>('.frame');
+        if (frame) frame.style.opacity = String(Math.max(0, 1 - a * 0.38));
+        card.style.visibility = a > 2.6 ? 'hidden' : 'visible';
+        card.classList.toggle('is-side', a > 0.6);
+        card.style.zIndex = String(100 - Math.round(a * 10));
+      });
+    };
+    const onScroll = () => { if (!ticking) { ticking = true; requestAnimationFrame(render); } };
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll);
+    render();
+  }
+</script>
+
+<style>
+  .wheel { background: var(--paper-2); padding-block: var(--section); }
+  .head p { margin-top: 0.75rem; color: var(--muted); font-size: var(--step-1); }
+  .track {
+    display: flex; gap: 1.25rem; overflow-x: auto; scroll-snap-type: x mandatory;
+    padding: 2rem var(--gutter); margin: 0;
+  }
+  .card { flex: 0 0 min(82vw, 38rem); scroll-snap-align: center; }
+  .card.phone { flex-basis: min(46vw, 15rem); }
+  .frame {
+    border-radius: 12px; overflow: hidden; background: #fff;
+    border: 1px solid var(--line); box-shadow: 0 18px 40px -24px rgb(31 36 33 / 0.45);
+  }
+  .phone .frame { border-radius: 26px; border: 6px solid var(--ink); }
+  .frame :global(img) { width: 100%; height: auto; }
+  figcaption { margin-top: 0.75rem; font-size: var(--step--1); font-weight: 600; }
+  .tag { color: var(--ceibo); }
+  .muted { color: var(--muted); font-weight: 500; }
+  .more { margin-top: 0.5rem; font-size: var(--step--1); }
+
+  /* Scroll-driven wheel (added by the script). */
+  .wheel.is-wheel { height: 320vh; padding: 0; }
+  .is-wheel .sticky {
+    position: sticky; top: 0; height: 100vh; overflow: hidden;
+    display: flex; flex-direction: column; justify-content: center; gap: 1rem;
+    padding-top: 6rem;
+  }
+  .is-wheel .track { position: relative; flex: 1; overflow: visible; display: block; padding: 0; max-height: 70vh; }
+  .is-wheel .card {
+    position: absolute; left: 50%; top: 50%; width: min(78vw, 38rem);
+    transform-origin: 50% 120%; will-change: transform, opacity;
+  }
+  .is-wheel .card.phone { width: min(40vw, 13rem); }
+  .is-wheel .card.is-side figcaption { visibility: hidden; }
+</style>

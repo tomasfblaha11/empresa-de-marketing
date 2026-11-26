@@ -11,3 +11,4 @@ Se reemplazan por las fotos del cliente. Verificadas en Wikimedia Commons el 202
 | oamaru.jpg | David Nind | https://commons.wikimedia.org/wiki/File:Oamaru_Public_Gardens_-_Path_and_lawn_area.jpg |
 | paving.jpg | MabelAmber (Pixabay) | https://commons.wikimedia.org/wiki/File:Square_paving_stones.jpg |
 | bowood.jpg | Daderot | https://commons.wikimedia.org/wiki/File:Bowood_lawn_and_pinetum_-_Wiltshire,_England_-_DSC00354.jpg |
+| lake.jpg | AndyScott | https://commons.wikimedia.org/w/index.php?curid=154147131 |
