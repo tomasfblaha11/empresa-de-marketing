@@ -34,6 +34,8 @@ export const t = {
       secondary: 'See an example',
       note: 'No upfront cost. I reply within 24 hours.',
       special: 'Every website is made by hand for one business: yours.',
+      photoAlt: 'Bright red ceibo flowers hanging from a branch among green leaves',
+      photoCaption: 'Ceibo, the national flower of Argentina. It grows along the rivers of Entre Ríos, where I’m from.',
     },
     examples: {
       title: 'Websites we could build for you',
@@ -103,7 +105,7 @@ export const t = {
       whatsapp: 'Message on WhatsApp',
       waText: 'Hi Tomas, I’d like a free website draft.',
     },
-    footer: { privacy: 'Privacy', privacyHref: '/privacy/' },
+    footer: { privacy: 'Privacy', privacyHref: '/privacy/', photo: 'Ceibo photo' },
   },
   es: {
     htmlLang: 'es',
@@ -119,6 +121,8 @@ export const t = {
       secondary: 'Ver un ejemplo',
       note: 'Sin costo inicial. Respondo en menos de 24 horas.',
       special: 'Cada web se hace a mano para un solo negocio: el tuyo.',
+      photoAlt: 'Flores de ceibo de un rojo intenso colgando de una rama entre hojas verdes',
+      photoCaption: 'El ceibo, flor nacional de Argentina. Crece a orillas de los ríos de Entre Ríos, de donde soy.',
     },
     examples: {
       title: 'Webs que podríamos armar para ti',
@@ -188,6 +192,6 @@ export const t = {
       whatsapp: 'Escribir por WhatsApp',
       waText: 'Hola Tomas, me interesa un borrador gratis de mi web.',
     },
-    footer: { privacy: 'Privacidad', privacyHref: '/es/privacidad/' },
+    footer: { privacy: 'Privacidad', privacyHref: '/es/privacidad/', photo: 'Foto del ceibo' },
   },
 } as const;
