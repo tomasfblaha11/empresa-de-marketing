@@ -13,7 +13,7 @@ if (!dir) throw new Error('Usage: report.mjs <folder>');
 const checked = Object.values(JSON.parse(readFileSync(join(dir, 'checked.json'), 'utf8')));
 
 // Large companies, chains, suppliers and agencies: not our clients.
-const EXCLUDE = /cement|aggregate|quarr|consultant|council|mitre ?10|bunnings|placemakers|fulton hogan|downer|harcourts|ray white|bayleys|realty|real estate|realtor|quinovic|bachcare|sotheby|university|school|wsp|opus international|winstone|firth|landscape suppl|garden (centre|center)|nursery|home depot|lowe'?s|trugreen|brightview|davey|vacasa|evolve|airbnb|homewatch caregivers|caregiver|senior care|insurance|bank|hotel|resort|motel group|top 10|holiday park|camping|campground|rv park|storage|plumb|electric|roofing|pest|pool supply|mortgage|law firm|attorney/i;
+const EXCLUDE = /cement|aggregate|quarr|consultant|council|mitre ?10|bunnings|placemakers|fulton hogan|downer|harcourts|ray white|bayleys|realty|real estate|realtor|quinovic|bachcare|sotheby|university|school|wsp|opus international|winstone|firth|landscape suppl|garden (centre|center)|nursery|home depot|lowe'?s|trugreen|brightview|davey|vacasa|evolve|airbnb|homewatch caregivers|caregiver|senior care|insurance|bank|hotel|resort|motel group|top 10|holiday park|camping|campground|rv park|storage|plumb|electric|roofing|pest|pool supply|mortgage|law firm|attorney|escriban|contador|abogad|estudio jur|\bcra\.|\bdra?\.|rematador|tasador/i;
 const FREE_MAIL = /@(gmail|googlemail|xtra|hotmail|outlook|live|yahoo|ymail|icloud|me|msn|aol|slingshot|orcon|vodafone|clear|paradise|actrix|inspire|kinect|farmside|bigpond|comcast|att|sbcglobal|verizon|bellsouth|cox|charter|earthlink)\./i;
 
 // Directories mix in unrelated businesses: the niche comes from the business's own categories,
