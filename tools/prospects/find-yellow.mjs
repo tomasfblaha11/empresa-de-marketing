@@ -14,7 +14,7 @@ import { parseArgs } from 'node:util';
 
 const { values: args, positionals } = parseArgs({
   allowPositionals: true,
-  options: { cats: { type: 'string' }, locs: { type: 'string' }, delay: { type: 'string', default: '800' } },
+  options: { cats: { type: 'string' }, locs: { type: 'string' }, delay: { type: 'string', default: '800' }, country: { type: 'string', default: 'NZ' } },
 });
 const dir = positionals[0];
 if (!dir || !args.cats || !args.locs) throw new Error('Usage: find-yellow.mjs <out-folder> --cats a,b --locs x,y');
@@ -24,7 +24,8 @@ const db = existsSync(out) ? JSON.parse(readFileSync(out, 'utf8')) : { listings:
 const save = () => writeFileSync(out, JSON.stringify(db, null, 2));
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 const UA = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124 Safari/537.36';
-const BASE = 'https://www.yellow.co.nz';
+// Yellow NZ and Yellow Pages Australia run on the same platform.
+const BASE = args.country === 'AU' ? 'https://www.yellowpages.com.au' : 'https://www.yellow.co.nz';
 
 async function get(url) {
   for (let i = 0; i < 3; i++) {
@@ -60,7 +61,7 @@ function parseListings(html, cat, loc) {
     const website = b.match(/class="weblink-button[^"]*" href="([^"]+)"/)?.[1] ?? '';
     const phone = text(b.match(/class="call-number">([\s\S]*?)<\/span>/)?.[1] ?? '');
     const category = text(b.match(/<div class="categories">([\s\S]*?)<\/div>/)?.[1] ?? '');
-    return { name: name.replace(/Claimed$/, '').trim(), profile: BASE + href.split('?')[0], address: adr ? text(adr) : '', phone, website, category, foundIn: `${loc}/${cat}` };
+    return { name: name.replace(/Claimed$/, '').trim(), profile: BASE + href.split('?')[0], address: adr ? text(adr) : '', phone, website, category, foundIn: `${loc}/${cat}`, country: args.country };
   }).filter(Boolean);
 }
 

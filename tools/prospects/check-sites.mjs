@@ -37,7 +37,7 @@ const read = (f) => (existsSync(join(dir, f)) ? JSON.parse(readFileSync(join(dir
 const outFile = join(dir, 'checked.json');
 const cache = read('checked.json') ?? {};
 
-const fromYellow = Object.values(read('yellow.json')?.listings ?? {}).map((l) => ({ ...l, country: 'NZ', source: 'Yellow.co.nz' }));
+const fromYellow = Object.values(read('yellow.json')?.listings ?? {}).map((l) => ({ ...l, country: l.country ?? 'NZ', source: l.country === 'AU' ? 'Yellow Pages Australia' : 'Yellow.co.nz' }));
 const fromYpUs = Object.values(read('yp-us.json')?.listings ?? {}).map((l) => ({ ...l, country: 'US', source: 'YellowPages.com' }));
 const fromSernatur = Object.values(read('sernatur-cl.json')?.listings ?? {}).map((l) => ({ ...l, country: 'CL', source: 'SERNATUR' }));
 const manual = read('manual.json') ?? [];

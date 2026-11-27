@@ -69,7 +69,7 @@ const cols = ['pais', 'tipo', 'nicho', 'negocio', 'ciudad', 'deficiencia', 'emai
 writeFileSync(join(dir, 'prospectos.csv'), toCsv(rows, cols));
 
 const count = (f) => rows.filter(f).length;
-const NAMES = { NZ: 'Nueva Zelanda', US: 'Estados Unidos', UK: 'Reino Unido', IE: 'Irlanda', CL: 'Chile', UY: 'Uruguay' };
+const NAMES = { AU: 'Australia', NZ: 'Nueva Zelanda', US: 'Estados Unidos', UK: 'Reino Unido', IE: 'Irlanda', CL: 'Chile', UY: 'Uruguay' };
 const countries = Object.keys(NAMES).filter((k) => rows.some((r) => r.pais === k));
 let md = `# Prospectos ${countries.map((k) => NAMES[k]).join(', ')}\n\n`;
 md += `Generado el ${new Date().toISOString().slice(0, 10)}. ${rows.length} negocios con un problema concreto y un email publicado por ellos mismos `;
