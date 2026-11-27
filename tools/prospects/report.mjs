@@ -69,7 +69,7 @@ const cols = ['pais', 'tipo', 'nicho', 'negocio', 'ciudad', 'deficiencia', 'emai
 writeFileSync(join(dir, 'prospectos.csv'), toCsv(rows, cols));
 
 const count = (f) => rows.filter(f).length;
-const NAMES = { NZ: 'Nueva Zelanda', US: 'Estados Unidos', CL: 'Chile', UY: 'Uruguay' };
+const NAMES = { NZ: 'Nueva Zelanda', US: 'Estados Unidos', UK: 'Reino Unido', IE: 'Irlanda', CL: 'Chile', UY: 'Uruguay' };
 const countries = Object.keys(NAMES).filter((k) => rows.some((r) => r.pais === k));
 let md = `# Prospectos ${countries.map((k) => NAMES[k]).join(', ')}\n\n`;
 md += `Generado el ${new Date().toISOString().slice(0, 10)}. ${rows.length} negocios con un problema concreto y un email publicado por ellos mismos `;
@@ -78,6 +78,7 @@ md += `| | ${countries.map((k) => NAMES[k]).join(' | ')} |\n|---|${countries.map
 for (const t of Object.values(LABEL)) md += `| ${t} | ${countries.map((k) => count((r) => r.pais === k && r.tipo === t)).join(' | ')} |\n`;
 md += `\n**Antes de escribir:** mirá la web vos mismo (a veces vuelven a funcionar), escribí uno por uno y siempre con la línea para darse de baja. `;
 if (countries.includes('US')) md += `A Estados Unidos, la ley (CAN-SPAM) exige además poner una dirección postal al pie del mail.`;
+if (countries.some((k) => ['UK', 'IE'].includes(k))) md += ` En Reino Unido e Irlanda escribir solo a estas sociedades (Ltd/Limited): a trabajadores independientes no se puede sin permiso previo.`;
 if (countries.includes('CL')) md += ` En Chile (Ley 19.496, art. 28 B) el mail debe decir de qué se trata, quién lo envía y dar una forma de darse de baja.`;
 md += `\n`;
 for (const pais of countries) {
