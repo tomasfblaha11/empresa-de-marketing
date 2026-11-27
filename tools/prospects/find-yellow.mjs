@@ -58,7 +58,8 @@ function parseListings(html, cat, loc) {
     const name = text(b.match(/class="business-name"[^>]*>([\s\S]*?)<\/a>/)?.[1] ?? '');
     // (the listing may append a "Claimed" badge to the name)
     const adr = b.match(/<p class="adr">([\s\S]*?)<\/p>/)?.[1];
-    const website = b.match(/class="weblink-button[^"]*" href="([^"]+)"/)?.[1] ?? '';
+    // NZ marks the website link as "weblink-button", Australia as "yp-website-cta".
+    const website = b.match(/class="(?:weblink-button|[^"]*yp-website-cta)[^"]*" href="([^"]+)"/)?.[1] ?? '';
     const phone = text(b.match(/class="call-number">([\s\S]*?)<\/span>/)?.[1] ?? '');
     const category = text(b.match(/<div class="categories">([\s\S]*?)<\/div>/)?.[1] ?? '');
     return { name: name.replace(/Claimed$/, '').trim(), profile: BASE + href.split('?')[0], address: adr ? text(adr) : '', phone, website, category, foundIn: `${loc}/${cat}`, country: args.country };
