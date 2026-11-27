@@ -5,6 +5,7 @@ Se regeneran con `node social/make-posts.mjs`. Una cuenta bilingüe: texto en in
 debajo (ver la conversación del 26/11). La 12 es solo en español, para Entre Ríos.
 
 **Perfil:** `profile.png` como foto de perfil (Instagram y Facebook) y `facebook-cover.png` como portada.
+**Usuario:** @ceibo_works.
 **Bio de Instagram:** `Websites for small businesses · NZ · US · Argentina 🇦🇷 Páginas web para negocios pequeños` + enlace a ceiboworks.com.
 
 **Ritmo sugerido:** 3 por semana (lunes, miércoles y viernes), en el orden de la lista. Hora: 9 a 11 h
@@ -121,12 +122,13 @@ Put the renewal date in your calendar, or ask whoever built your site.
 
 Simple pricing:
 • Building your website: free.
-• If you keep it: US$79 a month (NZ$79 in New Zealand), 12-month minimum.
+• If you keep it: one monthly fee in your currency (from £49 in the UK, €55 in Ireland, NZ$79 in New Zealand, US$79 in the US, US$49 in Chile and Uruguay).
+• No long contract: a 3-month minimum, then month to month. Pay a year upfront and get 2 months free.
 • Includes hosting, security, backups and up to 2 changes a month.
 • Your domain stays in your name.
 
 —
-🇦🇷 Precios simples: armar la web es gratis; si te la quedás, una cuota mensual (en pesos o dólares) con alojamiento, seguridad y cambios incluidos. Detalle en ceiboworks.com/es
+🇦🇷 Precios simples: armar la web es gratis; si te la quedás, una cuota mensual en tu moneda, sin contrato largo (mínimo 3 meses). Detalle en ceiboworks.com/es
 
 #pricing #webdesign #smallbusiness #websitedesign
 

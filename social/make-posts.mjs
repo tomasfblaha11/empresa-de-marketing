@@ -40,7 +40,7 @@ const css = `
 `;
 const page = (w, h, body, extra = '') => `<!doctype html><style>${css} :root{--w:${w}px;--h:${h}px} ${extra}</style>${body}`;
 const brand = `<div class="brand">${mark}Ceibo Works</div>`;
-const foot = (right = 'ceiboworks.com') => `<div class="foot"><span>${right}</span><span>@ceiboworks</span></div>`;
+const foot = (right = 'ceiboworks.com') => `<div class="foot"><span>${right}</span><span>@ceibo_works</span></div>`;
 
 const sample = (key, label, title) => page(1080, 1350, `
   <div class="pad" style="background:var(--paper2)">
@@ -86,7 +86,7 @@ const posts = [
         <p class="lead" style="margin-top:30px;color:#e3e6e3;max-width:22ch">linked to a website that didn't load or no longer existed.</p>
       </div>
       <div style="height:70px"></div>
-      <div class="foot" style="color:#c9ced2"><span>Is yours one of them?</span><span>@ceiboworks</span></div>
+      <div class="foot" style="color:#c9ced2"><span>Is yours one of them?</span><span>@ceibo_works</span></div>
     </div>`)],
   ['04-how', page(1080, 1350, `
     <div class="pad">
@@ -122,8 +122,8 @@ const posts = [
         <p style="font-size:34px;font-weight:650;color:var(--dark)">Building your website</p>
         <p style="font-size:110px;font-weight:650;line-height:1">Free</p>
         <p style="font-size:34px;font-weight:650;color:var(--dark);margin-top:50px">Then, if you keep it</p>
-        <p style="font-size:84px;font-weight:650;line-height:1.05">US$79 <span style="font-size:34px;color:var(--muted);font-weight:500">/ month</span></p>
-        <p style="font-size:30px;color:var(--muted);margin-top:14px">NZ$79 in New Zealand. Hosting, security, backups and up to 2 changes a month.</p>
+        <p style="font-size:84px;font-weight:650;line-height:1.05">One monthly fee</p>
+        <p style="font-size:30px;color:var(--muted);margin-top:14px">In your currency: £, €, NZ$ or US$. Hosting, security, backups and up to 2 changes a month. No long contract.</p>
       </div>
       ${foot()}
     </div>`)],
@@ -136,7 +136,7 @@ const posts = [
         <p class="lead" style="margin-top:40px;color:#fde8eb;max-width:22ch">Te la armo gratis. Si te gusta, pagás una cuota mensual y yo la mantengo.</p>
       </div>
       <div style="height:70px"></div>
-      <div class="foot" style="color:#fde8eb"><span>ceiboworks.com/es</span><span>@ceiboworks</span></div>
+      <div class="foot" style="color:#fde8eb"><span>ceiboworks.com/es</span><span>@ceibo_works</span></div>
     </div>`)],
 ];
 
