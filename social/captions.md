@@ -152,3 +152,13 @@ Te la armo gratis: una web rápida, con tus fotos, tus servicios y tu WhatsApp s
 Cabañas, paisajismo, servicios para el hogar y cualquier negocio chico de la provincia. Escribime por mensaje o entrá a ceiboworks.com/es
 
 #entrerios #parana #paginasweb #emprendedoresargentinos #concordia #gualeguaychu #colon
+
+## 13 · `13-australia.png` (reemplaza a la 12 en el calendario de diciembre)
+
+Now building websites for small businesses in Australia 🇦🇺
+
+Landscapers, B&Bs, guest houses and holiday homes: I build your website for free, and if you like it, you keep it for A$79 a month. No long contract, and you always deal with the same person.
+
+Want to see what yours could look like? Send me a message or visit ceiboworks.com/au
+
+#smallbusinessaustralia #australiansmallbusiness #webdesignaustralia #landscapingaustralia #bnbaustralia #holidayhomes

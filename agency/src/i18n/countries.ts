@@ -5,7 +5,7 @@ import type { Lang } from './content';
 export type NicheKey = 'gardens' | 'stay' | 'homecare';
 
 export interface Country {
-  id: 'nz' | 'us' | 'uk' | 'ie' | 'ar' | 'cl' | 'uy';
+  id: 'au' | 'nz' | 'us' | 'uk' | 'ie' | 'ar' | 'cl' | 'uy';
   lang: Lang;
   hreflang: string; // en-NZ, es-CL...
   path: string;
@@ -41,6 +41,16 @@ export const countries: Country[] = [
     pay: 'Monthly, by SEPA bank transfer or by debit or credit card through a secure payment link. Prices in euro.',
     niches: ['gardens', 'stay', 'homecare'],
     timezones: /^Europe\/Dublin/,
+  },
+  {
+    id: 'au', lang: 'en', hreflang: 'en-AU', path: '/au/', flag: '🇦🇺',
+    name: { en: 'Australia', es: 'Australia' },
+    currencyCode: 'AUD', price: 'A$79', extra: 'A$69',
+    title: 'Ceibo Works | Websites for small businesses in Australia',
+    description: 'Websites for landscapers, B&Bs, guest houses and holiday homes in Australia. Built for free, looked after for A$79 a month. No long contract.',
+    pay: 'Monthly, by Australian bank transfer or by debit or credit card through a secure payment link. Prices in Australian dollars.',
+    niches: ['stay', 'gardens', 'homecare'],
+    timezones: /^Australia\//,
   },
   {
     id: 'nz', lang: 'en', hreflang: 'en-NZ', path: '/nz/', flag: '🇳🇿',

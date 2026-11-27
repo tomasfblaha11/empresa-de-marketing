@@ -138,6 +138,17 @@ const posts = [
       <div style="height:70px"></div>
       <div class="foot" style="color:#fde8eb"><span>ceiboworks.com/es</span><span>@ceibo_works</span></div>
     </div>`)],
+  ['13-australia', page(1080, 1350, `
+    <div class="pad" style="background:var(--river);color:#fff">
+      ${brand.replace('class="brand"', 'class="brand" style="color:#fff"')}
+      <div style="margin-top:auto">
+        <span class="tag">Now in Australia</span>
+        <h1 style="margin-top:40px">Websites for small businesses in Australia.</h1>
+        <p class="lead" style="margin-top:40px;color:#dfe9e2;max-width:24ch">Landscapers, B&amp;Bs, guest houses and holiday homes. Built for free, A$79 a month, no long contract.</p>
+      </div>
+      <div style="height:70px"></div>
+      <div class="foot" style="color:#dfe9e2"><span>ceiboworks.com/au</span><span>@ceibo_works</span></div>
+    </div>`)],
 ];
 
 // Small round avatars (Gmail, WhatsApp): the flower must still read at 40px inside a circle.

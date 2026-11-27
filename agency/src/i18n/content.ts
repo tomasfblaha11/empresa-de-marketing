@@ -12,6 +12,7 @@ export const settings = {
   // Monthly prices per region. `langs` says in which version of the site each option appears.
   // ARS is provisional: confirm and review regularly for inflation.
   currencies: [
+    { id: 'aud', currency: 'AUD', label: { en: 'AUD', es: 'AUD' }, price: 'A$79', extra: 'A$69', langs: ['en'] },
     { id: 'nzd', currency: 'NZD', label: { en: 'NZD', es: 'NZD' }, price: 'NZ$79', extra: 'NZ$69', langs: ['en'] },
     { id: 'latam', currency: 'USD', label: { en: 'Chile · Uruguay', es: 'Chile y Uruguay' }, price: 'US$49', extra: 'US$39', langs: ['es'] },
     { id: 'ars', currency: 'ARS', label: { en: 'ARS', es: 'Argentina' }, price: 'ARS 45.000', extra: 'ARS 40.000', langs: ['es'] },
@@ -28,7 +29,7 @@ export const t = {
     htmlLang: 'en',
     meta: {
       title: 'Ceibo Works | Custom websites for small businesses',
-      description: 'Custom websites for small businesses in New Zealand, the US and Latin America. Built for free, looked after every month, always by the same person.',
+      description: 'Custom websites for small businesses in Australia, New Zealand, the UK and Ireland. Built for free, looked after every month, always by the same person.',
     },
     nav: { how: 'How it works', pricing: 'Pricing', about: 'About', contact: 'Contact', language: 'Language' },
     hero: {
@@ -86,6 +87,7 @@ export const t = {
       payTitle: 'How you pay',
       pay: [
         { where: 'UK and Ireland', how: 'Monthly, by local bank transfer (in pounds or euro) or by card through a secure payment link.' },
+        { where: 'Australia', how: 'Monthly, by Australian bank transfer or by card through a secure payment link.' },
         { where: 'New Zealand and the US', how: 'Monthly, by debit or credit card through a secure payment link, or with PayPal.' },
       ],
     },
@@ -105,7 +107,7 @@ export const t = {
         { q: 'Is there a long contract?', a: 'No. There is a 3-month minimum, because building the site is free; after that it is month to month and you can cancel whenever you like. If you prefer to pay a year upfront, you get 2 months free.' },
         { q: 'Who owns the domain?', a: 'You do. It is registered in your name from day one.' },
         { q: 'How do I pay?', a: 'Monthly, by debit or credit card through a secure payment link, or with PayPal. Building the site is free.' },
-        { q: 'Where are you based?', a: 'In Argentina. I work remotely with businesses in New Zealand, the United States and Latin America, by email, WhatsApp or video call.' },
+        { q: 'Where are you based?', a: 'In Argentina. I work remotely with businesses in Australia, New Zealand, the UK, Ireland, the United States and Latin America, by email, WhatsApp or video call.' },
       ],
     },
     contact: {
