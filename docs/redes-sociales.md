@@ -55,7 +55,7 @@ la mejor hora real.
 | Vie 18/12 | 09 · Consejo: el vencimiento del dominio |
 | Lun 21/12 | 10 · Precios |
 | Mié 23/12 | 11 · Consejo: llamar con un toque |
-| Lun 28/12 | 12 · Entre Ríos (solo español) |
+| Lun 28/12 | 13 · Now in Australia (reemplaza a la 12, que era solo en español) |
 
 ## Pasos para conectar (los hace Tomas, una sola vez)
 
