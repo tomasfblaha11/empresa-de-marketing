@@ -79,7 +79,7 @@ export const t = {
       legend: 'Currency',
       per: 'per month',
       extra: 'Each extra website for the same owner:',
-      foot: '12-month minimum, billed monthly. Your domain is around US$15 a year, paid by you and registered in your name.',
+      foot: 'No long contract: a 3-month minimum, then month to month, cancel any time. Pay a year upfront and get 2 months free. Your domain is around US$15 a year, paid by you and registered in your name.',
       defaultCurrency: 'nzd',
       payTitle: 'How you pay',
       pay: [
@@ -99,7 +99,7 @@ export const t = {
       items: [
         { q: 'Is the draft really free?', a: 'Yes. If you don’t like it, you don’t pay anything and you don’t owe me anything.' },
         { q: 'How long does it take?', a: 'A first draft usually takes 3 to 5 days after I receive your photos and details.' },
-        { q: 'What happens after 12 months?', a: 'You can carry on month to month, or cancel whenever you like.' },
+        { q: 'Is there a long contract?', a: 'No. There is a 3-month minimum, because building the site is free; after that it is month to month and you can cancel whenever you like. If you prefer to pay a year upfront, you get 2 months free.' },
         { q: 'Who owns the domain?', a: 'You do. It is registered in your name from day one.' },
         { q: 'How do I pay?', a: 'Monthly, by debit or credit card through a secure payment link, or with PayPal. Building the site is free.' },
         { q: 'Where are you based?', a: 'In Argentina. I work remotely with businesses in New Zealand, the United States and Latin America, by email, WhatsApp or video call.' },
@@ -118,7 +118,7 @@ export const t = {
       lead: 'I know these trades well, so your site starts from what your customers actually look for.',
       more: 'Read more',
     },
-    niche: { home: 'Home', from: 'From', per: 'per month', priceNote: 'Building the site is free. 12-month minimum, billed monthly.', allPrices: 'See pricing details', open: 'Open the sample website', email: 'Email me', faq: 'Questions', others: 'Other kinds of business' },
+    niche: { home: 'Home', from: 'From', per: 'per month', priceNote: 'Building the site is free. 3-month minimum, then month to month.', allPrices: 'See pricing details', open: 'Open the sample website', email: 'Email me', faq: 'Questions', others: 'Other kinds of business' },
   },
   es: {
     htmlLang: 'es',
@@ -177,7 +177,7 @@ export const t = {
       legend: 'País',
       per: 'por mes',
       extra: 'Cada web adicional del mismo dueño:',
-      foot: 'Mínimo 12 meses, con pago mensual. El dominio cuesta unos US$15 al año, lo pagas tú y queda a tu nombre.',
+      foot: 'Sin contrato largo: mínimo 3 meses y después mes a mes, cancelas cuando quieras. Si pagas el año por adelantado, 2 meses gratis. El dominio cuesta unos US$15 al año, lo pagas tú y queda a tu nombre.',
       defaultCurrency: 'latam',
       payTitle: 'Cómo pagas',
       pay: [
@@ -199,7 +199,7 @@ export const t = {
       items: [
         { q: '¿El borrador es gratis de verdad?', a: 'Sí. Si no te gusta, no pagas nada y no me debes nada.' },
         { q: '¿Cuánto tarda?', a: 'El primer borrador suele estar en 3 a 5 días desde que recibo tus fotos y datos.' },
-        { q: '¿Qué pasa después de los 12 meses?', a: 'Puedes seguir mes a mes o cancelar cuando quieras.' },
+        { q: '¿Hay que firmar un contrato largo?', a: 'No. Hay un mínimo de 3 meses, porque armar la web es gratis; después es mes a mes y cancelas cuando quieras. Si prefieres pagar el año por adelantado, tienes 2 meses gratis.' },
         { q: '¿De quién es el dominio?', a: 'Tuyo. Queda registrado a tu nombre desde el primer día.' },
         { q: '¿Cómo pago desde Chile o Uruguay?', a: 'En dólares (US$49 por mes), con tarjeta de débito o crédito por un link de pago seguro, o con PayPal. No hace falta abrir ninguna cuenta nueva.' },
         { q: '¿Dónde estás?', a: 'En Argentina, en Entre Ríos. Trabajo a distancia con negocios de Chile, Uruguay, Argentina, Nueva Zelanda y Estados Unidos, por correo, WhatsApp o videollamada.' },
@@ -218,6 +218,6 @@ export const t = {
       lead: 'Conozco bien estos rubros, así que tu web arranca desde lo que tus clientes realmente buscan.',
       more: 'Ver más',
     },
-    niche: { home: 'Inicio', from: 'Desde', per: 'por mes', priceNote: 'Armar la web es gratis. Mínimo 12 meses, con pago mensual.', allPrices: 'Ver detalle de precios', open: 'Abrir la web de muestra', email: 'Escríbeme', faq: 'Preguntas', others: 'Otros tipos de negocio' },
+    niche: { home: 'Inicio', from: 'Desde', per: 'por mes', priceNote: 'Armar la web es gratis. Mínimo 3 meses y después mes a mes.', allPrices: 'Ver detalle de precios', open: 'Abrir la web de muestra', email: 'Escríbeme', faq: 'Preguntas', others: 'Otros tipos de negocio' },
   },
 } as const;
