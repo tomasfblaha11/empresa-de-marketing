@@ -11,10 +11,11 @@ import careM from '../assets/examples/housecare-mobile.jpg';
 import rentalD from '../assets/examples/rental-desktop.jpg';
 import rentalM from '../assets/examples/rental-mobile.jpg';
 
-interface Props { lang: Lang }
-const { lang } = Astro.props;
+type Sample = 'paving' | 'housecare' | 'rental';
+interface Props { lang: Lang; order?: Sample[] }
+const { lang, order = ['paving', 'housecare', 'rental'] } = Astro.props;
 const c = t[lang].examples;
-const cards = [
+const allCards = [
   { key: 'paving', img: pavingD, phone: false },
   { key: 'paving', img: pavingM, phone: true },
   { key: 'housecare', img: careD, phone: false },
@@ -22,6 +23,8 @@ const cards = [
   { key: 'rental', img: rentalD, phone: false },
   { key: 'rental', img: rentalM, phone: true },
 ] as const;
+// Most relevant kind of business first (by country); ?for=... can reorder it again in the browser.
+const cards = [...allCards].sort((a, b) => order.indexOf(a.key) - order.indexOf(b.key));
 ---
 <section class="wheel" id="work" aria-labelledby="work-title" data-wheel>
   <div class="stage">
@@ -34,7 +37,7 @@ const cards = [
       {cards.map((card) => {
         const name = c.items[card.key];
         return (
-          <li class:list={['card', { phone: card.phone }]}>
+          <li class:list={['card', { phone: card.phone }]} data-sample={card.key}>
             <a class="card-link" href={settings.examples[card.key]}>
             <figure>
               <div class="frame">
@@ -72,6 +75,12 @@ const cards = [
 <script>
   const section = document.querySelector<HTMLElement>('[data-wheel]');
   const still = window.matchMedia('(prefers-reduced-motion: reduce)');
+  // Links like ?for=gardens put that kind of sample first.
+  const want = ({ gardens: 'paving', stay: 'rental', homecare: 'housecare' } as Record<string, string>)[new URLSearchParams(location.search).get('for') ?? ''];
+  const track = section?.querySelector('.track');
+  if (want && track) {
+    [...track.querySelectorAll<HTMLElement>(`[data-sample="${want}"]`)].reverse().forEach((li) => track.prepend(li));
+  }
   if (section && !still.matches) {
     section.classList.add('is-wheel');
     const cards = [...section.querySelectorAll<HTMLElement>('.card')];

@@ -1,0 +1,104 @@
+---
+// "Where is your business?" dialog. Opens on the first visit to the generic home pages (/ and /es/)
+// and from the country button in the header. Each option is a plain link to that country's home
+// page, so it also works as a normal list without JavaScript. The choice is remembered only in this
+// browser (localStorage), never sent anywhere.
+import { t, type Lang } from '../i18n/content';
+import { countries, type Country } from '../i18n/countries';
+
+interface Props { lang: Lang; current?: Country; autoOpen?: boolean }
+const { lang, current, autoOpen = false } = Astro.props;
+const c = t[lang].country;
+const genericHome = lang === 'en' ? '/' : '/es/';
+const zones = JSON.stringify(Object.fromEntries(countries.map((k) => [k.id, k.timezones.source])));
+---
+<dialog class="picker" id="country-picker" aria-labelledby="picker-title" data-auto-open={autoOpen ? '' : undefined} data-zones={zones}>
+  <div class="picker-inner">
+    <div class="picker-head">
+      <h2 id="picker-title">{c.pickerTitle}</h2>
+      <form method="dialog"><button class="close" aria-label={c.close}>×</button></form>
+    </div>
+    <p class="picker-lead">{c.pickerLead}</p>
+    <ul role="list" class="options">
+      {countries.map((k) => (
+        <li>
+          <a href={k.path} data-country={k.id} aria-current={current?.id === k.id ? 'true' : undefined}>
+            <span class="flag" aria-hidden="true">{k.flag}</span>
+            <span class="name">{k.name[lang]}</span>
+            <span class="cur">{k.currencyCode}</span>
+            <span class="tag" hidden>{c.suggested}</span>
+          </a>
+        </li>
+      ))}
+      <li>
+        <a href={`${genericHome}?stay`} data-country="other">
+          <span class="flag" aria-hidden="true">🌎</span>
+          <span class="name">{c.other}</span>
+          <span class="cur">USD</span>
+        </a>
+      </li>
+    </ul>
+  </div>
+</dialog>
+
+<script>
+  const KEY = 'ceibo-country';
+  const dialog = document.getElementById('country-picker') as HTMLDialogElement | null;
+  const store = {
+    get: () => { try { return localStorage.getItem(KEY); } catch { return null; } },
+    set: (v: string) => { try { localStorage.setItem(KEY, v); } catch {} },
+  };
+  if (dialog) {
+    // Remember the choice when a country is picked.
+    dialog.querySelectorAll<HTMLAnchorElement>('a[data-country]').forEach((a) =>
+      a.addEventListener('click', () => store.set(a.dataset.country!)));
+    // Header buttons open the dialog.
+    document.querySelectorAll<HTMLElement>('[data-country-picker]').forEach((b) =>
+      b.addEventListener('click', (e) => { e.preventDefault(); dialog.showModal(); }));
+    // Suggest a country from the time zone (no network request involved).
+    const tz = Intl.DateTimeFormat().resolvedOptions().timeZone || '';
+    const zones: Record<string, RegExp> = JSON.parse(dialog.dataset.zones || '{}', (k, v) => (k && typeof v === 'string' ? new RegExp(v) : v));
+    const guess = Object.keys(zones).find((id) => zones[id].test(tz));
+    if (guess) {
+      const link = dialog.querySelector<HTMLAnchorElement>(`a[data-country="${guess}"]`);
+      if (link) {
+        link.classList.add('is-suggested');
+        link.querySelector<HTMLElement>('.tag')?.removeAttribute('hidden');
+        link.closest('li')?.parentElement?.prepend(link.closest('li')!);
+      }
+    }
+    // On the generic home pages: go straight to the remembered country, or ask on the first visit.
+    if (dialog.hasAttribute('data-auto-open')) {
+      const params = new URLSearchParams(location.search);
+      const saved = store.get();
+      if (params.has('stay')) store.set('other');
+      else if (saved && saved !== 'other') {
+        const link = dialog.querySelector<HTMLAnchorElement>(`a[data-country="${saved}"]`);
+        if (link) location.replace(link.href + location.hash);
+      } else if (!saved) {
+        dialog.showModal();
+        dialog.querySelector<HTMLAnchorElement>('.options a')?.focus(); // start on the suggested country
+      }
+    }
+    // Close when clicking outside the box.
+    dialog.addEventListener('click', (e) => { if (e.target === dialog) dialog.close(); });
+  }
+</script>
+
+<style>
+  .picker { border: 0; border-radius: 18px; padding: 0; width: min(34rem, calc(100vw - 2rem)); max-height: calc(100dvh - 2rem); box-shadow: 0 40px 80px -30px rgb(31 36 33 / 0.5); background: var(--paper); color: var(--ink); }
+  .picker::backdrop { background: rgb(31 36 33 / 0.45); backdrop-filter: blur(2px); }
+  .picker-inner { padding: 1.5rem; }
+  .picker-head { display: flex; align-items: start; justify-content: space-between; gap: 1rem; }
+  .picker h2 { font-size: var(--step-2); }
+  .close { font: inherit; font-size: 1.6rem; line-height: 1; width: 2.5rem; height: 2.5rem; border-radius: 50%; border: 1px solid var(--line); background: #fff; cursor: pointer; color: var(--ink); }
+  .picker-lead { margin-top: 0.5rem; color: var(--muted); font-size: var(--step--1); }
+  .options { display: grid; gap: 0.5rem; margin-top: 1.25rem; }
+  .options a { display: grid; grid-template-columns: 2rem 1fr auto; align-items: center; gap: 0.75rem; padding: 0.7rem 0.9rem; border: 1px solid var(--line); border-radius: 12px; background: #fff; text-decoration: none; color: var(--ink); font-weight: 600; }
+  .options a:hover, .options a[aria-current='true'] { border-color: var(--ink); }
+  .options a.is-suggested { border-color: var(--ceibo); box-shadow: inset 0 0 0 1px var(--ceibo); }
+  .flag { font-size: 1.4rem; }
+  .cur { font-size: var(--step--1); color: var(--muted); font-weight: 500; }
+  .tag { grid-column: 2 / 4; justify-self: start; margin-top: -0.2rem; font-size: 0.75rem; font-weight: 650; color: var(--ceibo-dark); }
+  @media (min-width: 34rem) { .options { grid-template-columns: 1fr 1fr; } }
+</style>

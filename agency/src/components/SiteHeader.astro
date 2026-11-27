@@ -3,11 +3,12 @@
 // elsewhere they point back to the matching section of the home page.
 import Logo from './Logo.astro';
 import { t, type Lang } from '../i18n/content';
+import type { Country } from '../i18n/countries';
 
-interface Props { lang: Lang; onHome?: boolean; enHref: string; esHref: string }
-const { lang, onHome = false, enHref, esHref } = Astro.props;
+interface Props { lang: Lang; onHome?: boolean; enHref: string; esHref: string; country?: Country; homeHref?: string }
+const { lang, onHome = false, enHref, esHref, country, homeHref } = Astro.props;
 const c = t[lang];
-const home = lang === 'en' ? '/' : '/es/';
+const home = homeHref ?? (lang === 'en' ? '/' : '/es/');
 const to = (id: string) => (onHome ? `#${id}` : `${home}#${id}`);
 ---
 <header class="header">
@@ -19,10 +20,16 @@ const to = (id: string) => (onHome ? `#${id}` : `${home}#${id}`);
         <li class="hide-sm"><a href={to('pricing')}>{c.nav.pricing}</a></li>
         <li class="hide-sm"><a href={to('about')}>{c.nav.about}</a></li>
         <li>
-          <div class="lang" role="group" aria-label={c.nav.language}>
-            <a href={enHref} hreflang="en" lang="en" aria-current={lang === 'en' ? 'true' : undefined}>EN</a>
-            <a href={esHref} hreflang="es" lang="es" aria-current={lang === 'es' ? 'true' : undefined}>ES</a>
-          </div>
+          {country ? (
+            <a class="country" href="#countries" data-country-picker>
+              <span aria-hidden="true">{country.flag}</span> <span class="sr">{c.country.change}: </span>{country.id.toUpperCase()} <span aria-hidden="true" class="caret">▾</span>
+            </a>
+          ) : (
+            <div class="lang" role="group" aria-label={c.nav.language}>
+              <a href={enHref} hreflang="en" lang="en" aria-current={lang === 'en' ? 'true' : undefined}>EN</a>
+              <a href={esHref} hreflang="es" lang="es" aria-current={lang === 'es' ? 'true' : undefined}>ES</a>
+            </div>
+          )}
         </li>
         <li class="hide-xs"><a class="btn btn--primary btn--sm" href={to('contact')}>{c.nav.contact}</a></li>
       </ul>
@@ -46,4 +53,8 @@ const to = (id: string) => (onHome ? `#${id}` : `${home}#${id}`);
   .lang a { min-width: 2.6rem; min-height: 2.1rem; display: grid; place-items: center; border-radius: 999px; text-decoration: none; font-weight: 600; color: var(--muted); }
   .lang a:hover { color: var(--ink); }
   .lang a[aria-current='true'] { background: var(--ink); color: #fff; }
+  .country { display: inline-flex; align-items: center; gap: 0.35rem; min-height: 2.6rem; padding: 0 0.9rem; border: 1px solid var(--line); border-radius: 999px; background: #fff; text-decoration: none; font-weight: 650; color: var(--ink); }
+  .country:hover { border-color: var(--ink); }
+  .caret { font-size: 0.7rem; color: var(--muted); }
+  .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 </style>

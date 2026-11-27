@@ -7,13 +7,24 @@ import { pages } from '../i18n/niches';
 import { Image } from 'astro:assets';
 import ceiboPhoto from '../assets/ceibo-flowers.jpg';
 import Wheel from './Wheel.astro';
+import CountryPicker from './CountryPicker.astro';
 import { t, settings, type Lang } from '../i18n/content';
+import { countries, nicheLabels, type Country } from '../i18n/countries';
 
-interface Props { lang: Lang }
-const { lang } = Astro.props;
+// Without `country` this is the international home (/ or /es/) with a currency switch and the
+// country picker; with it, the version for one country (/uk/, /es/cl/...), in its currency.
+interface Props { lang: Lang; country?: Country }
+const { lang, country } = Astro.props;
 const c = t[lang];
-const path = lang === 'en' ? '/' : '/es/';
+const path = country?.path ?? (lang === 'en' ? '/' : '/es/');
 const altPath = lang === 'en' ? '/es/' : '/';
+const alternates = [{ hreflang: 'en', path: '/' }, { hreflang: 'es', path: '/es/' }, ...countries.map((k) => ({ hreflang: k.hreflang, path: k.path }))];
+const niches = country?.niches ?? (['gardens', 'stay', 'homecare'] as const);
+const wheelOrder = niches.map((n) => nicheLabels[n].sample);
+const payRe = /how do i pay|cómo pago/i;
+const faqItems = country
+  ? [c.faq.items[0], { q: c.country.payFaq, a: country.pay }, ...c.faq.items.slice(1).filter((f) => !payRe.test(f.q))]
+  : c.faq.items;
 const mail = `mailto:${settings.email}`;
 const wa = settings.whatsapp ? `https://wa.me/${settings.whatsapp}?text=${encodeURIComponent(c.contact.waText)}` : '';
 const titleWords = c.hero.title.split(' ');
@@ -23,8 +34,8 @@ const nicheLinks = pages.filter((p) => !['entre-rios', 'chile', 'uruguay'].inclu
 const website = { '@context': 'https://schema.org', '@type': 'WebSite', name: 'Ceibo Works', url: `${settings.url}/`, inLanguage: lang, publisher: { '@id': `${settings.url}/#business` } };
 
 ---
-<Base lang={lang} title={c.meta.title} description={c.meta.description} path={path} altPath={altPath} jsonLd={[website]}>
-  <SiteHeader lang={lang} onHome enHref="/" esHref="/es/" />
+<Base lang={lang} title={country?.title ?? c.meta.title} description={country?.description ?? c.meta.description} path={path} altPath={altPath} alternates={alternates} locale={country?.hreflang.replace('-', '_')} jsonLd={[website]}>
+  <SiteHeader lang={lang} onHome enHref="/" esHref="/es/" country={country} homeHref={path} />
 
   <main id="main">
     <section class="hero" aria-labelledby="hero-title">
@@ -39,6 +50,12 @@ const website = { '@context': 'https://schema.org', '@type': 'WebSite', name: 'C
           <a class="btn btn--quiet" href="#work">{c.hero.secondary}</a>
         </div>
         <p class="note fade" style={`--i:${titleWords.length + 7}`}>{c.hero.note}</p>
+        <nav class="kinds fade" style={`--i:${titleWords.length + 8}`} aria-labelledby="kinds-title">
+          <p id="kinds-title">{c.country.kindTitle}</p>
+          <ul role="list">
+            {niches.map((n) => <li><a href={`?for=${n}#work`}>{nicheLabels[n][lang]}</a></li>)}
+          </ul>
+        </nav>
       </div>
       <figure class="hero-art">
         <Image src={ceiboPhoto} alt={c.hero.photoAlt} widths={[400, 640, 900, 1280]} sizes="(min-width: 56rem) 30vw, 80vw" loading="eager" fetchpriority="high" />
@@ -46,7 +63,7 @@ const website = { '@context': 'https://schema.org', '@type': 'WebSite', name: 'C
       </figure>
     </section>
 
-    <Wheel lang={lang} />
+    <Wheel lang={lang} order={wheelOrder} />
 
     <section class="draft" aria-labelledby="draft-title">
       <div class="wrap draft-inner">
@@ -101,30 +118,45 @@ const website = { '@context': 'https://schema.org', '@type': 'WebSite', name: 'C
     <section class="section pricing" id="pricing" aria-labelledby="pricing-title">
       <div class="wrap narrow">
         <h2 id="pricing-title">{c.pricing.title}</h2>
-        <p class="sub">{c.pricing.lead}</p>
-        <fieldset class="currency">
-          <legend>{c.pricing.legend}</legend>
-          {currencies.map((cur) => (
-            <label>
-              <input type="radio" name="currency" value={cur.id} checked={cur.id === c.pricing.defaultCurrency} />
-              <span>{cur.label[lang]}</span>
-            </label>
-          ))}
-        </fieldset>
-        <div class="price-box" aria-live="polite">
-          {currencies.map((cur) => (
-            <div class="price" data-cur={cur.id}>
-              <p class="amount">{cur.price} <small>{c.pricing.per}</small></p>
-              <p class="extra">{c.pricing.extra} <strong>{cur.extra}</strong> {c.pricing.per}</p>
+        <p class="sub">{country ? c.country.priceLead : c.pricing.lead}</p>
+        {country ? (
+          <div class="price-box">
+            <p class="in">{c.country.priceIn} {country.name[lang]} <span aria-hidden="true">{country.flag}</span></p>
+            <p class="amount">{country.price} <small>{c.pricing.per}</small></p>
+            <p class="extra">{c.pricing.extra} <strong>{country.extra}</strong> {c.pricing.per}</p>
+          </div>
+        ) : (
+          <>
+            <fieldset class="currency">
+              <legend>{c.pricing.legend}</legend>
+              {currencies.map((cur) => (
+                <label>
+                  <input type="radio" name="currency" value={cur.id} checked={cur.id === c.pricing.defaultCurrency} />
+                  <span>{cur.label[lang]}</span>
+                </label>
+              ))}
+            </fieldset>
+            <div class="price-box" aria-live="polite">
+              {currencies.map((cur) => (
+                <div class="price" data-cur={cur.id}>
+                  <p class="amount">{cur.price} <small>{c.pricing.per}</small></p>
+                  <p class="extra">{c.pricing.extra} <strong>{cur.extra}</strong> {c.pricing.per}</p>
+                </div>
+              ))}
             </div>
-          ))}
-        </div>
+          </>
+        )}
         <p class="foot">{c.pricing.foot}</p>
         <div class="pay">
           <h3>{c.pricing.payTitle}</h3>
-          <dl>
-            {c.pricing.pay.map((p) => (<><dt>{p.where}</dt><dd>{p.how}</dd></>))}
-          </dl>
+          {country ? (
+            <p class="pay-one">{country.pay}</p>
+          ) : (
+            <dl>
+              {c.pricing.pay.map((p) => (<><dt>{p.where}</dt><dd>{p.how}</dd></>))}
+            </dl>
+          )}
+          {country && <p class="others-link"><a href="#countries" data-country-picker>{c.country.otherCountries}</a></p>}
         </div>
       </div>
     </section>
@@ -143,7 +175,7 @@ const website = { '@context': 'https://schema.org', '@type': 'WebSite', name: 'C
       <div class="wrap narrow">
         <h2 id="faq-title">{c.faq.title}</h2>
         <div class="faq">
-          {c.faq.items.map((f) => (
+          {faqItems.map((f) => (
             <details>
               <summary>{f.q}</summary>
               <p>{f.a}</p>
@@ -166,6 +198,7 @@ const website = { '@context': 'https://schema.org', '@type': 'WebSite', name: 'C
     </section>
   </main>
 
+  <CountryPicker lang={lang} current={country} autoOpen={!country} />
   <SiteFooter lang={lang} photoCredit />
 </Base>
 
@@ -249,6 +282,14 @@ const website = { '@context': 'https://schema.org', '@type': 'WebSite', name: 'C
   .pricing:has(input[value='latam']:checked) [data-cur='latam'] { display: block; }
   @media (max-width: 26rem) { .currency span { min-width: 0; padding-inline: 0.6rem; font-size: var(--step--1); } }
   .pay { margin-top: 2rem; }
+  .pay-one { margin-top: 0.6rem; color: var(--muted); }
+  .others-link { margin-top: 1rem; font-weight: 600; }
+  .in { font-weight: 650; color: var(--ceibo-dark); margin-bottom: 0.5rem; }
+  .kinds { margin-top: 1.75rem; }
+  .kinds p { font-size: var(--step--1); font-weight: 650; }
+  .kinds ul { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 0.6rem; }
+  .kinds a { display: inline-flex; align-items: center; min-height: 2.5rem; padding: 0.4rem 1rem; border-radius: 999px; border: 1px solid var(--line); background: #fff; text-decoration: none; font-size: var(--step--1); font-weight: 600; color: var(--ink); }
+  .kinds a:hover { border-color: var(--ink); }
   .pay h3 { font-size: var(--step-0); }
   .pay dl { display: grid; gap: 0.25rem 1.5rem; margin-top: 0.75rem; font-size: var(--step--1); }
   .pay dt { font-weight: 650; }

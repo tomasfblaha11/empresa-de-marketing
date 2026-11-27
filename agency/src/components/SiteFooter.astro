@@ -2,6 +2,7 @@
 // Footer shared by every page: links to the niche pages (useful for visitors and for Google).
 import { t, type Lang } from '../i18n/content';
 import { pages } from '../i18n/niches';
+import { countries } from '../i18n/countries';
 
 interface Props { lang: Lang; photoCredit?: boolean }
 const { lang, photoCredit = false } = Astro.props;
@@ -14,6 +15,12 @@ const links = pages.filter((p) => p[lang]).map((p) => ({ href: p[lang]!.path, la
       <p class="label">{c.footer.servicesLabel}</p>
       <ul role="list" class="services">
         {links.map((l) => <li><a href={l.href}>{l.label}</a></li>)}
+      </ul>
+    </nav>
+    <nav aria-labelledby="countries-title" id="countries" class="countries">
+      <p class="label" id="countries-title">{c.country.pickerTitle}</p>
+      <ul role="list" class="services">
+        {countries.map((k) => <li><a href={k.path}><span aria-hidden="true">{k.flag}</span> {k.name[lang]}</a></li>)}
       </ul>
     </nav>
     <div class="row">
@@ -31,6 +38,7 @@ const links = pages.filter((p) => p[lang]).map((p) => ({ href: p[lang]!.path, la
   .label { font-weight: 650; color: var(--ink); }
   .services { display: flex; flex-wrap: wrap; gap: 0.5rem 1.5rem; margin-top: 0.6rem; }
   .services a { color: var(--ink); }
+  .countries { margin-top: 1.75rem; }
   .row { display: flex; flex-wrap: wrap; gap: 1rem 2rem; margin-top: 2rem; }
   .credit { flex-basis: 100%; font-size: 0.8rem; }
 </style>

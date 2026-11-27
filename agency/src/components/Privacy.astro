@@ -15,12 +15,18 @@ const en = lang === 'en';
         <p>Ceibo Works is run by Tomas Blaha from Argentina. This site does not use cookies, analytics or tracking.</p>
         <p>If you email or message me, I use your details only to reply and, if we work together, to build and look after your website and invoice you. I don't sell or share them.</p>
         <p>Enquiries that don't turn into work are deleted within 12 months. To see, correct or delete what I hold about you, write to <a href={`mailto:${settings.email}`}>{settings.email}</a>.</p>
+        <h2>If I emailed you first</h2>
+        <p>I contact businesses one by one, using the business email they publish themselves in public directories, official tourism registers or on their own website. I keep only the business name, that email, the public phone number and a note about the website, and I use them only to offer my service once and, if you reply, to answer you. In the UK and the EU the legal basis is legitimate interest.</p>
+        <p>If you reply "no thanks", or ask me to remove your details, I delete them and never contact you again. Contact data is kept for no longer than 12 months. Emails are handled through Google (Gmail). You can also complain to your data protection authority (in the UK, the ICO; in Ireland, the Data Protection Commission).</p>
       </>
     ) : (
       <>
         <p>Ceibo Works está a cargo de Tomas Blaha, desde Argentina. Esta web no usa cookies, analíticas ni rastreo.</p>
         <p>Si me escribes, uso tus datos solo para responderte y, si trabajamos juntos, para armar y mantener tu web y facturarte. No los vendo ni los comparto.</p>
         <p>Las consultas que no se convierten en trabajo se borran dentro de los 12 meses. Para ver, corregir o borrar tus datos, escribe a <a href={`mailto:${settings.email}`}>{settings.email}</a>.</p>
+        <h2>Si te escribí yo primero</h2>
+        <p>Contacto a negocios uno por uno, usando el email que el propio negocio publica en directorios públicos, registros oficiales de turismo o su propia web. Guardo solo el nombre del negocio, ese email, el teléfono público y una nota sobre su web, y los uso únicamente para ofrecer mi servicio una vez y, si respondes, para contestarte.</p>
+        <p>Si respondes "no gracias" o me pides borrar tus datos, los borro y no vuelvo a escribirte. Los datos de contacto se guardan como máximo 12 meses. Los correos se gestionan con Google (Gmail).</p>
       </>
     )}
   </main>
@@ -28,5 +34,6 @@ const en = lang === 'en';
 <style>
   .legal h1 { font-size: var(--step-3); margin-top: 2.5rem; }
   .legal p { margin-top: 1.1rem; }
+  .legal h2 { font-size: var(--step-1); margin-top: 2rem; }
   .legal > a { text-decoration: none; }
 </style>
