@@ -63,6 +63,25 @@ for (const p of checked) {
     ficha: p.profile ?? '',
   });
 }
+// Drop emails whose domain cannot receive mail (expired domains): writing to them only bounces,
+// and bounces hurt a new sending account. Free providers (gmail, hotmail...) are always fine.
+const mxCache = new Map();
+async function hasMx(domain) {
+  if (!mxCache.has(domain)) {
+    mxCache.set(domain, fetch(`https://dns.google/resolve?name=${domain}&type=MX`, { signal: AbortSignal.timeout(15_000) })
+      .then((r) => r.json()).then((j) => j.Status === 0 && (j.Answer?.length ?? 0) > 0).catch(() => true));
+  }
+  return mxCache.get(domain);
+}
+const domains = [...new Set(rows.map((r) => r.email.split('@')[1]).filter((d) => !FREE_MAIL.test(`@${d}`)))];
+for (let i = 0; i < domains.length; i += 10) await Promise.all(domains.slice(i, i + 10).map(hasMx));
+const before = rows.length;
+for (let i = rows.length - 1; i >= 0; i--) {
+  const d = rows[i].email.split('@')[1];
+  if (!FREE_MAIL.test(`@${d}`) && !(await hasMx(d))) rows.splice(i, 1);
+}
+if (before !== rows.length) console.log(`${before - rows.length} dropped: their email domain does not receive mail`);
+
 rows.sort((a, b) => a.pais.localeCompare(b.pais) || a.prioridad - b.prioridad || a.nicho.localeCompare(b.nicho) || a.ciudad.localeCompare(b.ciudad));
 
 const cols = ['pais', 'tipo', 'nicho', 'negocio', 'ciudad', 'deficiencia', 'email', 'telefono', 'web', 'ficha'];
