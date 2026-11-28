@@ -8,13 +8,14 @@ import { createHash } from 'node:crypto';
 import { execFileSync } from 'node:child_process';
 
 const DIR = 'social/reels/voice';
+const LANGS = ['en']; // English only from now on (Spanish lines kept for reference)
 const cfg = JSON.parse(await readFile(`${DIR}/lines.json`, 'utf8'));
 await mkdir(`${DIR}/clips`, { recursive: true });
 const key = process.env.ELEVENLABS_API_KEY ?? 'proxy-injected';
 const durations = {};
 
 for (const [reel, langs] of Object.entries(cfg.reels)) {
-  for (const [lang, lines] of Object.entries(langs)) {
+  for (const [lang, lines] of Object.entries(langs).filter(([l]) => LANGS.includes(l))) {
     let prevEnd = 0;
     for (const [i, [earliest, text]] of lines.entries()) {
       const hash = createHash('sha1').update(JSON.stringify([cfg.voice, text])).digest('hex').slice(0, 12);

@@ -14,6 +14,7 @@ import { readFile, mkdir, rm } from 'node:fs/promises';
 import { execFileSync } from 'node:child_process';
 
 const FPS = 30;
+const LANGS = ['en'];
 const OUT = 'social/reels/out';
 const A = 'agency';
 const b64 = async (p) => (await readFile(p)).toString('base64');
@@ -295,7 +296,8 @@ const seek = (t) => pg.evaluate((ms) => {
 
 for (const [id, reel] of Object.entries(reels)) {
   if (only && !id.includes(only)) continue;
-  for (const lang of Object.keys(reel.text)) {
+  // English only: the account now targets English-speaking markets (Spanish texts kept for reference).
+  for (const lang of Object.keys(reel.text).filter((l) => LANGS.includes(l))) {
     page.lang = lang === 'es' ? 'es-AR' : 'en';
     const cues = clips[`${id}-${lang}`];
     // The reel lasts until the closing line ends, plus a beat of silence on the end card.
