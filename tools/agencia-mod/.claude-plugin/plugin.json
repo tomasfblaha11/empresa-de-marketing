@@ -1,0 +1,1 @@
+{ "name": "ceibo-hq", "version": "0.1.0", "description": "Ceibo Works HQ: an isometric office pane showing which agency role is working and on what", "types": "./types/index.d.ts" }

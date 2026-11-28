@@ -90,6 +90,13 @@ no se escribe contenido de un cliente directamente en los componentes.
 
 Ver `docs/auditoria-entorno.md` para versiones, licencias y decisiones.
 
+## La agencia (roles)
+
+Cuatro roles que Tomas activa a mano con `/buscador`, `/analista`, `/desarrollador` y `/cm`
+(`.claude/skills/`). La oficina animada está en `tools/agencia-mod/` y los números en
+`agencia/estado.json`. Es una herramienta interna, no un CRM ni una plataforma para clientes.
+Ver `agencia/README.md`.
+
 ## Convenciones
 
 - Código y nombres de archivos en inglés; contenido y documentación interna en español.
