@@ -1,0 +1,162 @@
+{
+ "voice": {
+  "name": "Jessica",
+  "id": "cgSgspJ2msm6clMCkdW9",
+  "model": "eleven_multilingual_v2",
+  "settings": {
+   "stability": 0.45,
+   "similarity_boost": 0.8,
+   "style": 0.35,
+   "use_speaker_boost": true,
+   "speed": 1.08
+  }
+ },
+ "reels": {
+  "reel-01-five-seconds": {
+   "en": [
+    [
+     0.1,
+     "Quick game: find the phone number. Five seconds!"
+    ],
+    [
+     3.2,
+     "Three!"
+    ],
+    [
+     4.2,
+     "Two!"
+    ],
+    [
+     5.2,
+     "One!"
+    ],
+    [
+     6.4,
+     "Time's up! They already called the next business."
+    ],
+    [
+     9.4,
+     "Same cottage, done right: one tap, and they call you."
+    ],
+    [
+     12.4,
+     "Is your number one tap away?"
+    ]
+   ],
+   "es": [
+    [
+     0.1,
+     "Juego rápido: encontrá el teléfono. ¡Cinco segundos!"
+    ],
+    [
+     3.2,
+     "¡Tres!"
+    ],
+    [
+     4.2,
+     "¡Dos!"
+    ],
+    [
+     5.2,
+     "¡Uno!"
+    ],
+    [
+     6.4,
+     "¡Tiempo! Tu cliente ya llamó a otro negocio."
+    ],
+    [
+     9.4,
+     "La misma cabaña, bien hecha: un toque, y te llaman."
+    ],
+    [
+     12.4,
+     "¿Tu teléfono está a un toque?"
+    ]
+   ]
+  },
+  "reel-02-one-in-eight": {
+   "en": [
+    [
+     0.1,
+     "We checked two thousand seven hundred and ninety small business listings."
+    ],
+    [
+     4.0,
+     "More than one in eight linked to a website that didn't even load."
+    ],
+    [
+     7.6,
+     "So... when did you last open yours?"
+    ],
+    [
+     11.3,
+     "Open it now. I'll wait."
+    ]
+   ],
+   "es": [
+    [
+     0.1,
+     "Revisamos dos mil setecientos noventa negocios en directorios."
+    ],
+    [
+     4.0,
+     "Más de uno de cada ocho tenía una web que ni siquiera cargaba."
+    ],
+    [
+     7.6,
+     "¿Cuándo fue la última vez que abriste la tuya?"
+    ],
+    [
+     11.3,
+     "Abrila ahora. Te espero."
+    ]
+   ]
+  },
+  "reel-03-which-one": {
+   "en": [
+    [
+     0.1,
+     "Same cottage. Same price. Which one would you book?"
+    ],
+    [
+     3.6,
+     "A... or B?"
+    ],
+    [
+     6.2,
+     "Tell me in the comments!"
+    ],
+    [
+     8.1,
+     "If you picked B, so do your guests. In seconds."
+    ],
+    [
+     11.8,
+     "Want your own B?"
+    ]
+   ],
+   "es": [
+    [
+     0.1,
+     "La misma cabaña. El mismo precio. ¿Cuál reservarías?"
+    ],
+    [
+     3.6,
+     "¿La A... o la B?"
+    ],
+    [
+     6.2,
+     "¡Contame en los comentarios!"
+    ],
+    [
+     8.1,
+     "Si elegiste la B, tus huéspedes también. En segundos."
+    ],
+    [
+     11.8,
+     "¿Querés tu propia B?"
+    ]
+   ]
+  }
+ }
+}

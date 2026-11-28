@@ -1,7 +1,14 @@
 # Reels de Ceibo Works: análisis de ganchos y guiones
 
-Videos en `social/reels/out/` (1080×1920, 13–15 s, inglés y español).
-Se regeneran con `node social/reels/make-reels.mjs`. Las capturas de las webs de muestra están en
+Videos en `social/reels/out/` (1080×1920, 15–17 s, inglés y español), con locución de **Jessica**
+(voz de ElevenLabs).
+
+**Para regenerarlos:**
+1. `NODE_USE_ENV_PROXY=1 node social/reels/make-voice.mjs`: genera las frases de la voz.
+2. `node social/reels/make-reels.mjs`: arma los videos y mezcla la voz.
+
+Los textos de la voz están en `social/reels/voice/lines.json`. Cada escena empieza cuando arranca su
+frase, así que si cambia un texto, el video se reacomoda solo. Las capturas de las webs de muestra están en
 `social/reels/shots/`; para actualizarlas, ver el comentario al principio del script.
 
 ## Qué se analizó y con qué límite
@@ -132,9 +139,9 @@ Texto (ES):
 
 - **Ritmo:** 2 reels por semana, además de los 3 posts que ya están programados. El plan gratis de
   Metricool permite 20 publicaciones por mes: alcanza.
-- **Música:** los videos vienen sin sonido. Si se publican desde la app de Instagram, se puede
-  sumar un audio en tendencia con volumen bajo, que ayuda un poco. Si se programan desde
-  Metricool, salen sin música, lo cual también está bien para reels de texto.
+- **Sonido:** los videos traen la voz de Jessica normalizada al volumen de Instagram (-14 LUFS), y
+  el texto en pantalla se mantiene para quien mira sin sonido. Si se publican desde la app, se
+  puede sumar música de fondo al 5–10% de volumen; desde Metricool salen solo con la voz.
 - **Reels de prueba:** Instagram permite mostrar un reel primero solo a gente que no te sigue.
   Sirve para probar qué gancho funciona sin llenar el perfil.
 - **A fin de mes:** comparar en Metricool cuánto los miraron, cuántas veces los enviaron y cuántos

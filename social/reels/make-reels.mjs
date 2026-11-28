@@ -96,15 +96,14 @@ const oldSite = `
   </div>`;
 
 // ---------- the reels ----------
-// Each reel: id, seconds, and per-language text. Hook notes for each one in guiones.md.
+// Each reel: id and per-language text; its length and scene times come from the voice cues. Hook notes for each one in guiones.md.
 const reels = {
   // 1 · Challenge hook: the viewer plays along (find the phone number in 5 seconds).
   'reel-01-five-seconds': {
-    seconds: 15,
     text: {
       en: {
         hook: 'Find the phone number.<br><span class="red">You have 5 seconds.</span>',
-        lost: 'Time’s up.<br>Your customer already called <span class="red">the next business.</span>',
+        lost: 'Time’s up.<br>They already called <span class="red">the next business.</span>',
         after: 'Same cottage.<br>One tap to call.',
         note: 'Example website made up for this video',
         end1: 'Is your number one tap away?',
@@ -113,7 +112,7 @@ const reels = {
       },
       es: {
         hook: 'Encontrá el teléfono.<br><span class="red">Tenés 5 segundos.</span>',
-        lost: 'Se acabó el tiempo.<br>Tu cliente ya llamó <span class="red">a otro.</span>',
+        lost: '¡Tiempo!<br>Tu cliente ya llamó <span class="red">a otro negocio.</span>',
         after: 'La misma cabaña.<br>Un toque para llamar.',
         note: 'Web de ejemplo inventada para este video',
         end1: '¿Tu teléfono está a un toque?',
@@ -121,8 +120,9 @@ const reels = {
         end3: 'Mandáselo a alguien con cabañas',
       },
     },
-    build: (t) => {
-      const end = endCard(t, 12.2);
+    // Voice cues (voice/lines.json): 0 hook, 1-3 "three, two, one", 4 time's up, 5 same cottage, 6 closing line.
+    build: (t, c) => {
+      const end = endCard(t, c[6].at - .2);
       return page(`
         <div class="abs" style="inset:0;background:#d9dcd4"></div>
         <div id="ph1" class="phone" style="left:150px;top:520px;width:780px;height:1340px">
@@ -136,29 +136,29 @@ const reels = {
         <div id="after" class="hook" style="top:170px">${t.after}</div>
         <div class="note" id="note">${t.note}</div>
         ${end.html}`, `
-        show('#hook', 0, 6.2, 'pop');
+        show('#hook', 0, ${c[4].at - .2}, 'pop');
         // The old site fills the phone (1.92x) and scrolls slowly while the viewer searches; then it
         // jumps to the bottom, where the number was hiding in tiny grey text, and highlights it.
         const k = 1.92, bottom = -($('#old').offsetHeight * k - 1300);
-        anim('#old', [{ transform: \`scale(\${k}) translateY(0)\` }, { transform: \`scale(\${k}) translateY(\${bottom * .45 / k}px)\` }], 0.4, 5.8, { easing: 'linear' });
-        ${[5, 4, 3, 2, 1].map((n, i) => `show('#n${n}', ${1.2 + i}, ${2.15 + i}, 'pop');`).join('\n')}
-        show('#note', 0.3, 9, 'fade');
-        anim('#old', [{ transform: \`scale(\${k}) translateY(\${bottom * .45 / k}px)\` }, { transform: \`scale(\${k}) translateY(\${bottom / k}px)\` }], 6.2, .6, { fill: 'forwards' });
-        anim('#old-phone', [{ background: 'transparent', color: '#bbb' }, { background: '#ffef5a', color: '#000' }], 6.8, .3);
-        show('#lost', 7.2, 9, 'up');
-        anim('#ph1', [{ opacity: 1 }, { opacity: 0 }], 9, .3, { fill: 'forwards' });
-        show('#ph2', 9.1, 999, 'up');
-        show('#after', 9.2, 999, 'up');
+        anim('#old', [{ transform: \`scale(\${k}) translateY(0)\` }, { transform: \`scale(\${k}) translateY(\${bottom * .45 / k}px)\` }], 0.4, ${c[4].at - .6}, { easing: 'linear' });
+        // Countdown: 3, 2, 1 land on the spoken words; 5 and 4 come one second apart before them.
+        ${[c[1].at - 2, c[1].at - 1, c[1].at, c[2].at, c[3].at].map((s, i) => `show('#n${5 - i}', ${s}, ${i < 4 ? [c[1].at - 1, c[1].at, c[2].at, c[3].at][i] - .05 : c[3].at + .95}, 'pop');`).join('\n')}
+        show('#note', 0.3, ${c[5].at - .1}, 'fade');
+        anim('#old', [{ transform: \`scale(\${k}) translateY(\${bottom * .45 / k}px)\` }, { transform: \`scale(\${k}) translateY(\${bottom / k}px)\` }], ${c[4].at - .2}, .6, { fill: 'forwards' });
+        anim('#old-phone', [{ background: 'transparent', color: '#bbb' }, { background: '#ffef5a', color: '#000' }], ${c[4].at + .4}, .3);
+        show('#lost', ${c[4].at + .5}, ${c[5].at - .1}, 'up');
+        anim('#ph1', [{ opacity: 1 }, { opacity: 0 }], ${c[5].at - .1}, .3, { fill: 'forwards' });
+        show('#ph2', ${c[5].at}, 999, 'up');
+        show('#after', ${c[5].at + .1}, 999, 'up');
         // The sample's "Call" button: tap ring pulses twice.
-        anim('#tap', [{ opacity: 0, transform: 'scale(.4)' }, { opacity: 1, transform: 'scale(1)' }, { opacity: 0, transform: 'scale(1.6)' }], 10.2, .8);
-        anim('#tap', [{ opacity: 0, transform: 'scale(.4)' }, { opacity: 1, transform: 'scale(1)' }, { opacity: 0, transform: 'scale(1.6)' }], 11.1, .8, { fill: 'forwards' });
+        anim('#tap', [{ opacity: 0, transform: 'scale(.4)' }, { opacity: 1, transform: 'scale(1)' }, { opacity: 0, transform: 'scale(1.6)' }], ${c[5].end - 1.9}, .8);
+        anim('#tap', [{ opacity: 0, transform: 'scale(.4)' }, { opacity: 1, transform: 'scale(1)' }, { opacity: 0, transform: 'scale(1.6)' }], ${c[5].end - 1}, .8, { fill: 'forwards' });
         ${end.js}`, '#old-phone{outline:0}');
     },
   },
 
   // 2 · Data hook: a real number from our own research, then a question that makes them check their own site.
   'reel-02-one-in-eight': {
-    seconds: 14,
     text: {
       en: {
         a: 'We checked',
@@ -183,8 +183,9 @@ const reels = {
         end3: 'ceiboworks.com/es',
       },
     },
-    build: (t) => {
-      const end = endCard(t, 11.2);
+    // Voice cues: 0 the count, 1 one in eight, 2 when did you last open yours, 3 closing line.
+    build: (t, c) => {
+      const end = endCard(t, c[3].at - .1);
       // 8 x 8 grid of mini browser windows; every 8th one breaks.
       const tiles = Array.from({ length: 64 }, (_, i) => {
         const bad = i % 8 === 3;
@@ -201,19 +202,19 @@ const reels = {
         <div id="t4" class="hook" style="top:1480px;font-size:80px">${t.d}</div>
         <div id="t5" class="hook big" style="top:560px">${t.e}</div>
         ${end.html}`, `
-        show('#t1', 0, 3.9, 'fade');
-        show('#count', 0, 3.9, 'fade');
+        show('#t1', 0, ${c[1].at - .1}, 'fade');
+        show('#count', 0, ${c[1].at - .1}, 'fade');
         // Count up to 2,790 in the first 1.6 s (driven by the animation clock so frames are exact).
         const c = $('#count'); const ca = $('#clock').animate([{ opacity: 0 }, { opacity: 0 }], { duration: 1600, fill: 'both' });
         window.__tick = () => { const p = Math.min(1, Math.max(0, (ca.currentTime ?? 0) / 1600)); c.textContent = Math.round(2790 * (1 - Math.pow(1 - p, 3))).toLocaleString(document.documentElement.lang); };
-        show('#t2', .9, 3.9, 'fade');
-        show('#grid', 1.4, 7.2, 'fade');
+        show('#t2', .9, ${c[1].at - .1}, 'fade');
+        show('#grid', 1.4, ${c[2].at - .1}, 'fade');
         // Broken tiles turn red one after another.
-        document.querySelectorAll('.tile.bad').forEach((el, i) => el.animate([{ background: '#fff', borderColor: '#cfd3cc' }, { background: '#fde8eb', borderColor: '#c8102e' }], { delay: (2.6 + i * .12) * 1000, duration: 200, fill: 'both' }));
-        show('.tile.bad em', 2.7, 7.2, 'pop');
-        show('#t3', 4, 7.2, 'up');
-        show('#t4', 5.6, 7.2, 'up');
-        show('#t5', 7.5, 11, 'up');
+        document.querySelectorAll('.tile.bad').forEach((el, i) => el.animate([{ background: '#fff', borderColor: '#cfd3cc' }, { background: '#fde8eb', borderColor: '#c8102e' }], { delay: (${c[1].at - 1.2} + i * .12) * 1000, duration: 200, fill: 'both' }));
+        show('.tile.bad em', ${c[1].at - 1.1}, ${c[2].at - .1}, 'pop');
+        show('#t3', ${c[1].at}, ${c[2].at - .1}, 'up');
+        show('#t4', ${c[1].end - .6}, ${c[2].at - .1}, 'up');
+        show('#t5', ${c[2].at}, ${c[3].at - .1}, 'up');
         ${end.js}`, `
         .tile { position: relative; height: 68px; border: 3px solid #cfd3cc; border-radius: 10px; background: #fff; padding: 18px 8px 0; overflow: hidden; }
         .tile i { position: absolute; left: 0; right: 0; top: 0; height: 12px; background: #e7e9e3; }
@@ -224,13 +225,12 @@ const reels = {
 
   // 3 · Comparison hook: two versions side by side; the question invites a comment (A or B).
   'reel-03-which-one': {
-    seconds: 13,
     text: {
       en: {
         hook: 'Same cottage. Same price.<br><span class="red">Which one do you book?</span>',
         a: 'A', b: 'B',
         q: 'Comment A or B 👇',
-        ans: 'If you picked B, so do your guests.<br>And they decide in seconds.',
+        ans: 'If you picked B, so do your guests.<br>In seconds.',
         note: 'Website A is made up for this video. B is a sample by Ceibo Works.',
         end1: 'Want your own B?',
         end2: 'I build it for free. You keep it for a small monthly fee, with no long contract.',
@@ -240,15 +240,17 @@ const reels = {
         hook: 'La misma cabaña. El mismo precio.<br><span class="red">¿Cuál reservás?</span>',
         a: 'A', b: 'B',
         q: 'Comentá A o B 👇',
-        ans: 'Si elegiste la B, tus huéspedes también.<br>Y deciden en segundos.',
+        ans: 'Si elegiste la B, tus huéspedes también.<br>En segundos.',
         note: 'La web A es inventada para este video. La B es una muestra de Ceibo Works.',
         end1: '¿Querés tu propia B?',
         end2: 'Te la armo gratis. Si te la quedás, pagás una cuota mensual, sin contrato largo.',
         end3: 'ceiboworks.com/es',
       },
     },
-    build: (t) => {
-      const end = endCard(t, 10.4);
+    // Voice cues: 0 hook, 1 "A or B?", 2 comment, 3 if you picked B, 4 closing line.
+    build: (t, c) => {
+      const end = endCard(t, c[4].at - .1);
+      const out = c[4].at - .1;
       return page(`
         <div class="abs" style="inset:0;background:#d9dcd4"></div>
         <div id="hook" class="hook" style="top:150px;font-size:82px">${t.hook}</div>
@@ -260,14 +262,17 @@ const reels = {
         <div id="ans" class="hook card" style="top:640px;font-size:68px">${t.ans}</div>
         <div class="note" id="note" style="top:1650px">${t.note}</div>
         ${end.html}`, `
-        show('#hook', 0, 10.4, 'pop');
-        show('#pa', .3, 10.4, 'up'); show('#pb', .5, 10.4, 'up');
-        show('#la', .8, 10.4, 'pop'); show('#lb', .9, 10.4, 'pop');
-        show('#note', .8, 10.4, 'fade');
-        anim('#sa', [{ transform: 'scale(1.17) translateY(0)' }, { transform: 'scale(1.17) translateY(-600px)' }], 1, 5.5, { easing: 'ease-in-out' });
-        anim('#sb', [{ transform: 'translateY(0)' }, { transform: 'translateY(-2600px)' }], 1, 5.5, { easing: 'ease-in-out' });
-        show('#q', 6.2, 8, 'pop');
-        show('#ans', 8.1, 10.4, 'up');
+        show('#hook', 0, ${out}, 'pop');
+        show('#pa', .3, ${out}, 'up'); show('#pb', .5, ${out}, 'up');
+        show('#la', .8, ${out}, 'pop'); show('#lb', .9, ${out}, 'pop');
+        show('#note', .8, ${out}, 'fade');
+        anim('#sa', [{ transform: 'scale(1.17) translateY(0)' }, { transform: 'scale(1.17) translateY(-600px)' }], 1, ${c[2].at - 1}, { easing: 'ease-in-out' });
+        anim('#sb', [{ transform: 'translateY(0)' }, { transform: 'translateY(-2600px)' }], 1, ${c[2].at - 1}, { easing: 'ease-in-out' });
+        // "A... or B?": each label pulses as it is said.
+        anim('#la', [{ transform: 'scale(1)' }, { transform: 'scale(1.35)' }, { transform: 'scale(1)' }], ${c[1].at}, .5, { fill: 'none' });
+        anim('#lb', [{ transform: 'scale(1)' }, { transform: 'scale(1.35)' }, { transform: 'scale(1)' }], ${c[1].end - .6}, .5, { fill: 'none' });
+        show('#q', ${c[2].at}, ${c[3].at - .1}, 'pop');
+        show('#ans', ${c[3].at}, ${out}, 'up');
         ${end.js}`);
     },
   },
@@ -280,6 +285,9 @@ const browser = await chromium.launch();
 const pg = await browser.newPage({ viewport: { width: 1080, height: 1920 } });
 pg.on('pageerror', (e) => { console.error('page error:', e.message); process.exitCode = 1; });
 
+// Voice cues per reel and language, from make-voice.mjs. Without them the reels can't be timed.
+const clips = JSON.parse(await readFile('social/reels/voice/clips.json', 'utf8'));
+
 const seek = (t) => pg.evaluate((ms) => {
   document.getAnimations().forEach((a) => { a.pause(); a.currentTime = ms; });
   window.__tick?.();
@@ -289,7 +297,10 @@ for (const [id, reel] of Object.entries(reels)) {
   if (only && !id.includes(only)) continue;
   for (const lang of Object.keys(reel.text)) {
     page.lang = lang === 'es' ? 'es-AR' : 'en';
-    await pg.setContent(reel.build(reel.text[lang]), { waitUntil: 'load' });
+    const cues = clips[`${id}-${lang}`];
+    // The reel lasts until the closing line ends, plus a beat of silence on the end card.
+    const seconds = Math.ceil((cues.at(-1).end + 1.2) * 2) / 2;
+    await pg.setContent(reel.build(reel.text[lang], cues), { waitUntil: 'load' });
     await pg.evaluate(() => document.fonts.ready);
     if (at !== undefined) {
       await seek(Number(at));
@@ -300,15 +311,18 @@ for (const [id, reel] of Object.entries(reels)) {
     const dir = `${OUT}/frames-${id}-${lang}`;
     await rm(dir, { recursive: true, force: true });
     await mkdir(dir, { recursive: true });
-    const n = reel.seconds * FPS;
+    const n = Math.round(seconds * FPS);
     for (let f = 0; f < n; f++) {
       await seek(f / FPS);
       await pg.screenshot({ path: `${dir}/${String(f).padStart(4, '0')}.jpg`, type: 'jpeg', quality: 92 });
     }
     const mp4 = `${OUT}/${id}-${lang}.mp4`;
-    execFileSync('ffmpeg', ['-y', '-loglevel', 'error', '-framerate', String(FPS), '-i', `${dir}/%04d.jpg`,
-      // Silent AAC track: some apps reject video files with no audio stream.
-      '-f', 'lavfi', '-i', 'anullsrc=r=44100:cl=stereo', '-shortest',
+    // Voice: each clip delayed to its cue and mixed into one track, padded with silence to the end.
+    const inputs = cues.flatMap((q) => ['-i', q.file]);
+    const mix = cues.map((q, i) => `[${i + 1}:a]adelay=${Math.round(q.at * 1000)}:all=1[v${i}]`).join(';') +
+      `;${cues.map((_, i) => `[v${i}]`).join('')}amix=inputs=${cues.length}:normalize=0,apad,loudnorm=I=-14:TP=-1.5[a]`;
+    execFileSync('ffmpeg', ['-y', '-loglevel', 'error', '-framerate', String(FPS), '-i', `${dir}/%04d.jpg`, ...inputs,
+      '-filter_complex', mix, '-map', '0:v', '-map', '[a]', '-t', String(seconds), '-ar', '44100',
       '-c:v', 'libx264', '-preset', 'slow', '-crf', '20', '-pix_fmt', 'yuv420p', '-profile:v', 'high',
       '-c:a', 'aac', '-b:a', '128k', '-movflags', '+faststart', mp4]);
     await rm(dir, { recursive: true, force: true });
