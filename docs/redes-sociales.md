@@ -45,9 +45,12 @@ la mejor hora real.
 | Fecha | Publicación |
 |---|---|
 | Lun 30/11 | 01 · Hola, esto es Ceibo Works |
+| Mar 1/12 | Reel 1 · Find the phone number in 5 seconds |
 | Mié 2/12 | 02 · Web de muestra: jardines y pavimentos |
+| Jue 3/12 | Reel 3 · Same cottage: A or B? |
 | Vie 4/12 | 03 · Dato: más de 1 de cada 8 webs no cargaba |
 | Lun 7/12 | 04 · Cómo funciona |
+| Mar 8/12 | Reel 2 · 1 in 8 websites didn't load |
 | Mié 9/12 | 05 · Web de muestra: cuidado de casas |
 | Vie 11/12 | 06 · Consejo: "No seguro" en Chrome |
 | Lun 14/12 | 07 · Por qué "Ceibo" |
@@ -64,3 +67,14 @@ la mejor hora real.
    vinculada a la página).
 3. En claude.ai → Configuración → Conectores → **Metricool** → Conectar → autorizar.
 4. Avisar a Claude para programar el calendario.
+
+## Reels
+
+Los reels se publican **solo en inglés**: el público objetivo son Australia, Nueva Zelanda, el Reino Unido
+e Irlanda. Los genera `social/reels/` (ver `social/reels/guiones.md`).
+
+- **Voz:** Jessica, de ElevenLabs.
+- **Etiqueta de IA:** los reels van marcados como "contenido generado con IA" en Instagram, porque la voz
+  es sintética. Instagram pide declararlo.
+- **Horario:** martes y jueves a las 19 h de Argentina (23 h en Madrid, la zona horaria de Metricool).
+- **Publicaciones en diciembre:** 14 de las 20 que permite el plan gratis.
